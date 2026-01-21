@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.j
 import { Button } from '@/components/ui/button.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
 import { Slider } from '@/components/ui/slider.jsx';
-import { Play, Pause, Volume2, Lightbulb, Zap, TrendingUp, Music } from 'lucide-react';
+import { Play, Pause, Volume2, Lightbulb, Zap, TrendingUp, Music, Target } from 'lucide-react';
 import { useToast } from '../hooks/useToast';
 import { BackingTrackEngine } from '../utils/backingTrackEngine';
 // import AudioRecorder from './AudioRecorder';
