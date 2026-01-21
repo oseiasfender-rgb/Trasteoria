@@ -382,14 +382,14 @@ export function HarmoniaSection() {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            onClick={() => setShowDiagram(showDiagram === acorde.simbolo ? null : acorde.simbolo)}
+                            onClick={() => setShowDiagram(showDiagram === 'voicing' ? null : 'voicing')}
                           >
-                            {showDiagram === acorde.simbolo ? 'Ocultar' : 'Ver'} Diagrama
+                            {showDiagram === 'voicing' ? 'Ocultar' : 'Ver'} Diagrama
                           </Button>
                         </div>
-                        {showDiagram === acorde.simbolo && (
+                        {showDiagram === 'voicing' && (
                           <div className="mt-4">
-                            <ChordDiagram chord={acorde.simbolo} />
+                            <ChordDiagram chord="Cmaj7" />
                           </div>
                         )}
                       </div>
@@ -538,14 +538,14 @@ export function HarmoniaSection() {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            onClick={() => setShowDiagram(showDiagram === acorde.simbolo ? null : acorde.simbolo)}
+                            onClick={() => setShowDiagram(showDiagram === 'voicing' ? null : 'voicing')}
                           >
-                            {showDiagram === acorde.simbolo ? 'Ocultar' : 'Ver'} Diagrama
+                            {showDiagram === 'voicing' ? 'Ocultar' : 'Ver'} Diagrama
                           </Button>
                         </div>
-                        {showDiagram === acorde.simbolo && (
+                        {showDiagram === 'voicing' && (
                           <div className="mt-4">
-                            <ChordDiagram chord={acorde.simbolo} />
+                            <ChordDiagram chord="Cmaj7" />
                           </div>
                         )}
                       </div>
