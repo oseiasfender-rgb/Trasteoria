@@ -848,7 +848,7 @@ export function ImprovisacaoSection() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {backingTracks.map((track, index) => (
+                {Object.entries(backingTracks).map(([key, track], index) => (
                   <Card key={index} className="bg-muted/50">
                     <CardHeader>
                       <div className="flex justify-between items-start">
