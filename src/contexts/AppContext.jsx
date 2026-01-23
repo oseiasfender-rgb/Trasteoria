@@ -75,13 +75,8 @@ export const AppProvider = ({ children }) => {
     console.log(`Modo alterado para: ${newMode}`);
   };
 
-  // Função para alterar a oitava globalmente
-  const changeOctave = (newOctave) => {
-    // Validar range (2-5 conforme roadmap)
-    const validOctave = Math.max(2, Math.min(5, newOctave));
-    setCurrentOctave(validOctave);
-    console.log(`Oitava alterada para: ${validOctave}`);
-  };
+  // Oitava fixa em 4 (central) - sistema suporta 5 oitavas automaticamente (2-6)
+  // Cada função de áudio pode especificar oitava diferente se necessário
 
   // Função para tocar um intervalo
   const playInterval = async (semitons, baseNote = 'C', octave = null) => {
@@ -243,7 +238,6 @@ export const AppProvider = ({ children }) => {
     // Funções de estado
     changeKey,
     changeMode,
-    changeOctave,
     
     // Funções de áudio
     playInterval,

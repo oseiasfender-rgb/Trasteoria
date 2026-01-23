@@ -9,7 +9,7 @@ import { PremiumProvider } from './contexts/PremiumContext.jsx';
 import ToastProvider from './components/ToastProvider.jsx';
 import UpgradePrompt from './components/UpgradePrompt.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
-import { OctaveSelector } from './components/OctaveSelector.jsx';
+
 import { SectionLoader } from './components/SectionLoader.jsx';
 
 // Lazy loading dos componentes das seções (otimização de performance)
@@ -134,13 +134,12 @@ function AppContent() {
           <CardHeader className="text-center relative">
             {/* Theme Toggle & Octave Selector */}
             <div className="absolute top-4 right-4 flex items-center space-x-2">
-              <OctaveSelector />
               <ThemeToggle />
             </div>
             <div className="flex items-center justify-center space-x-3 mb-4">
-              <Music className="w-8 h-8 text-purple-400" />
+              <img src="/trasteoria-icon.png" alt="TrasTeoria" className="w-12 h-12" />
               <CardTitle className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Guitarra Completa
+                TrasTeoria
               </CardTitle>
             </div>
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full inline-block">
