@@ -61,7 +61,7 @@ class EffectsChain {
   setDryWetMix(mix) {
     this.dryWetMix = Math.max(0, Math.min(1, mix));
     this.updateMix();
-    console.log(`🎛️ Dry/Wet Mix: ${(this.dryWetMix * 100).toFixed(0)}%`);
+    .toFixed(0)}%`);
   }
 
   /**
@@ -71,7 +71,6 @@ class EffectsChain {
     const effect = this[effectName];
     if (effect) {
       effect.bypass = !enabled;
-      console.log(`${enabled ? '✅' : '❌'} ${effectName} ${enabled ? 'ativado' : 'desativado'}`);
     }
   }
 
@@ -91,7 +90,6 @@ class EffectsChain {
   applyPreset(presetName) {
     const preset = this.presets[presetName];
     if (!preset) {
-      console.warn(`❌ Preset '${presetName}' não encontrado`);
       return false;
     }
 
@@ -100,8 +98,6 @@ class EffectsChain {
         this.setEffectParameter(effectName, paramName, value);
       });
     });
-
-    console.log(`✅ Preset '${presetName}' aplicado`);
     return true;
   }
 
@@ -180,7 +176,6 @@ class EffectsChain {
     this.eq.reset();
     this.dryWetMix = 0.3;
     this.updateMix();
-    console.log('🔄 Todos os efeitos resetados');
   }
 }
 

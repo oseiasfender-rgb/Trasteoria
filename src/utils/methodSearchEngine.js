@@ -484,10 +484,8 @@ class MethodSearchEngine {
     try {
       this.methodData = JSON.parse(jsonString);
       this.invertedIndex = this.buildInvertedIndex();
-      console.log('✅ Dados importados com sucesso');
       return true;
     } catch (error) {
-      console.error('❌ Erro ao importar dados:', error);
       return false;
     }
   }

@@ -56,7 +56,6 @@ class ProfessionalBassEngine {
     
     const baseFreq = noteFrequencies[note];
     if (!baseFreq) {
-      console.error(`Nota inválida: ${note}`);
       return 65.41; // C2 default
     }
     

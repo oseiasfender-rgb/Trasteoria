@@ -401,7 +401,6 @@ class StringSampleEngine {
    */
   setTimbre(timbreId) {
     if (!this.timbres[timbreId]) {
-      console.warn(`Timbre não encontrado: ${timbreId}`);
       return false;
     }
     this.currentTimbre = timbreId;
@@ -413,7 +412,6 @@ class StringSampleEngine {
    */
   setTechnique(techniqueId) {
     if (!this.techniques[techniqueId]) {
-      console.warn(`Técnica não encontrada: ${techniqueId}`);
       return false;
     }
     this.currentTechnique = techniqueId;
@@ -471,7 +469,6 @@ class StringSampleEngine {
         const audioBuffer = await sampleEngine.loadSample(samplePath);
         kit.set(note.name, audioBuffer);
       } catch (err) {
-        console.warn(`Não foi possível carregar sample: ${samplePath}`);
       }
     }
 
@@ -497,7 +494,7 @@ class StringSampleEngine {
     const audioBuffer = kit?.get(noteName);
 
     if (!audioBuffer) {
-      console.warn(`Sample não encontrado: ${noteName} (${timbre}/${technique})`);
+      `);
       return;
     }
 
@@ -523,13 +520,11 @@ class StringSampleEngine {
     const voicing = this.voicings[chordType];
 
     if (!voicing) {
-      console.warn(`Tipo de acorde não encontrado: ${chordType}`);
       return;
     }
 
     const rootNoteObj = this.noteMap.get(rootNote);
     if (!rootNoteObj) {
-      console.warn(`Nota não encontrada: ${rootNote}`);
       return;
     }
 
@@ -556,13 +551,11 @@ class StringSampleEngine {
     const voicing = this.voicings[chordType];
 
     if (!voicing) {
-      console.warn(`Tipo de acorde não encontrado: ${chordType}`);
       return;
     }
 
     const rootNoteObj = this.noteMap.get(rootNote);
     if (!rootNoteObj) {
-      console.warn(`Nota não encontrada: ${rootNote}`);
       return;
     }
 

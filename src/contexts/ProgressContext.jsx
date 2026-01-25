@@ -80,7 +80,6 @@ export const ProgressProvider = ({ children }) => {
       try {
         setProgress(JSON.parse(savedProgress));
       } catch (error) {
-        console.error('Error loading progress:', error);
       }
     }
     
@@ -88,7 +87,6 @@ export const ProgressProvider = ({ children }) => {
       try {
         setStats(JSON.parse(savedStats));
       } catch (error) {
-        console.error('Error loading stats:', error);
       }
     }
   }, []);

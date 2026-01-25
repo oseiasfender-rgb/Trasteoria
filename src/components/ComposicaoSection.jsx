@@ -33,7 +33,6 @@ export function ComposicaoSection() {
       await playProgression(chords, null, 2.0);
       showSuccess(`Tocando: ${progression.name}`);
     } catch (error) {
-      console.error('Erro ao tocar progressão:', error);
     }
   };
 
@@ -51,7 +50,6 @@ export function ComposicaoSection() {
       await playProgression(customProgression, null, 2.0);
       showSuccess('Tocando sua progressão');
     } catch (error) {
-      console.error('Erro ao tocar progressão:', error);
     }
   };
 
@@ -99,9 +97,9 @@ export function ComposicaoSection() {
       </Card>
 
       <Tabs defaultValue="biblioteca" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="biblioteca">Biblioteca de Progressões</TabsTrigger>
-          <TabsTrigger value="criador">Criador de Progressões</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-2">
+          <TabsTrigger role="tab" value="biblioteca">Biblioteca de Progressões</TabsTrigger>
+          <TabsTrigger role="tab" value="criador">Criador de Progressões</TabsTrigger>
         </TabsList>
 
         {/* Biblioteca de Progressões */}

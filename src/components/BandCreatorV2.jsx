@@ -69,9 +69,7 @@ const BandCreatorV2 = () => {
       try {
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
         engineRef.current = new BandCreatorEngine(audioContextRef.current);
-        console.log('Band Creator Engine initialized');
       } catch (error) {
-        console.error('Error initializing audio:', error);
       }
     };
     
@@ -133,7 +131,6 @@ const BandCreatorV2 = () => {
         setIsPlaying(true);
         showBandCreatorStart(currentGenre, currentStyle);
       } catch (error) {
-        console.error('Error playing:', error);
         showInfo('Erro ao iniciar Band Creator');
       } finally {
         setIsLoading(false);

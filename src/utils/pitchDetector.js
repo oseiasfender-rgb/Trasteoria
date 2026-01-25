@@ -70,7 +70,6 @@ class PitchDetector {
       this.isRunning = true;
       return true;
     } catch (error) {
-      console.error('Error starting pitch detector:', error);
       throw new Error('Não foi possível acessar o microfone');
     }
   }

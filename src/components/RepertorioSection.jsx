@@ -45,7 +45,6 @@ export function RepertorioSection() {
       await playProgression(song.chords, null, 2.0);
       showSuccess(`Tocando: ${song.title}`);
     } catch (error) {
-      console.error('Erro ao tocar progressão:', error);
     }
   };
 

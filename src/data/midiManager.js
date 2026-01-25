@@ -39,14 +39,11 @@ class MIDIManager {
         this.midiAccess = await navigator.requestMIDIAccess();
         this.setupMIDIListeners();
         this.isConnected = true;
-        console.log('✅ MIDI inicializado com sucesso');
         return true;
       } else {
-        console.warn('⚠️ Web MIDI API não suportada neste navegador');
         return false;
       }
     } catch (error) {
-      console.error('❌ Erro ao inicializar MIDI:', error);
       return false;
     }
   }
@@ -62,14 +59,12 @@ class MIDIManager {
     for (let input of inputs) {
       this.inputs.push(input);
       input.onmidimessage = (message) => this.handleMIDIMessage(message);
-      console.log(`✅ Entrada MIDI conectada: ${input.name}`);
     }
 
     // Listar dispositivos de saída
     const outputs = this.midiAccess.outputs.values();
     for (let output of outputs) {
       this.outputs.push(output);
-      console.log(`✅ Saída MIDI conectada: ${output.name}`);
     }
 
     // Listener para conexão/desconexão de dispositivos
@@ -78,13 +73,11 @@ class MIDIManager {
         if (event.port.state === 'connected') {
           this.inputs.push(event.port);
           event.port.onmidimessage = (message) => this.handleMIDIMessage(message);
-          console.log(`✅ Entrada MIDI conectada: ${event.port.name}`);
           if (this.callbacks.onDeviceConnected) {
             this.callbacks.onDeviceConnected(event.port);
           }
         } else if (event.port.state === 'disconnected') {
           this.inputs = this.inputs.filter((i) => i !== event.port);
-          console.log(`❌ Entrada MIDI desconectada: ${event.port.name}`);
           if (this.callbacks.onDeviceDisconnected) {
             this.callbacks.onDeviceDisconnected(event.port);
           }
@@ -124,7 +117,7 @@ class MIDIManager {
     const mappedNote = this.getMappedNote(note, channel);
     const normalizedVelocity = velocity / 127;
 
-    console.log(`🎵 Note On: ${mappedNote} (Velocity: ${(normalizedVelocity * 100).toFixed(0)}%)`);
+    .toFixed(0)}%)`);
 
     if (this.audioEngine && this.audioEngine.playNote) {
       this.audioEngine.playNote(mappedNote, normalizedVelocity);
@@ -144,9 +137,6 @@ class MIDIManager {
    */
   handleNoteOff(note, velocity, channel) {
     const mappedNote = this.getMappedNote(note, channel);
-
-    console.log(`🔇 Note Off: ${mappedNote}`);
-
     if (this.audioEngine && this.audioEngine.stopNote) {
       this.audioEngine.stopNote(mappedNote);
     }
@@ -165,7 +155,7 @@ class MIDIManager {
   handleControlChange(cc, value, channel) {
     const normalizedValue = value / 127;
 
-    console.log(`🎛️ CC ${cc}: ${(normalizedValue * 100).toFixed(0)}%`);
+    .toFixed(0)}%`);
 
     // Mapeamentos padrão de CC
     switch (cc) {
@@ -207,7 +197,7 @@ class MIDIManager {
     const pitchValue = ((msb << 7) | lsb) - 8192;
     const normalizedPitch = pitchValue / 8192; // -1 a 1
 
-    console.log(`🎸 Pitch Bend: ${(normalizedPitch * 100).toFixed(0)}%`);
+    .toFixed(0)}%`);
 
     if (this.audioEngine && this.audioEngine.setPitchBend) {
       this.audioEngine.setPitchBend(normalizedPitch);
@@ -244,7 +234,6 @@ class MIDIManager {
   mapNote(midiNote, instrumentNote, channel = 0) {
     const key = `${channel}-${midiNote}`;
     this.mappings[key] = instrumentNote;
-    console.log(`🎵 Mapeamento: MIDI ${midiNote} → ${instrumentNote}`);
     return true;
   }
 
@@ -253,7 +242,6 @@ class MIDIManager {
    */
   sendNote(note, velocity = 100, duration = 500, outputIndex = 0) {
     if (!this.outputs[outputIndex]) {
-      console.warn('⚠️ Saída MIDI não disponível');
       return false;
     }
 
@@ -270,10 +258,9 @@ class MIDIManager {
         output.send([0x80, midiNote, 0]);
       }, duration);
 
-      console.log(`📤 Nota enviada: ${note} (Velocity: ${normalizedVelocity})`);
+      `);
       return true;
     } catch (error) {
-      console.error('❌ Erro ao enviar nota:', error);
       return false;
     }
   }
@@ -299,7 +286,6 @@ class MIDIManager {
    */
   sendCC(cc, value, outputIndex = 0) {
     if (!this.outputs[outputIndex]) {
-      console.warn('⚠️ Saída MIDI não disponível');
       return false;
     }
 
@@ -307,10 +293,8 @@ class MIDIManager {
       const output = this.outputs[outputIndex];
       const normalizedValue = Math.max(0, Math.min(127, value));
       output.send([0xb0, cc, normalizedValue]);
-      console.log(`📤 CC enviado: ${cc} = ${normalizedValue}`);
       return true;
     } catch (error) {
-      console.error('❌ Erro ao enviar CC:', error);
       return false;
     }
   }
@@ -320,7 +304,6 @@ class MIDIManager {
    */
   sendPitchBend(value, outputIndex = 0) {
     if (!this.outputs[outputIndex]) {
-      console.warn('⚠️ Saída MIDI não disponível');
       return false;
     }
 
@@ -330,10 +313,8 @@ class MIDIManager {
       const lsb = pitchValue & 0x7f;
       const msb = (pitchValue >> 7) & 0x7f;
       output.send([0xe0, lsb, msb]);
-      console.log(`📤 Pitch Bend enviado: ${value}`);
       return true;
     } catch (error) {
-      console.error('❌ Erro ao enviar Pitch Bend:', error);
       return false;
     }
   }
@@ -344,7 +325,6 @@ class MIDIManager {
   setCallback(eventName, callback) {
     if (this.callbacks.hasOwnProperty(`on${eventName}`)) {
       this.callbacks[`on${eventName}`] = callback;
-      console.log(`✅ Callback configurado para ${eventName}`);
       return true;
     }
     return false;
@@ -393,7 +373,6 @@ class MIDIManager {
   createPreset(presetName, mappings) {
     this.presets = this.presets || {};
     this.presets[presetName] = mappings;
-    console.log(`✅ Preset '${presetName}' criado`);
     return true;
   }
 
@@ -402,12 +381,10 @@ class MIDIManager {
    */
   loadPreset(presetName) {
     if (!this.presets || !this.presets[presetName]) {
-      console.warn(`⚠️ Preset '${presetName}' não encontrado`);
       return false;
     }
 
     this.mappings = { ...this.presets[presetName] };
-    console.log(`✅ Preset '${presetName}' carregado`);
     return true;
   }
 
@@ -416,7 +393,6 @@ class MIDIManager {
    */
   clearMappings() {
     this.mappings = {};
-    console.log('🗑️ Mapeamentos limpos');
     return true;
   }
 }

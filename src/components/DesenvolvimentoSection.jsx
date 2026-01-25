@@ -379,11 +379,11 @@ export function DesenvolvimentoSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="metodologia">Metodologia</TabsTrigger>
-          <TabsTrigger value="percepcao">Percepção</TabsTrigger>
-          <TabsTrigger value="metas">Metas</TabsTrigger>
-          <TabsTrigger value="plano">Plano de Estudos</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-4">
+          <TabsTrigger role="tab" value="metodologia">Metodologia</TabsTrigger>
+          <TabsTrigger role="tab" value="percepcao">Percepção</TabsTrigger>
+          <TabsTrigger role="tab" value="metas">Metas</TabsTrigger>
+          <TabsTrigger role="tab" value="plano">Plano de Estudos</TabsTrigger>
         </TabsList>
 
         {/* Metodologia */}

@@ -9,6 +9,9 @@ import { PremiumProvider } from './contexts/PremiumContext.jsx';
 import ToastProvider from './components/ToastProvider.jsx';
 import UpgradePrompt from './components/UpgradePrompt.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
+import AccessibilityProvider from './components/AccessibilityProvider.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
+import PWAInstaller from './components/PWAInstaller.jsx';
 
 import { SectionLoader } from './components/SectionLoader.jsx';
 
@@ -40,6 +43,7 @@ import { VideoSection } from './components/VideoSection.jsx';
 import { modosInfo, modosList, getModoData } from './data/modosDataExpanded.js';
 import { tonalidades } from './data/musicTheory.js';
 import './App.css';
+import './animations.css';
 
 function AppContent() {
   const [activeSection, setActiveSection] = useState('fundamentos');
@@ -310,9 +314,9 @@ function AppContent() {
               <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
               {/* Content dos Modos Gregos */}
-              <main>
+              <div>
                 {renderModosGregosContent()}
-              </main>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
@@ -323,17 +327,22 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <PremiumProvider>
-        <ProgressProvider>
-          <AppProvider>
-            <ToastProvider />
-            <UpgradePrompt />
-            <AppContent />
-          </AppProvider>
-        </ProgressProvider>
-      </PremiumProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <AccessibilityProvider>
+        <ThemeProvider>
+          <PremiumProvider>
+            <ProgressProvider>
+              <AppProvider>
+              <ToastProvider />
+              <UpgradePrompt />
+              <PWAInstaller />
+              <AppContent />
+              </AppProvider>
+            </ProgressProvider>
+          </PremiumProvider>
+        </ThemeProvider>
+      </AccessibilityProvider>
+    </ErrorBoundary>
   );
 }
 

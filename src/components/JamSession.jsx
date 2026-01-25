@@ -35,7 +35,6 @@ const JamSession = () => {
         setSavedSessions(JSON.parse(saved));
       }
     } catch (error) {
-      console.error('Error loading sessions:', error);
     }
   };
   
@@ -206,7 +205,6 @@ const JamSession = () => {
         setBpm(session.bpm || 120);
         showInfo('Sessão compartilhada carregada!');
       } catch (error) {
-        console.error('Error loading shared session:', error);
       }
     }
   }, []);

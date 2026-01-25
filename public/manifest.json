@@ -1,0 +1,85 @@
+{
+  "name": "TrasTeoria - Plataforma de Ensino de Guitarra",
+  "short_name": "TrasTeoria",
+  "description": "Aprenda guitarra com o método de excelência unificado. Teoria musical, harmonia, escalas, improvisação e muito mais.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#9333ea",
+  "icons": [
+    {
+      "src": "/trasteoria-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/trasteoria-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/trasteoria-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["education", "music"],
+  "screenshots": [
+    {
+      "src": "/trasteoria-icon.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/trasteoria-icon.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Fundamentos",
+      "short_name": "Fundamentos",
+      "description": "Aprenda os fundamentos da guitarra",
+      "url": "/?section=fundamentos",
+      "icons": [
+        {
+          "src": "/trasteoria-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Harmonia",
+      "short_name": "Harmonia",
+      "description": "Estude harmonia e acordes",
+      "url": "/?section=harmonia",
+      "icons": [
+        {
+          "src": "/trasteoria-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Modos Gregos",
+      "short_name": "Modos",
+      "description": "Explore os modos gregos",
+      "url": "/?section=modos_gregos",
+      "icons": [
+        {
+          "src": "/trasteoria-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}

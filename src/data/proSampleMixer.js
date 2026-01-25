@@ -35,11 +35,8 @@ class ProSampleMixer {
       for (const name of this.channelNames) {
         this.createChannel(name);
       }
-      
-      console.log('[ProSampleMixer] Mixer inicializado');
       return true;
     } catch (error) {
-      console.error('[ProSampleMixer] Erro ao inicializar:', error);
       return false;
     }
   }
@@ -232,10 +229,7 @@ class ProSampleMixer {
 
       // Reproduzir piano
       pianoSampleEngine.playChord(chordNotes[0], chordType, 4, 0.7);
-
-      console.log('[ProSampleMixer] Backing track iniciado');
     } catch (error) {
-      console.error('[ProSampleMixer] Erro ao reproduzir backing track:', error);
       this.isPlaying = false;
     }
   }
@@ -247,7 +241,6 @@ class ProSampleMixer {
     drumSampleEngine.stopPattern();
     sampleEngine.stopAll();
     this.isPlaying = false;
-    console.log('[ProSampleMixer] Backing track parado');
   }
 
   /**
@@ -271,7 +264,6 @@ class ProSampleMixer {
    * Exportar áudio (futuro)
    */
   async exportAudio(filename = 'backing-track.wav') {
-    console.log('[ProSampleMixer] Exportação de áudio não implementada ainda');
     // Implementação futura usando MediaRecorder ou similar
   }
 
@@ -281,7 +273,6 @@ class ProSampleMixer {
   async close() {
     this.stopBackingTrack();
     await sampleEngine.close();
-    console.log('[ProSampleMixer] Mixer fechado');
   }
 }
 

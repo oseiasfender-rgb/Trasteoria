@@ -162,10 +162,10 @@ Esta é a magia dos Modos Gregos: transformar uma simples escala em sete univers
       </Card>
 
       <Tabs defaultValue="principal" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="principal">Vídeo Principal</TabsTrigger>
-          <TabsTrigger value="tutoriais">Tutoriais</TabsTrigger>
-          <TabsTrigger value="transcricao">Transcrição</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-3">
+          <TabsTrigger role="tab" value="principal">Vídeo Principal</TabsTrigger>
+          <TabsTrigger role="tab" value="tutoriais">Tutoriais</TabsTrigger>
+          <TabsTrigger role="tab" value="transcricao">Transcrição</TabsTrigger>
         </TabsList>
 
         {/* Vídeo Principal */}

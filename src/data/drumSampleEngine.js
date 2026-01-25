@@ -305,8 +305,6 @@ class DrumSampleEngine {
    */
   async loadDrumKit(kitName = 'rock') {
     try {
-      console.log(`[DrumSampleEngine] Carregando kit: ${kitName}`);
-      
       const kit = {
         name: kitName,
         samples: {}
@@ -320,9 +318,7 @@ class DrumSampleEngine {
         try {
           const url = `${baseUrl}/${drumType}.wav`;
           kit.samples[drumType] = await sampleEngine.loadSample(url);
-          console.log(`[DrumSampleEngine] Sample carregado: ${drumType}`);
         } catch (error) {
-          console.warn(`[DrumSampleEngine] Falha ao carregar ${drumType}:`, error);
           // Continuar com outros samples mesmo se um falhar
         }
       }
@@ -332,7 +328,6 @@ class DrumSampleEngine {
       
       return kit;
     } catch (error) {
-      console.error(`[DrumSampleEngine] Erro ao carregar kit: ${kitName}`, error);
       throw error;
     }
   }
@@ -345,7 +340,6 @@ class DrumSampleEngine {
    */
   playDrum(drumType, velocity = 1.0, options = {}) {
     if (!this.currentKit || !this.currentKit.samples[drumType]) {
-      console.warn(`[DrumSampleEngine] Sample não disponível: ${drumType}`);
       return null;
     }
 
@@ -365,7 +359,6 @@ class DrumSampleEngine {
    */
   async playPattern(pattern, bpm = 120, loop = false) {
     if (!this.currentKit) {
-      console.error('[DrumSampleEngine] Kit não carregado');
       return;
     }
 
@@ -410,7 +403,6 @@ class DrumSampleEngine {
         );
       } while (loop && this.patternPlaying);
     } catch (error) {
-      console.error('[DrumSampleEngine] Erro ao reproduzir padrão:', error);
       this.patternPlaying = false;
     }
   }

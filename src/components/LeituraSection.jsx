@@ -216,9 +216,9 @@ export function LeituraSection() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="notas">Notas no Braço</TabsTrigger>
-          <TabsTrigger value="cifras">Cifras</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-2">
+          <TabsTrigger role="tab" value="notas">Notas no Braço</TabsTrigger>
+          <TabsTrigger role="tab" value="cifras">Cifras</TabsTrigger>
         </TabsList>
 
         {/* Notas no Braço */}

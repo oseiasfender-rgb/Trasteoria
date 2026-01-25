@@ -110,9 +110,9 @@ export const StringTimbreSelector = ({ onTimbreChange, onTechniqueChange, defaul
 
       {/* Tabs para Timbres e Técnicas */}
       <Tabs defaultValue="timbres" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="timbres">Timbres de Cordas</TabsTrigger>
-          <TabsTrigger value="tecnicas">Técnicas de Arco</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-2">
+          <TabsTrigger role="tab" value="timbres">Timbres de Cordas</TabsTrigger>
+          <TabsTrigger role="tab" value="tecnicas">Técnicas de Arco</TabsTrigger>
         </TabsList>
 
         {/* Aba Timbres */}

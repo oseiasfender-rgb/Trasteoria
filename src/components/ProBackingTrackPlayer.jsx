@@ -90,7 +90,6 @@ export const ProBackingTrackPlayer = ({
   // Iniciar reprodução
   const handlePlay = async () => {
     if (!isInitialized) {
-      console.error('Engines não inicializados');
       return;
     }
 
@@ -110,7 +109,6 @@ export const ProBackingTrackPlayer = ({
       await playBackingTrack(config);
       setIsPlaying(true);
     } catch (error) {
-      console.error('Erro ao reproduzir:', error);
     }
   };
 
@@ -189,11 +187,11 @@ export const ProBackingTrackPlayer = ({
 
         {/* Tabs de Configuração */}
         <Tabs defaultValue="drums" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="drums">Bateria</TabsTrigger>
-            <TabsTrigger value="bass">Baixo</TabsTrigger>
-            <TabsTrigger value="piano">Piano</TabsTrigger>
-            <TabsTrigger value="mixer">Mixer</TabsTrigger>
+          <TabsList role="tablist" className="grid w-full grid-cols-4">
+            <TabsTrigger role="tab" value="drums">Bateria</TabsTrigger>
+            <TabsTrigger role="tab" value="bass">Baixo</TabsTrigger>
+            <TabsTrigger role="tab" value="piano">Piano</TabsTrigger>
+            <TabsTrigger role="tab" value="mixer">Mixer</TabsTrigger>
           </TabsList>
 
           {/* Aba Bateria */}

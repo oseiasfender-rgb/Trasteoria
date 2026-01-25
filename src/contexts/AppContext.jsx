@@ -34,12 +34,10 @@ export const AppProvider = ({ children }) => {
       setAudioInitialized(audioSuccess);
       
       if (audioSuccess) {
-        console.log('Módulo de áudio inicializado com sucesso');
       }
       
       return audioSuccess;
     } catch (error) {
-      console.error('Erro ao inicializar módulo de áudio:', error);
       return false;
     }
   };
@@ -53,12 +51,10 @@ export const AppProvider = ({ children }) => {
       setDrumInitialized(drumSuccess);
       
       if (drumSuccess) {
-        console.log('Módulo de bateria inicializado com sucesso');
       }
       
       return drumSuccess;
     } catch (error) {
-      console.error('Erro ao inicializar módulo de bateria:', error);
       return false;
     }
   };
@@ -66,13 +62,11 @@ export const AppProvider = ({ children }) => {
   // Função para alterar a tonalidade globalmente
   const changeKey = (newKey) => {
     setCurrentKey(newKey);
-    console.log(`Tonalidade alterada para: ${newKey}`);
   };
 
   // Função para alterar o modo globalmente
   const changeMode = (newMode) => {
     setCurrentMode(newMode);
-    console.log(`Modo alterado para: ${newMode}`);
   };
 
   // Oitava fixa em 4 (central) - sistema suporta 5 oitavas automaticamente (2-6)
@@ -86,7 +80,6 @@ export const AppProvider = ({ children }) => {
     if (!audioInitialized) {
       const success = await initializeAudio();
       if (!success) {
-        console.warn('Não foi possível inicializar o áudio');
         return;
       }
     }
@@ -94,7 +87,6 @@ export const AppProvider = ({ children }) => {
     try {
       await audioEngine.playInterval(semitons, baseNote, targetOctave);
     } catch (error) {
-      console.error('Erro ao tocar intervalo:', error);
     }
   };
 
@@ -106,7 +98,6 @@ export const AppProvider = ({ children }) => {
     if (!audioInitialized) {
       const success = await initializeAudio();
       if (!success) {
-        console.warn('Não foi possível inicializar o áudio');
         return;
       }
     }
@@ -114,7 +105,6 @@ export const AppProvider = ({ children }) => {
     try {
       await audioEngine.playNote(note, targetOctave, duration, timbre);
     } catch (error) {
-      console.error('Erro ao tocar nota:', error);
     }
   };
 
@@ -126,7 +116,6 @@ export const AppProvider = ({ children }) => {
     if (!audioInitialized) {
       const success = await initializeAudio();
       if (!success) {
-        console.warn('Não foi possível inicializar o áudio');
         return;
       }
     }
@@ -134,7 +123,6 @@ export const AppProvider = ({ children }) => {
     try {
       await audioEngine.playScale(notes, targetOctave, noteDuration, timbre);
     } catch (error) {
-      console.error('Erro ao tocar escala:', error);
     }
   };
 
@@ -146,7 +134,6 @@ export const AppProvider = ({ children }) => {
     if (!audioInitialized) {
       const success = await initializeAudio();
       if (!success) {
-        console.warn('Não foi possível inicializar o áudio');
         return;
       }
     }
@@ -165,7 +152,6 @@ export const AppProvider = ({ children }) => {
         notes = chordInput;
       }
       else {
-        console.warn('Formato de acorde inválido');
         return;
       }
       
@@ -173,7 +159,6 @@ export const AppProvider = ({ children }) => {
         await audioEngine.playChord(notes, targetOctave, duration, timbre);
       }
     } catch (error) {
-      console.error('Erro ao tocar acorde:', error);
     }
   };
 
@@ -185,7 +170,6 @@ export const AppProvider = ({ children }) => {
     if (!audioInitialized) {
       const success = await initializeAudio();
       if (!success) {
-        console.warn('Não foi possível inicializar o áudio');
         return;
       }
     }
@@ -193,7 +177,6 @@ export const AppProvider = ({ children }) => {
     try {
       await audioEngine.playProgression(chords, targetOctave, chordDuration, timbre);
     } catch (error) {
-      console.error('Erro ao tocar progressão:', error);
     }
   };
 
@@ -203,7 +186,6 @@ export const AppProvider = ({ children }) => {
     if (!drumInitialized) {
       const success = await initializeDrums();
       if (!success) {
-        console.warn('Não foi possível inicializar a bateria');
         return;
       }
     }
@@ -211,7 +193,6 @@ export const AppProvider = ({ children }) => {
     try {
       await drumEngine.playPattern(pattern, bpm);
     } catch (error) {
-      console.error('Erro ao tocar ritmo:', error);
     }
   };
 

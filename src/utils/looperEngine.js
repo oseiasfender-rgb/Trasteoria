@@ -66,7 +66,6 @@ class LooperEngine {
       });
       return true;
     } catch (error) {
-      console.error('Erro ao acessar microfone:', error);
       return false;
     }
   }

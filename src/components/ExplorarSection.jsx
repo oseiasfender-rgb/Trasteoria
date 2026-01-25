@@ -127,10 +127,10 @@ export function ExplorarSection() {
       </Card>
 
       <Tabs defaultValue="gerador" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="gerador">Gerador de Progressões</TabsTrigger>
-          <TabsTrigger value="construtor">Construtor Personalizado</TabsTrigger>
-          <TabsTrigger value="ferramentas">Ferramentas Avançadas</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-3">
+          <TabsTrigger role="tab" value="gerador">Gerador de Progressões</TabsTrigger>
+          <TabsTrigger role="tab" value="construtor">Construtor Personalizado</TabsTrigger>
+          <TabsTrigger role="tab" value="ferramentas">Ferramentas Avançadas</TabsTrigger>
         </TabsList>
 
         {/* Gerador de Progressões */}

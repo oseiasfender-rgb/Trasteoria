@@ -274,7 +274,6 @@ class DrumEngine {
     
     const pattern = this.patterns[patternName];
     if (!pattern) {
-      console.error('Padrão não encontrado:', patternName);
       return;
     }
 

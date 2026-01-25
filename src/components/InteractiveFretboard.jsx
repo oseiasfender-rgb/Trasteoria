@@ -111,7 +111,6 @@ export function InteractiveFretboard({ modo, tonalidade }) {
       };
 
     } catch (error) {
-      console.error('Erro ao tocar nota:', error);
     }
   };
 

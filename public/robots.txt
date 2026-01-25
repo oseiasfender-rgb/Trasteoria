@@ -1,0 +1,22 @@
+# TrasTeoria robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /.git
+Disallow: /node_modules
+Disallow: /dist
+
+# Sitemap
+Sitemap: https://trasteoria-project.vercel.app/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# User-agent specific rules
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1

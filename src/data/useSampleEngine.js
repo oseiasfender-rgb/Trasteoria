@@ -31,9 +31,7 @@ export const useSampleEngine = () => {
         await proSampleMixer.init();
         
         setIsInitialized(true);
-        console.log('[useSampleEngine] Engines inicializados');
       } catch (err) {
-        console.error('[useSampleEngine] Erro ao inicializar:', err);
         setError(err.message);
       }
     };

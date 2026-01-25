@@ -60,8 +60,6 @@ class BandCreatorEngine {
     
     // Aplicar volumes iniciais
     this.updateMixer();
-    
-    console.log('✅ Band Creator Engine inicializado!');
   }
 
   /**
@@ -89,8 +87,6 @@ class BandCreatorEngine {
     this.startBass();
     this.startPiano();
     this.startChordChanges();
-    
-    console.log(`🎵 Tocando ${genreId} - Style ${styleId} @ ${bpm} BPM`);
   }
 
   /**
@@ -193,8 +189,6 @@ class BandCreatorEngine {
       // Avançar para próximo acorde
       this.currentChordIndex = (this.currentChordIndex + 1) % this.chordProgression.length;
       this.currentChord = this.chordProgression[this.currentChordIndex];
-      
-      console.log(`🎵 Acorde: ${this.currentChord.root}${this.currentChord.quality || ''}`);
     }, chordDuration);
   }
 
@@ -232,8 +226,6 @@ class BandCreatorEngine {
       clearInterval(this.chordChangeInterval);
       this.chordChangeInterval = null;
     }
-    
-    console.log('⏹️ Band Creator parado');
   }
 
   /**

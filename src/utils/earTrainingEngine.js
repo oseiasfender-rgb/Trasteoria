@@ -266,7 +266,6 @@ class EarTrainingEngine {
     try {
       localStorage.setItem('earTrainingStats', JSON.stringify(this.stats));
     } catch (error) {
-      console.error('Error saving ear training stats:', error);
     }
   }
   
@@ -280,7 +279,6 @@ class EarTrainingEngine {
         this.stats = JSON.parse(saved);
       }
     } catch (error) {
-      console.error('Error loading ear training stats:', error);
     }
   }
   

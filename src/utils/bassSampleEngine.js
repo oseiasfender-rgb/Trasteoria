@@ -85,8 +85,6 @@ class BassSampleEngine {
    */
   async loadBassKit(style = 'electric') {
     try {
-      console.log(`[BassSampleEngine] Carregando kit: ${style}`);
-      
       const kit = {
         name: style,
         samples: {}
@@ -100,9 +98,7 @@ class BassSampleEngine {
         try {
           const url = `${baseUrl}/${note.name}.wav`;
           kit.samples[note.name] = await sampleEngine.loadSample(url);
-          console.log(`[BassSampleEngine] Sample carregado: ${note.name}`);
         } catch (error) {
-          console.warn(`[BassSampleEngine] Falha ao carregar ${note.name}:`, error);
         }
       }
 
@@ -111,7 +107,6 @@ class BassSampleEngine {
       
       return kit;
     } catch (error) {
-      console.error(`[BassSampleEngine] Erro ao carregar kit: ${style}`, error);
       throw error;
     }
   }
@@ -125,7 +120,6 @@ class BassSampleEngine {
    */
   playNote(note, duration = 1.0, velocity = 1.0, options = {}) {
     if (!this.currentKit || !this.currentKit.samples[note]) {
-      console.warn(`[BassSampleEngine] Sample não disponível: ${note}`);
       return null;
     }
 
@@ -147,7 +141,6 @@ class BassSampleEngine {
    */
   async playBassLine(notes, mode = 'root', bpm = 120, velocity = 1.0) {
     if (!this.currentKit) {
-      console.error('[BassSampleEngine] Kit não carregado');
       return;
     }
 
@@ -184,7 +177,6 @@ class BassSampleEngine {
         }, i * beatDuration * 1000);
       }
     } catch (error) {
-      console.error('[BassSampleEngine] Erro ao reproduzir linha de baixo:', error);
     }
   }
 

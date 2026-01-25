@@ -115,10 +115,8 @@ class AudioEngineFixed {
       }
 
       this.isInitialized = true;
-      console.log('✓ AudioEngine inicializado com sucesso');
       return true;
     } catch (error) {
-      console.error('✗ Erro ao inicializar AudioEngine:', error);
       return false;
     }
   }
@@ -142,7 +140,6 @@ class AudioEngineFixed {
 
       return frequency;
     } catch (error) {
-      console.error('Erro ao calcular frequência:', error);
       return 440; // Fallback para A4
     }
   }
@@ -153,7 +150,6 @@ class AudioEngineFixed {
   playNote(note, octave = 4, duration = 1, timbre = 'piano', volume = 0.3) {
     try {
       if (!this.isInitialized) {
-        console.warn('AudioEngine não inicializado');
         return;
       }
 
@@ -199,7 +195,6 @@ class AudioEngineFixed {
 
       return id;
     } catch (error) {
-      console.error('Erro ao reproduzir nota:', error);
       return null;
     }
   }
@@ -210,7 +205,6 @@ class AudioEngineFixed {
   playChord(baseNote, chordType = 'major', octave = 4, duration = 2, timbre = 'piano', volume = 0.3) {
     try {
       if (!this.isInitialized) {
-        console.warn('AudioEngine não inicializado');
         return;
       }
 
@@ -278,7 +272,6 @@ class AudioEngineFixed {
 
       return ids;
     } catch (error) {
-      console.error('Erro ao reproduzir acorde:', error);
       return [];
     }
   }
@@ -297,9 +290,7 @@ class AudioEngineFixed {
       }
       this.activeOscillators.clear();
       this.activeGains.clear();
-      console.log('✓ Todos os sons foram parados');
     } catch (error) {
-      console.error('Erro ao parar sons:', error);
     }
   }
 
@@ -315,7 +306,6 @@ class AudioEngineFixed {
         );
       }
     } catch (error) {
-      console.error('Erro ao definir volume:', error);
     }
   }
 

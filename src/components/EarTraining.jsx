@@ -72,7 +72,6 @@ const EarTraining = () => {
       setHasPlayed(true);
       showInfo('Ouça atentamente!');
     } catch (error) {
-      console.error('Error playing exercise:', error);
       showError('Erro ao tocar');
     }
   };

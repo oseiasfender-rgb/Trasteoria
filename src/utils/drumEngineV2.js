@@ -538,7 +538,6 @@ class DrumEngineV2 {
         this.professionalDrum.playTom('low', velocity);
         break;
       default:
-        console.warn(`Drum type não reconhecido: ${drumType}`);
     }
   }
 

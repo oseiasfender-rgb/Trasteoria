@@ -434,7 +434,6 @@ class KeyboardSampleEngine {
    */
   setTimbre(timbreId) {
     if (!this.timbres[timbreId]) {
-      console.warn(`Timbre não encontrado: ${timbreId}`);
       return false;
     }
     this.currentTimbre = timbreId;
@@ -480,7 +479,6 @@ class KeyboardSampleEngine {
         const audioBuffer = await sampleEngine.loadSample(samplePath);
         kit.set(note.name, audioBuffer);
       } catch (err) {
-        console.warn(`Não foi possível carregar sample: ${samplePath}`);
       }
     }
 
@@ -504,7 +502,7 @@ class KeyboardSampleEngine {
     const audioBuffer = kit.get(noteName);
 
     if (!audioBuffer) {
-      console.warn(`Sample não encontrado: ${noteName} (${timbre})`);
+      `);
       return;
     }
 
@@ -525,13 +523,11 @@ class KeyboardSampleEngine {
     const voicing = this.voicings[chordType];
 
     if (!voicing) {
-      console.warn(`Tipo de acorde não encontrado: ${chordType}`);
       return;
     }
 
     const rootNoteObj = this.noteMap.get(rootNote);
     if (!rootNoteObj) {
-      console.warn(`Nota não encontrada: ${rootNote}`);
       return;
     }
 
@@ -557,13 +553,11 @@ class KeyboardSampleEngine {
     const voicing = this.voicings[chordType];
 
     if (!voicing) {
-      console.warn(`Tipo de acorde não encontrado: ${chordType}`);
       return;
     }
 
     const rootNoteObj = this.noteMap.get(rootNote);
     if (!rootNoteObj) {
-      console.warn(`Nota não encontrado: ${rootNote}`);
       return;
     }
 

@@ -290,12 +290,12 @@ export function EscalasArpejosSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="modos_gregos">Modos Gregos</TabsTrigger>
-          <TabsTrigger value="caged">Sistema CAGED</TabsTrigger>
-          <TabsTrigger value="exoticas">Escalas Exóticas</TabsTrigger>
-          <TabsTrigger value="arpejos">Arpejos</TabsTrigger>
-          <TabsTrigger value="menor_melodica">Menor Melódica</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-5">
+          <TabsTrigger role="tab" value="modos_gregos">Modos Gregos</TabsTrigger>
+          <TabsTrigger role="tab" value="caged">Sistema CAGED</TabsTrigger>
+          <TabsTrigger role="tab" value="exoticas">Escalas Exóticas</TabsTrigger>
+          <TabsTrigger role="tab" value="arpejos">Arpejos</TabsTrigger>
+          <TabsTrigger role="tab" value="menor_melodica">Menor Melódica</TabsTrigger>
         </TabsList>
 
         {/* Modos Gregos */}

@@ -160,9 +160,9 @@ export function ModosExoticosSection() {
         {/* Conteúdo Principal */}
         <div className="lg:col-span-3">
           <Tabs defaultValue="modos" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="modos">Explorar Modos</TabsTrigger>
-              <TabsTrigger value="detalhes">Detalhes do Modo</TabsTrigger>
+            <TabsList role="tablist" className="grid w-full grid-cols-2">
+              <TabsTrigger role="tab" value="modos">Explorar Modos</TabsTrigger>
+              <TabsTrigger role="tab" value="detalhes">Detalhes do Modo</TabsTrigger>
             </TabsList>
 
             {/* Aba de Exploração */}

@@ -52,10 +52,8 @@ class AudioRecorder {
       };
 
       this.mediaRecorder.start();
-      console.log('✅ Gravação iniciada');
       return true;
     } catch (error) {
-      console.error('❌ Erro ao iniciar gravação:', error);
       return false;
     }
   }
@@ -70,7 +68,7 @@ class AudioRecorder {
     this.recordingDuration = (Date.now() - this.recordingStartTime) / 1000;
     this.mediaRecorder.stop();
 
-    console.log(`⏹️ Gravação parada - Duração: ${this.recordingDuration.toFixed(2)}s`);
+    }s`);
     return true;
   }
 
@@ -93,7 +91,6 @@ class AudioRecorder {
     };
 
     this.recordings.push(recording);
-    console.log(`✅ Gravação processada - Total: ${this.recordings.length}`);
     return recording;
   }
 
@@ -106,7 +103,6 @@ class AudioRecorder {
       : this.recordings[this.recordings.length - 1];
 
     if (!recording) {
-      console.warn('⚠️ Nenhuma gravação encontrada');
       return null;
     }
 
@@ -117,11 +113,8 @@ class AudioRecorder {
       // Converter para WAV
       const wav = this.audioBufferToWAV(audioBuffer);
       const blob = new Blob([wav], { type: 'audio/wav' });
-
-      console.log('✅ Exportado como WAV');
       return blob;
     } catch (error) {
-      console.error('❌ Erro ao exportar WAV:', error);
       return null;
     }
   }
@@ -135,17 +128,15 @@ class AudioRecorder {
       : this.recordings[this.recordings.length - 1];
 
     if (!recording) {
-      console.warn('⚠️ Nenhuma gravação encontrada');
       return null;
     }
 
     try {
       // Nota: MP3 real requer biblioteca externa (lamejs)
       // Por enquanto, retornar blob original (webm)
-      console.log('✅ Exportado como MP3 (formato webm)');
+      ');
       return recording.blob;
     } catch (error) {
-      console.error('❌ Erro ao exportar MP3:', error);
       return null;
     }
   }
@@ -159,17 +150,15 @@ class AudioRecorder {
       : this.recordings[this.recordings.length - 1];
 
     if (!recording) {
-      console.warn('⚠️ Nenhuma gravação encontrada');
       return null;
     }
 
     try {
       // Nota: OGG real requer biblioteca externa
       // Por enquanto, retornar blob original (webm)
-      console.log('✅ Exportado como OGG (formato webm)');
+      ');
       return recording.blob;
     } catch (error) {
-      console.error('❌ Erro ao exportar OGG:', error);
       return null;
     }
   }
@@ -262,10 +251,9 @@ class AudioRecorder {
         }
       }
 
-      console.log(`✅ Áudio normalizado - Ganho: ${(gain * 100).toFixed(0)}%`);
+      .toFixed(0)}%`);
       return true;
     } catch (error) {
-      console.error('❌ Erro ao normalizar:', error);
       return false;
     }
   }
@@ -297,11 +285,8 @@ class AudioRecorder {
         const trimmedData = trimmedBuffer.getChannelData(channel);
         trimmedData.set(sourceData.slice(startSample, endSample));
       }
-
-      console.log(`✅ Áudio trimado - ${startTime}s a ${endTime}s`);
       return trimmedBuffer;
     } catch (error) {
-      console.error('❌ Erro ao fazer trim:', error);
       return false;
     }
   }
@@ -313,7 +298,6 @@ class AudioRecorder {
     const recording = this.recordings.find((r) => r.id === recordingId);
     if (recording) {
       recording.name = newName;
-      console.log(`✅ Gravação renomeada para: ${newName}`);
       return true;
     }
     return false;
@@ -326,7 +310,6 @@ class AudioRecorder {
     const index = this.recordings.findIndex((r) => r.id === recordingId);
     if (index !== -1) {
       this.recordings.splice(index, 1);
-      console.log('✅ Gravação deletada');
       return true;
     }
     return false;
@@ -380,11 +363,8 @@ class AudioRecorder {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-
-      console.log(`✅ Gravação baixada: ${recording.name}`);
       return true;
     } catch (error) {
-      console.error('❌ Erro ao baixar:', error);
       return false;
     }
   }
@@ -395,7 +375,6 @@ class AudioRecorder {
   clearAll() {
     this.recordings = [];
     this.audioChunks = [];
-    console.log('🗑️ Todas as gravações removidas');
     return true;
   }
 

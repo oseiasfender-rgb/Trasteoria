@@ -409,11 +409,11 @@ export function EstilosSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="jazz">Jazz</TabsTrigger>
-          <TabsTrigger value="blues">Blues</TabsTrigger>
-          <TabsTrigger value="rock">Rock</TabsTrigger>
-          <TabsTrigger value="brasileiro">Música Brasileira</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-4">
+          <TabsTrigger role="tab" value="jazz">Jazz</TabsTrigger>
+          <TabsTrigger role="tab" value="blues">Blues</TabsTrigger>
+          <TabsTrigger role="tab" value="rock">Rock</TabsTrigger>
+          <TabsTrigger role="tab" value="brasileiro">Música Brasileira</TabsTrigger>
         </TabsList>
 
         {/* Jazz */}

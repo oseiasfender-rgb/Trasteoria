@@ -112,8 +112,6 @@ class PianoSampleEngine {
    */
   async loadPiano(style = 'acoustic') {
     try {
-      console.log(`[PianoSampleEngine] Carregando piano: ${style}`);
-      
       const kit = {
         name: style,
         samples: {}
@@ -127,9 +125,7 @@ class PianoSampleEngine {
         try {
           const url = `${baseUrl}/${note.name}.wav`;
           kit.samples[note.name] = await sampleEngine.loadSample(url);
-          console.log(`[PianoSampleEngine] Sample carregado: ${note.name}`);
         } catch (error) {
-          console.warn(`[PianoSampleEngine] Falha ao carregar ${note.name}:`, error);
         }
       }
 
@@ -138,7 +134,6 @@ class PianoSampleEngine {
       
       return kit;
     } catch (error) {
-      console.error(`[PianoSampleEngine] Erro ao carregar piano: ${style}`, error);
       throw error;
     }
   }
@@ -152,7 +147,6 @@ class PianoSampleEngine {
    */
   playNote(note, duration = 1.0, velocity = 1.0, options = {}) {
     if (!this.currentKit || !this.currentKit.samples[note]) {
-      console.warn(`[PianoSampleEngine] Sample não disponível: ${note}`);
       return null;
     }
 
@@ -175,13 +169,11 @@ class PianoSampleEngine {
    */
   playChord(rootNote, chordType = 'major', duration = 1.0, velocity = 1.0, spread = 12) {
     if (!this.noteMap.has(rootNote)) {
-      console.warn(`[PianoSampleEngine] Nota raiz não encontrada: ${rootNote}`);
       return [];
     }
 
     const voicing = this.voicings[chordType];
     if (!voicing) {
-      console.warn(`[PianoSampleEngine] Tipo de acorde não encontrado: ${chordType}`);
       return [];
     }
 
@@ -213,13 +205,11 @@ class PianoSampleEngine {
    */
   async playArpeggio(rootNote, chordType = 'major', bpm = 120, velocity = 1.0) {
     if (!this.noteMap.has(rootNote)) {
-      console.warn(`[PianoSampleEngine] Nota raiz não encontrada: ${rootNote}`);
       return;
     }
 
     const voicing = this.voicings[chordType];
     if (!voicing) {
-      console.warn(`[PianoSampleEngine] Tipo de acorde não encontrado: ${chordType}`);
       return;
     }
 
@@ -240,7 +230,6 @@ class PianoSampleEngine {
         }
       }
     } catch (error) {
-      console.error('[PianoSampleEngine] Erro ao reproduzir arpejo:', error);
     }
   }
 

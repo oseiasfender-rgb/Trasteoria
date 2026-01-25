@@ -52,13 +52,10 @@ class SampleEngine {
 
     // Verificar cache
     if (cache && this.sampleCache.has(url) && !force) {
-      console.log(`[SampleEngine] Sample em cache: ${url}`);
       return this.sampleCache.get(url);
     }
 
     try {
-      console.log(`[SampleEngine] Carregando sample: ${url}`);
-      
       // Inicializar AudioContext se necessário
       const ctx = await this.initAudioContext();
 
@@ -84,12 +81,11 @@ class SampleEngine {
         
         this.sampleCache.set(url, audioBuffer);
         this.currentCacheSize += bufferSize;
-        console.log(`[SampleEngine] Sample em cache (${(bufferSize / 1024 / 1024).toFixed(2)} MB)`);
+        .toFixed(2)} MB)`);
       }
 
       return audioBuffer;
     } catch (error) {
-      console.error(`[SampleEngine] Erro ao carregar sample: ${url}`, error);
       throw error;
     }
   }
@@ -112,14 +108,13 @@ class SampleEngine {
     } = options;
 
     if (!this.audioContext) {
-      console.error('[SampleEngine] AudioContext não inicializado');
       return null;
     }
 
     try {
       // Limitar número de vozes simultâneas
       if (this.activeVoices.length >= this.maxVoices) {
-        console.warn(`[SampleEngine] Máximo de vozes atingido (${this.maxVoices})`);
+        `);
         this.activeVoices[0].stop();
         this.activeVoices.shift();
       }
@@ -212,7 +207,6 @@ class SampleEngine {
 
       return voice;
     } catch (error) {
-      console.error('[SampleEngine] Erro ao reproduzir sample:', error);
       return null;
     }
   }
@@ -250,7 +244,6 @@ class SampleEngine {
    * Limpar cache de samples
    */
   clearCache() {
-    console.log('[SampleEngine] Limpando cache de samples');
     this.sampleCache.clear();
     this.currentCacheSize = 0;
   }

@@ -100,10 +100,8 @@ class AudioEngine {
       }
 
       this.isInitialized = true;
-      console.log('AudioEngine inicializado com sucesso');
       return true;
     } catch (error) {
-      console.error('Erro ao inicializar AudioEngine:', error);
       this.isInitialized = false;
       return false;
     }
@@ -135,13 +133,11 @@ class AudioEngine {
   // Tocar uma nota individual
   async playNote(note, octave = 4, duration = 1.0, timbre = 'guitar') {
     if (!await this.ensureContext()) {
-      console.warn('AudioEngine não inicializado');
       return;
     }
 
     const frequency = this.getNoteFrequency(note, octave);
     if (!frequency) {
-      console.warn(`Nota inválida: ${note}`);
       return;
     }
 
@@ -191,7 +187,6 @@ class AudioEngine {
   // Tocar um intervalo (duas notas sequenciais)
   async playInterval(semitons, baseNote = 'C', octave = 4, timbre = 'guitar') {
     if (!await this.ensureContext()) {
-      console.warn('AudioEngine não inicializado');
       return;
     }
 

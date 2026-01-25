@@ -34,7 +34,6 @@ export function FundamentosSection() {
       setTimeout(() => setPlayingInterval(null), 2000);
       
     } catch (error) {
-      console.error('Erro ao tocar intervalo:', error);
       showAudioError();
       setPlayingInterval(null);
     }
@@ -56,7 +55,6 @@ export function FundamentosSection() {
       setTimeout(() => setPlayingScale(null), escala.notas.length * 400 + 500);
       
     } catch (error) {
-      console.error('Erro ao tocar escala:', error);
       showAudioError();
       setPlayingScale(null);
     }
@@ -160,20 +158,20 @@ export function FundamentosSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 mb-6 h-auto p-2">
-          <TabsTrigger value="teoria" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
+        <TabsList role="tablist" className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 mb-6 h-auto p-2">
+          <TabsTrigger role="tab" value="teoria" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
             <Music className="w-4 h-4" />
             <span>Teoria Musical</span>
           </TabsTrigger>
-          <TabsTrigger value="tecnica" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
+          <TabsTrigger role="tab" value="tecnica" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
             <Hand className="w-4 h-4" />
             <span>Técnica</span>
           </TabsTrigger>
-          <TabsTrigger value="escalas" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
+          <TabsTrigger role="tab" value="escalas" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
             <Scale className="w-4 h-4" />
             <span>Escalas Básicas</span>
           </TabsTrigger>
-          <TabsTrigger value="harmonia" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
+          <TabsTrigger role="tab" value="harmonia" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
             <Target className="w-4 h-4" />
             <span>Harmonia Introdutória</span>
           </TabsTrigger>

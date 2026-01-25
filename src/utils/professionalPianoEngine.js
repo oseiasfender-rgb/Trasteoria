@@ -69,7 +69,6 @@ class ProfessionalPianoEngine {
     
     const baseFreq = noteFrequencies[note];
     if (!baseFreq) {
-      console.error(`Nota inválida: ${note}`);
       return 261.63; // C4 default
     }
     

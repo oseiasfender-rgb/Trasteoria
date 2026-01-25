@@ -312,12 +312,12 @@ export function ImprovisacaoSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="fundamentos">Fundamentos</TabsTrigger>
-          <TabsTrigger value="backing_tracks">Backing Tracks</TabsTrigger>
-          <TabsTrigger value="tecnicas">Técnicas</TabsTrigger>
-          <TabsTrigger value="fraseado">Fraseado</TabsTrigger>
-          <TabsTrigger value="pratica">Prática</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-5">
+          <TabsTrigger role="tab" value="fundamentos">Fundamentos</TabsTrigger>
+          <TabsTrigger role="tab" value="backing_tracks">Backing Tracks</TabsTrigger>
+          <TabsTrigger role="tab" value="tecnicas">Técnicas</TabsTrigger>
+          <TabsTrigger role="tab" value="fraseado">Fraseado</TabsTrigger>
+          <TabsTrigger role="tab" value="pratica">Prática</TabsTrigger>
         </TabsList>
 
         {/* Fundamentos */}

@@ -203,11 +203,11 @@ export function HarmoniaSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="campos">Campos Harmônicos</TabsTrigger>
-          <TabsTrigger value="acordes">Acordes com 7ª</TabsTrigger>
-          <TabsTrigger value="progressoes">Progressões</TabsTrigger>
-          <TabsTrigger value="voicings">Voicings</TabsTrigger>
+        <TabsList role="tablist" className="grid w-full grid-cols-4">
+          <TabsTrigger role="tab" value="campos">Campos Harmônicos</TabsTrigger>
+          <TabsTrigger role="tab" value="acordes">Acordes com 7ª</TabsTrigger>
+          <TabsTrigger role="tab" value="progressoes">Progressões</TabsTrigger>
+          <TabsTrigger role="tab" value="voicings">Voicings</TabsTrigger>
         </TabsList>
 
         {/* Campos Harmônicos */}

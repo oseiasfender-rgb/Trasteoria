@@ -181,20 +181,16 @@ export default function AtlasViewer() {
 
   // Funções de reprodução de áudio (placeholder)
   const playModo = (modo) => {
-    console.log('Reproduzindo modo:', modo.name);
     // Implementar reprodução de áudio
   };
 
   const playCampo = (campo) => {
-    console.log('Reproduzindo campo:', campo.name);
   };
 
   const playAcorde = (acorde) => {
-    console.log('Reproduzindo acorde:', acorde.name);
   };
 
   const playProgressao = (prog) => {
-    console.log('Reproduzindo progressão:', prog.name);
   };
 
   const toggleExpanded = (id) => {

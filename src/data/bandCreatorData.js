@@ -1830,5 +1830,3 @@ export const getTotalCombinations = () => {
   return Object.keys(bandCreatorData).length * 12; // 12 gêneros × 12 estilos
 };
 
-console.log(`Band Creator Data loaded: ${getTotalCombinations()} combinations`);
-

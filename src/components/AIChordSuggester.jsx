@@ -49,7 +49,6 @@ const AIChordSuggester = ({ mode = 'major', tonality = 'C' }) => {
       await playChord(chord, tonality);
       showSuccess(`Acorde ${chord} adicionado`);
     } catch (error) {
-      console.error('Error playing chord:', error);
     }
   };
   

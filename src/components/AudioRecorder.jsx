@@ -125,8 +125,6 @@ const AudioRecorder = ({
       showInfo('Gravação iniciada');
       
     } catch (error) {
-      console.error('Erro ao iniciar gravação:', error);
-      
       if (error.name === 'NotAllowedError') {
         showError('Permissão de microfone negada');
       } else if (error.name === 'NotFoundError') {

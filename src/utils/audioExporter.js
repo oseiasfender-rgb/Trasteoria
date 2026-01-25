@@ -53,7 +53,6 @@ export async function saveToLocalStorage(audioBlob, key) {
           localStorage.setItem(key, reader.result);
           resolve(true);
         } catch (error) {
-          console.error('Erro ao salvar no localStorage:', error);
           reject(false);
         }
       };
@@ -62,7 +61,6 @@ export async function saveToLocalStorage(audioBlob, key) {
       reader.readAsDataURL(audioBlob);
     });
   } catch (error) {
-    console.error('Erro ao converter para base64:', error);
     return false;
   }
 }
@@ -83,7 +81,6 @@ export async function loadFromLocalStorage(key) {
     
     return blob;
   } catch (error) {
-    console.error('Erro ao carregar do localStorage:', error);
     return null;
   }
 }

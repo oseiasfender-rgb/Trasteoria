@@ -308,7 +308,6 @@ class AdaptiveLearningEngine {
       localStorage.setItem('adaptiveLearningSkills', JSON.stringify(this.skillLevels));
       localStorage.setItem('adaptiveLearningHistory', JSON.stringify(this.performanceHistory));
     } catch (error) {
-      console.error('Error saving adaptive learning data:', error);
     }
   }
   
@@ -331,7 +330,6 @@ class AdaptiveLearningEngine {
       // Gerar recomendações iniciais
       this.generateRecommendations();
     } catch (error) {
-      console.error('Error loading adaptive learning data:', error);
     }
   }
 }
