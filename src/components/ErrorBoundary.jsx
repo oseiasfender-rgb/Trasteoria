@@ -45,7 +45,7 @@ export class ErrorBoundary extends React.Component {
               Desculpe, ocorreu um erro inesperado. Por favor, tente recarregar a página.
             </p>
 
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {this.state.error && (
               <details className="mb-4 p-3 bg-red-500/10 rounded border border-red-500/30">
                 <summary className="cursor-pointer font-semibold text-red-400">
                   Detalhes do erro (desenvolvimento)
