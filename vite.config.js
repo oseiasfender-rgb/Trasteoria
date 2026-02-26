@@ -11,14 +11,6 @@ export default defineConfig({
     port: 5173,
     strictPort: false,
     cors: true,
-    allowedHosts: ['all'],
-    middlewareMode: false,
-    headers: {
-      'Cache-Control': 'public, max-age=31536000, immutable',
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-    },
   },
   resolve: {
     alias: {
@@ -26,37 +18,8 @@ export default defineConfig({
     },
   },
   build: {
-    // Otimizações de performance
     target: 'es2015',
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.log em produção
-        drop_debugger: true,
-      },
-    },
-    rollupOptions: {
-      output: {
-        // Manual chunks para melhor code splitting
-        manualChunks: {
-          // Vendors separados
-          'react-vendor': ['react', 'react-dom'],
-          'lucide-icons': ['lucide-react'],
-          // Engines de áudio
-          'audio-engines': [
-            './src/utils/audioEngine.js',
-            './src/utils/drumEngine.js',
-            './src/utils/bassEngine.js',
-            './src/utils/backingTrackEngine.js',
-          ],
-        },
-      },
-    },
-    // Chunk size warning limit
-    chunkSizeWarningLimit: 600,
-  },
-  // Otimizações de desenvolvimento
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'lucide-react'],
+    minify: 'esbuild',
+    sourcemap: true,
   },
 })
