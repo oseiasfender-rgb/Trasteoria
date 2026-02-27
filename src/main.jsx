@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import AppTest from './App.test.jsx'
+import App from './App.v1.jsx'
 function AppTest() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: 'linear-gradient(to bottom, #1a1a2e, #16213e)', color: 'white', fontFamily: 'Arial, sans-serif' }}>
@@ -16,6 +16,6 @@ function AppTest() {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AppTest />
+    <App />
   </StrictMode>,
 )
