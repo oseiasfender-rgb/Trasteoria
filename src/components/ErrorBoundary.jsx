@@ -21,6 +21,21 @@ export class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    // Log detalhado do erro para debug
+    console.error('=== ERROR BOUNDARY CAUGHT ERROR ===');
+    console.error('Error:', error);
+    console.error('Error message:', error?.message);
+    console.error('Error stack:', error?.stack);
+    console.error('Component stack:', errorInfo?.componentStack);
+    console.error('===================================');
+    
+    // Salvar erro no window para acesso via console
+    window.__REACT_ERROR__ = {
+      message: error?.message,
+      stack: error?.stack,
+      componentStack: errorInfo?.componentStack
+    };
+    
     this.setState({
       error,
       errorInfo
@@ -46,14 +61,19 @@ export class ErrorBoundary extends React.Component {
             </p>
 
             {this.state.error && (
-              <details className="mb-4 p-3 bg-red-500/10 rounded border border-red-500/30">
+              <details open className="mb-4 p-3 bg-red-500/10 rounded border border-red-500/30">
                 <summary className="cursor-pointer font-semibold text-red-400">
-                  Detalhes do erro (desenvolvimento)
+                  Detalhes do erro
                 </summary>
-                <pre className="mt-2 text-xs overflow-auto max-h-48 text-red-300">
-                  {this.state.error.toString()}
+                <pre className="mt-2 text-xs overflow-auto max-h-64 text-red-300 whitespace-pre-wrap break-words">
+                  <strong>Mensagem:</strong>
+                  {this.state.error?.message || 'Erro desconhecido'}
                   {'\n\n'}
-                  {this.state.errorInfo?.componentStack}
+                  <strong>Stack:</strong>
+                  {this.state.error?.stack || 'Sem stack trace'}
+                  {'\n\n'}
+                  <strong>Component Stack:</strong>
+                  {this.state.errorInfo?.componentStack || 'Sem component stack'}
                 </pre>
               </details>
             )}
