@@ -1,7 +1,8 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-import { BookOpen, Music, Zap, Play, Guitar, TrendingUp, Heart, Brain, Ear, Activity, Users, Music2, Library } from 'lucide-react';
+import { BookOpen, Music, Zap, Play, Guitar, TrendingUp, Heart, Brain, Ear, Activity, Users, Music2, Library, Settings } from 'lucide-react';
+
 import { AppProvider, useAppContext } from './contexts/AppContext.jsx';
 import { ThemeProvider } from './contexts/ThemeContext.jsx';
 import { ProgressProvider } from './contexts/ProgressContext.jsx';
