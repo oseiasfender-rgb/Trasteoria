@@ -185,6 +185,4 @@ function App() {
 }
 
 export default App;
-// TrasTeoria v2.0 - Build completo com todas as seções
-import { useState, useEffect, lazy, Suspense } from 'react';
 
