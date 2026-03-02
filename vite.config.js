@@ -11,6 +11,11 @@ export default defineConfig({
     port: 5173,
     strictPort: false,
     cors: true,
+    allowedHosts: [
+      'localhost',
+      '5173-iveo6bsfaokc62d9s14lj-1f3ece29.us1.manus.computer',
+      '.manus.computer',
+    ],
   },
   resolve: {
     alias: {
@@ -19,7 +24,7 @@ export default defineConfig({
   },
   build: {
     target: 'es2015',
-    minify: 'esbuild', // Mais rápido e menos agressivo que terser
-    sourcemap: true, // Habilita sourcemaps para debug
+    minify: 'esbuild',
+    sourcemap: true,
   },
 })

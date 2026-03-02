@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button.jsx';
 import { Book, Music, Hand, Scale, Target, Play, Volume2 } from 'lucide-react';
 import { useAppContext } from '../contexts/AppContext.jsx';
 import { useToast } from '../hooks/useToast';
+import { useGamification } from '../contexts/GamificationContext.jsx';
 import AnimatedButton from './AnimatedButton';
 import AnimatedCard from './AnimatedCard';
 
@@ -17,6 +18,7 @@ export function FundamentosSection() {
   // Usar o contexto para áudio
   const { playInterval, playScale, initializeAudio } = useAppContext();
   const { showAudioSuccess, showAudioError } = useToast();
+  const { addPoints } = useGamification();
 
   // Função para tocar intervalos
   const handlePlayInterval = async (intervalo, index) => {
@@ -26,6 +28,7 @@ export function FundamentosSection() {
       // Inicializar áudio e tocar intervalo
       await initializeAudio();
       await playInterval(intervalo.semitons, 'C', 4);
+      addPoints(5); // XP por explorar intervalos
       
       // Toast de sucesso
       showAudioSuccess(intervalo.nome);
@@ -47,6 +50,7 @@ export function FundamentosSection() {
       // Inicializar áudio e tocar escala
       await initializeAudio();
       await playScale(escala.notas, 4, 0.4);
+      addPoints(10); // XP por tocar escalas
       
       // Toast de sucesso
       showAudioSuccess(escala.nome);

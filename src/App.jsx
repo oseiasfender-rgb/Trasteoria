@@ -1,13 +1,13 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-import { BookOpen, Music, Zap, Play, Guitar, TrendingUp, Heart, Brain, Ear, Activity, Users, Music2, Library, Settings } from 'lucide-react';
+import { BookOpen, Music, Zap, Play, Guitar, TrendingUp, Heart, Brain, Ear, Activity, Users, Music2, Library, Settings, Mic } from 'lucide-react';
 import { AppProvider, useAppContext } from './contexts/AppContext.jsx';
 import { ThemeProvider } from './contexts/ThemeContext.jsx';
 import { ProgressProvider } from './contexts/ProgressContext.jsx';
 import { PremiumProvider } from './contexts/PremiumContext.jsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
-import { GamificationProvider } from './contexts/GamificationContext.jsx';
+import { GamificationProvider, useGamification } from './contexts/GamificationContext.jsx';
 import ToastProvider from './components/ToastProvider.jsx';
 import UpgradePrompt from './components/UpgradePrompt.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
@@ -20,6 +20,9 @@ import { UserProfile } from './components/UserProfile.jsx';
 import Leaderboard from './components/Leaderboard.jsx';
 import Metronome from './components/Metronome.jsx';
 import { ShareButton } from './components/ShareButton.jsx';
+import UserStats from './components/UserStats.jsx';
+import { AnalyticsProvider } from './components/AnalyticsProvider.jsx';
+import { InteractiveFretboard } from './components/InteractiveFretboard.jsx';
 
 // Lazy loading dos componentes das seções (otimização de performance)
 const FundamentosSection = lazy(() => import('./components/FundamentosSection.jsx').then(m => ({ default: m.FundamentosSection })));
@@ -42,6 +45,7 @@ const ProgressDashboard = lazy(() => import('./components/ProgressDashboard.jsx'
 const ComposicaoSection = lazy(() => import('./components/ComposicaoSection.jsx').then(m => ({ default: m.ComposicaoSection })));
 const LeituraSection = lazy(() => import('./components/LeituraSection.jsx').then(m => ({ default: m.LeituraSection })));
 const RepertorioSection = lazy(() => import('./components/RepertorioSection.jsx').then(m => ({ default: m.RepertorioSection })));
+const VideoGallery = lazy(() => import('./components/VideoGallery.jsx').then(m => ({ default: m.VideoGallery })));
 
 // Componentes originais dos Modos Gregos
 import { Navigation } from './components/Navigation.jsx';
@@ -62,6 +66,7 @@ function AppContent() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showMetronome, setShowMetronome] = useState(false);
   const { user, logout } = useAuth();
+  const { addPoints } = useGamification();
   
   // Usar o Context API para gerenciar estado global
   const { currentKey, currentMode, changeKey, changeMode } = useAppContext();
@@ -84,11 +89,20 @@ function AppContent() {
   const handleModoChange = (modo) => {
     setSelectedModo(modo);
     changeMode(modo);
+    addPoints(5); // XP por explorar modos
   };
   
   const handleTonalityChange = (tonality) => {
     setSelectedTonality(tonality);
     changeKey(tonality);
+    addPoints(3); // XP por explorar tonalidades
+  };
+
+  // Gamificação: XP ao mudar de seção
+  const handleSectionChange = (section) => {
+    setActiveSection(section);
+    addPoints(2);
+    window.dispatchEvent(new CustomEvent('sectionChange', { detail: { section } }));
   };
 
   const currentModo = getModoData(selectedModo, selectedTonality);
@@ -98,35 +112,49 @@ function AppContent() {
     switch (activeTab) {
       case 'aprender':
         return (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Seletor de Modos e Tonalidade */}
-            <div className="lg:col-span-1">
-              <div className="bg-card/30 backdrop-blur-sm rounded-lg p-6">
-                {/* Seletor de Tonalidade */}
-                <TonalitySelector 
-                  selectedTonality={selectedTonality}
-                  onTonalityChange={handleTonalityChange}
-                />
-                
-                <h2 className="text-xl font-semibold mb-4">Selecione um Modo</h2>
-                <p className="text-muted-foreground mb-6">Explore os sete modos gregos</p>
-                
-                <div className="space-y-3">
-                  {modosList.map((modoKey) => (
-                    <ModoCard
-                      key={modoKey}
-                      modo={modosInfo[modoKey]}
-                      isSelected={selectedModo === modoKey}
-                      onClick={() => handleModoChange(modoKey)}
-                    />
-                  ))}
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Seletor de Modos e Tonalidade */}
+              <div className="lg:col-span-1">
+                <div className="bg-card/30 backdrop-blur-sm rounded-lg p-6">
+                  {/* Seletor de Tonalidade */}
+                  <TonalitySelector 
+                    selectedTonality={selectedTonality}
+                    onTonalityChange={handleTonalityChange}
+                  />
+                  
+                  <h2 className="text-xl font-semibold mb-4">Selecione um Modo</h2>
+                  <p className="text-muted-foreground mb-6">Explore os sete modos gregos</p>
+                  
+                  <div className="space-y-3">
+                    {modosList.map((modoKey) => (
+                      <ModoCard
+                        key={modoKey}
+                        modo={modosInfo[modoKey]}
+                        isSelected={selectedModo === modoKey}
+                        onClick={() => handleModoChange(modoKey)}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Detalhes do Modo */}
-            <div className="lg:col-span-2">
-              <ModoDetails modo={currentModo} tonalidade={currentTonality} />
+              {/* Detalhes do Modo */}
+              <div className="lg:col-span-2">
+                <ModoDetails modo={currentModo} tonalidade={currentTonality} />
+              </div>
+            </div>
+            {/* 🎸 Braço Interativo — Feature Central v2.0 */}
+            <div className="mt-6">
+              <div className="mb-4 flex items-center space-x-2">
+                <Guitar className="w-5 h-5 text-primary" />
+                <h3 className="text-lg font-semibold">Braço Interativo — {selectedModo.charAt(0).toUpperCase() + selectedModo.slice(1)} em {selectedTonality}</h3>
+                <span className="bg-primary/20 text-primary text-xs px-2 py-1 rounded-full font-medium">v2.0</span>
+              </div>
+              <InteractiveFretboard 
+                modo={currentModo} 
+                tonalidade={selectedTonality}
+              />
             </div>
           </div>
         );
@@ -167,14 +195,9 @@ function AppContent() {
               >
                 <TrendingUp className="w-4 h-4" />
               </button>
+              {user && <UserStats />}
               {user ? (
-                <div className="flex items-center space-x-2">
-                  <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full border-2 border-purple-500" />
-                  <button
-                    onClick={logout}
-                    className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                  >Sair</button>
-                </div>
+                <UserProfile />
               ) : (
                 <button
                   onClick={() => setShowLoginModal(true)}
@@ -190,7 +213,12 @@ function AppContent() {
               </CardTitle>
             </div>
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full inline-block">
-              <span className="font-semibold">Método de Excelência Unificado - Todos os 12 Tons</span>
+              <span className="font-semibold">Método de Excelência Unificado — Todos os 12 Tons</span>
+            </div>
+            <div className="mt-2">
+              <span className="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full font-medium border border-green-500/30">
+                ✨ v2.0 — Braço Interativo + Gamificação Ativa
+              </span>
             </div>
           </CardHeader>
         </Card>
@@ -221,7 +249,7 @@ function AppContent() {
         )}
 
         {/* Navegação Principal */}
-        <Tabs value={activeSection} onValueChange={setActiveSection} className="w-full">
+        <Tabs value={activeSection} onValueChange={handleSectionChange} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-2 mb-8 h-auto p-2">
             <TabsTrigger value="fundamentos" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
               <BookOpen className="w-4 h-4" />
@@ -314,7 +342,7 @@ function AppContent() {
               <span className="sm:hidden">Band</span>
             </TabsTrigger>
             <TabsTrigger value="gravador" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
-              <Activity className="w-4 h-4" />
+              <Mic className="w-4 h-4" />
               <span className="hidden sm:inline">Gravador</span>
               <span className="sm:hidden">Grav.</span>
             </TabsTrigger>
@@ -322,6 +350,11 @@ function AppContent() {
               <TrendingUp className="w-4 h-4" />
               <span className="hidden sm:inline">Progresso</span>
               <span className="sm:hidden">Prog.</span>
+            </TabsTrigger>
+            <TabsTrigger value="videos" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
+              <Play className="w-4 h-4" />
+              <span className="hidden sm:inline">Vídeos</span>
+              <span className="sm:hidden">Vid.</span>
             </TabsTrigger>
             <TabsTrigger value="admin" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm bg-gradient-to-r from-red-600 to-orange-600">
               <Settings className="w-4 h-4" />
@@ -399,6 +432,9 @@ function AppContent() {
             <TabsContent value="progresso">
               <ProgressDashboard />
             </TabsContent>
+            <TabsContent value="videos">
+              <VideoGallery />
+            </TabsContent>
 
             <TabsContent value="composicao">
               <ComposicaoSection />
@@ -421,12 +457,11 @@ function AppContent() {
                 <div className="flex items-center justify-center space-x-3 mb-4">
                   <Heart className="w-8 h-8 text-primary" />
                   <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
-                    TrasTeoria
+                    Modos Gregos
                   </h1>
-                  <p className="text-sm text-muted-foreground">Desenvolvido com Modos Gregos</p>
                 </div>
                 <div className="inline-block bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium">
-                  Seção Especializada - Todos os 12 Tons
+                  Seção Especializada — Todos os 12 Tons · Braço Interativo
                 </div>
               </header>
 
@@ -454,12 +489,14 @@ function App() {
             <PremiumProvider>
               <ProgressProvider>
                 <AppProvider>
-                  <GamificationProvider>
-                    <ToastProvider />
-                    <UpgradePrompt />
-                    <PWAInstaller />
-                    <AppContent />
-                  </GamificationProvider>
+                    <GamificationProvider>
+                      <AnalyticsProvider>
+                        <ToastProvider />
+                        <UpgradePrompt />
+                        <PWAInstaller />
+                        <AppContent />
+                      </AnalyticsProvider>
+                    </GamificationProvider>
                 </AppProvider>
               </ProgressProvider>
             </PremiumProvider>

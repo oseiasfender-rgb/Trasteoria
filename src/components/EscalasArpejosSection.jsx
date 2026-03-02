@@ -4,18 +4,34 @@ import { Badge } from '@/components/ui/badge.jsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.jsx';
 import { Button } from '@/components/ui/button.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
-import { Zap, Grid, Music2, Target, Volume2, Eye, Shuffle, ArrowRight } from 'lucide-react';
+import { Zap, Grid, Music2, Target, Volume2, Eye, Shuffle, ArrowRight, Guitar } from 'lucide-react';
 import { useToast } from '../hooks/useToast';
 import { useAppContext } from '../contexts/AppContext.jsx';
 import ChordDiagram from './ChordDiagram';
+import { InteractiveFretboard } from './InteractiveFretboard.jsx';
+import { getModoData } from '../utils/modosDataExpanded.js';
 
 export function EscalasArpejosSection() {
   const { playScale, playArpeggio } = useAppContext();
   const { showInfo, showAudioSuccess, showAudioError } = useToast();
-  const [activeTab, setActiveTab] = useState('modos_gregos');
+  const [activeTab, setActiveTab] = useState('fretboard');
   const [selectedKey, setSelectedKey] = useState('C');
   const [selectedCAGEDForm, setSelectedCAGEDForm] = useState('C');
   const [showDiagram, setShowDiagram] = useState(null);
+  const [selectedScaleMode, setSelectedScaleMode] = useState('jonio');
+
+  // Dados do modo selecionado para o fretboard
+  const fretboardModo = getModoData(selectedScaleMode, selectedKey);
+
+  const modoOptions = [
+    { value: 'jonio', label: 'Jônio (Maior)' },
+    { value: 'dorico', label: 'Dórico' },
+    { value: 'frigio', label: 'Frígio' },
+    { value: 'lidio', label: 'Lídio' },
+    { value: 'mixolidio', label: 'Mixolídio' },
+    { value: 'eolio', label: 'Eólio (Menor Natural)' },
+    { value: 'locrio', label: 'Lócrio' },
+  ];
 
   // Handler para tocar escalas
   const handlePlayScale = (scaleName, key = selectedKey) => {
@@ -290,13 +306,61 @@ export function EscalasArpejosSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList role="tablist" className="grid w-full grid-cols-5">
+        <TabsList role="tablist" className="grid w-full grid-cols-6">
+          <TabsTrigger role="tab" value="fretboard">🎸 Braço</TabsTrigger>
           <TabsTrigger role="tab" value="modos_gregos">Modos Gregos</TabsTrigger>
           <TabsTrigger role="tab" value="caged">Sistema CAGED</TabsTrigger>
           <TabsTrigger role="tab" value="exoticas">Escalas Exóticas</TabsTrigger>
           <TabsTrigger role="tab" value="arpejos">Arpejos</TabsTrigger>
           <TabsTrigger role="tab" value="menor_melodica">Menor Melódica</TabsTrigger>
         </TabsList>
+
+        {/* Braço Interativo v2.0 */}
+        <TabsContent value="fretboard" className="space-y-6">
+          <Card className="bg-card/50 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center space-x-2">
+                <Guitar className="w-5 h-5" />
+                <span>Braço Interativo — Visualize Escalas em Tempo Real</span>
+                <span className="bg-primary/20 text-primary text-xs px-2 py-1 rounded-full">v2.0</span>
+              </CardTitle>
+              <p className="text-muted-foreground">
+                Selecione a tonalidade e o modo para visualizar as notas no braço da guitarra. Clique nas casas para ouvir as notas.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-4 mb-6">
+                <div className="flex items-center space-x-2">
+                  <label className="text-sm font-medium">Tonalidade:</label>
+                  <Select value={selectedKey} onValueChange={setSelectedKey}>
+                    <SelectTrigger className="w-24">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'].map(k => (
+                        <SelectItem key={k} value={k}>{k}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <label className="text-sm font-medium">Modo/Escala:</label>
+                  <Select value={selectedScaleMode} onValueChange={setSelectedScaleMode}>
+                    <SelectTrigger className="w-52">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {modoOptions.map(m => (
+                        <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <InteractiveFretboard modo={fretboardModo} tonalidade={selectedKey} />
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         {/* Modos Gregos */}
         <TabsContent value="modos_gregos" className="space-y-6">

@@ -4,10 +4,12 @@ import { Badge } from '@/components/ui/badge.jsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.jsx';
 import { Button } from '@/components/ui/button.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
-import { Music, Layers, ArrowRight, Volume2, Copy, Shuffle } from 'lucide-react';
+import { Music, Layers, ArrowRight, Volume2, Copy, Shuffle, Guitar } from 'lucide-react';
 import { useAppContext } from '../contexts/AppContext.jsx';
 import { useToast } from '../hooks/useToast';
 import ChordDiagram from './ChordDiagram';
+import { InteractiveFretboard } from './InteractiveFretboard.jsx';
+import { getModoData } from '../utils/modosDataExpanded.js';
 
 export function HarmoniaSection() {
   const { playChord } = useAppContext();
@@ -16,6 +18,10 @@ export function HarmoniaSection() {
   const [selectedKey, setSelectedKey] = useState('C');
   const [selectedProgression, setSelectedProgression] = useState('I-V-vi-IV');
   const [showDiagram, setShowDiagram] = useState(null);
+  const [harmoniaFretboardMode, setHarmoniaFretboardMode] = useState('jonio');
+
+  // Dados para o fretboard de harmonia
+  const harmoniaFretboardModo = getModoData(harmoniaFretboardMode, selectedKey);
 
   // Dados dos campos harmônicos
   const camposHarmonicos = {
@@ -203,11 +209,12 @@ export function HarmoniaSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList role="tablist" className="grid w-full grid-cols-4">
+        <TabsList role="tablist" className="grid w-full grid-cols-5">
           <TabsTrigger role="tab" value="campos">Campos Harmônicos</TabsTrigger>
           <TabsTrigger role="tab" value="acordes">Acordes com 7ª</TabsTrigger>
           <TabsTrigger role="tab" value="progressoes">Progressões</TabsTrigger>
           <TabsTrigger role="tab" value="voicings">Voicings</TabsTrigger>
+          <TabsTrigger role="tab" value="fretboard">🎸 Braço</TabsTrigger>
         </TabsList>
 
         {/* Campos Harmônicos */}
@@ -644,6 +651,54 @@ export function HarmoniaSection() {
                   </CardContent>
                 </Card>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Braço Interativo v2.0 */}
+        <TabsContent value="fretboard" className="space-y-6">
+          <Card className="bg-card/50 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center space-x-2">
+                <Guitar className="w-5 h-5" />
+                <span>Braço Interativo — Harmonia Visual</span>
+                <span className="bg-primary/20 text-primary text-xs px-2 py-1 rounded-full">v2.0</span>
+              </CardTitle>
+              <p className="text-muted-foreground">
+                Visualize as notas do campo harmônico no braço da guitarra. Clique para ouvir.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-4 mb-6">
+                <div className="flex items-center space-x-2">
+                  <label className="text-sm font-medium">Tonalidade:</label>
+                  <Select value={selectedKey} onValueChange={setSelectedKey}>
+                    <SelectTrigger className="w-24">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'].map(k => (
+                        <SelectItem key={k} value={k}>{k}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <label className="text-sm font-medium">Campo Harmônico:</label>
+                  <Select value={harmoniaFretboardMode} onValueChange={setHarmoniaFretboardMode}>
+                    <SelectTrigger className="w-52">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="jonio">Jônio (Maior)</SelectItem>
+                      <SelectItem value="eolio">Eólio (Menor Natural)</SelectItem>
+                      <SelectItem value="dorico">Dórico</SelectItem>
+                      <SelectItem value="mixolidio">Mixolídio</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <InteractiveFretboard modo={harmoniaFretboardModo} tonalidade={selectedKey} />
             </CardContent>
           </Card>
         </TabsContent>
