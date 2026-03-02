@@ -496,3 +496,4 @@ class ProfessionalBassEngine {
 
 export default ProfessionalBassEngine;
 
+export { ProfessionalBassEngine };

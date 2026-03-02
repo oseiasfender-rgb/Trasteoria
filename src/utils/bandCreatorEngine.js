@@ -7,7 +7,7 @@
 import DrumEngineV2 from './drumEngineV2';
 import ProfessionalBassEngine from './professionalBassEngine';
 import ProfessionalPianoEngine from './professionalPianoEngine';
-import { bandCreatorData } from '../data/bandCreatorData';
+import { bandCreatorData } from '../utils/bandCreatorData';
 
 class BandCreatorEngine {
   constructor() {
@@ -455,3 +455,4 @@ class BandCreatorEngine {
 const bandCreatorEngine = new BandCreatorEngine();
 export default bandCreatorEngine;
 
+export { BandCreatorEngine };

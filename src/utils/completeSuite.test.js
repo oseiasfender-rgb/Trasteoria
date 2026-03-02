@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { generateAtlasModos, listModos } from '../data/atlasModosGregos.js';
-import { generateAtlasCampos } from '../data/atlasCamposHarmonicos.js';
-import { generateAtlasAcordes } from '../data/atlasAcordes.js';
-import { PROGRESSOES } from '../data/atlasProgressoes.js';
+import { generateAtlasModos, listModos } from '../utils/atlasModosGregos.js';
+import { generateAtlasCampos } from '../utils/atlasCamposHarmonicos.js';
+import { generateAtlasAcordes } from '../utils/atlasAcordes.js';
+import { PROGRESSOES } from '../utils/atlasProgressoes.js';
 
 const atlasModosGregos = generateAtlasModos();
 const atlasCamposHarmonicos = generateAtlasCampos();

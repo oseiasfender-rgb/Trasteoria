@@ -192,3 +192,6 @@ export {
   getProgressoes,
   analisarAcorde,
 };
+
+// Compatibilidade com AtlasViewer
+export const atlasCamposHarmonicos = generateAtlasCampos();

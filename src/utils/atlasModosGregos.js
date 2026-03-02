@@ -298,3 +298,6 @@ export {
   listModos,
   listTonalidades,
 };
+
+// Compatibilidade com AtlasViewer
+export const atlasModosGregos = generateAtlasModos();

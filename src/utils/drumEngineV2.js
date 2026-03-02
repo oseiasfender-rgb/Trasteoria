@@ -5,7 +5,7 @@
  */
 
 import ProfessionalDrumEngine from './professionalDrumEngine';
-import { bandCreatorData } from '../data/bandCreatorData';
+import { bandCreatorData } from '../utils/bandCreatorData';
 
 class DrumEngineV2 {
   constructor() {
@@ -589,3 +589,4 @@ class DrumEngineV2 {
 
 export default DrumEngineV2;
 
+export { DrumEngineV2 };

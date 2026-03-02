@@ -1,5 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
-import { tonalidades } from '../data/musicTheory.js';
+import { tonalidades } from '../utils/musicTheory.js';
 
 export function TonalitySelector({ selectedTonality, onTonalityChange }) {
   return (

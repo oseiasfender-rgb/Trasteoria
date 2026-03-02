@@ -361,3 +361,4 @@ class ProfessionalPianoEngine {
 
 export default ProfessionalPianoEngine;
 
+export { ProfessionalPianoEngine };

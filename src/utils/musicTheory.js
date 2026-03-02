@@ -1,298 +1,155 @@
-// Módulo de Teoria Musical
-// Construção de acordes, escalas e modos gregos
+// Teoria musical base para transposição
+export const notas = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+export const notasPortugues = ['Dó', 'Dó#', 'Ré', 'Ré#', 'Mi', 'Fá', 'Fá#', 'Sol', 'Sol#', 'Lá', 'Lá#', 'Si'];
 
-// Notas cromáticas
-export const CHROMATIC_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-// Fórmulas de intervalos (em semitons a partir da fundamental)
-export const CHORD_FORMULAS = {
-  major: [0, 4, 7],           // 1 - 3 - 5
-  minor: [0, 3, 7],           // 1 - b3 - 5
-  diminished: [0, 3, 6],      // 1 - b3 - b5
-  augmented: [0, 4, 8],       // 1 - 3 - #5
-  sus2: [0, 2, 7],            // 1 - 2 - 5
-  sus4: [0, 5, 7],            // 1 - 4 - 5
-  major7: [0, 4, 7, 11],      // 1 - 3 - 5 - 7
-  minor7: [0, 3, 7, 10],      // 1 - b3 - 5 - b7
-  dominant7: [0, 4, 7, 10],   // 1 - 3 - 5 - b7
-  minor7b5: [0, 3, 6, 10],    // 1 - b3 - b5 - b7 (half-diminished)
-  diminished7: [0, 3, 6, 9]   // 1 - b3 - b5 - bb7
+// Mapeamento de notas para português
+export const notaParaPortugues = {
+  'C': 'Dó', 'C#': 'Dó#', 'Db': 'Réb',
+  'D': 'Ré', 'D#': 'Ré#', 'Eb': 'Mib',
+  'E': 'Mi',
+  'F': 'Fá', 'F#': 'Fá#', 'Gb': 'Solb',
+  'G': 'Sol', 'G#': 'Sol#', 'Ab': 'Láb',
+  'A': 'Lá', 'A#': 'Lá#', 'Bb': 'Sib',
+  'B': 'Si'
 };
 
-// Fórmulas dos Modos Gregos (em semitons)
-export const MODE_FORMULAS = {
-  ionian: [0, 2, 4, 5, 7, 9, 11],      // 1 2 3 4 5 6 7 (Jônio - Maior)
-  dorian: [0, 2, 3, 5, 7, 9, 10],      // 1 2 b3 4 5 6 b7 (Dórico)
-  phrygian: [0, 1, 3, 5, 7, 8, 10],    // 1 b2 b3 4 5 b6 b7 (Frígio)
-  lydian: [0, 2, 4, 6, 7, 9, 11],      // 1 2 3 #4 5 6 7 (Lídio)
-  mixolydian: [0, 2, 4, 5, 7, 9, 10],  // 1 2 3 4 5 6 b7 (Mixolídio)
-  aeolian: [0, 2, 3, 5, 7, 8, 10],     // 1 2 b3 4 5 b6 b7 (Eólio - Menor Natural)
-  locrian: [0, 1, 3, 5, 6, 8, 10]      // 1 b2 b3 4 b5 b6 b7 (Lócrio)
+// Intervalos dos modos gregos (em semitons)
+export const intervalosModosGrecos = {
+  jonio: [0, 2, 4, 5, 7, 9, 11],      // T T S T T T S
+  dorico: [0, 2, 3, 5, 7, 9, 10],     // T S T T T S T
+  frigio: [0, 1, 3, 5, 7, 8, 10],     // S T T T S T T
+  lidio: [0, 2, 4, 6, 7, 9, 11],      // T T T S T T S
+  mixolidio: [0, 2, 4, 5, 7, 9, 10],  // T T S T T S T
+  eolio: [0, 2, 3, 5, 7, 8, 10],      // T S T T S T T
+  locrio: [0, 1, 3, 5, 6, 8, 10]      // S T T S T T T
 };
 
-// Nomes dos modos em português
-export const MODE_NAMES = {
-  ionian: 'Jônio',
-  dorian: 'Dórico',
-  phrygian: 'Frígio',
-  lydian: 'Lídio',
-  mixolydian: 'Mixolídio',
-  aeolian: 'Eólio',
-  locrian: 'Lócrio'
+// Qualidades dos acordes para cada grau dos modos
+export const qualidadesAcordes = {
+  jonio: ['maj7', 'm7', 'm7', 'maj7', '7', 'm7', 'm7b5'],
+  dorico: ['m7', 'm7b5', 'maj7', '7', 'm7', 'm7b5', 'maj7'],
+  frigio: ['m7', 'maj7', '7', 'm7', 'm7b5', 'maj7', 'm7'],
+  lidio: ['maj7', '7', 'm7', 'm7b5', 'maj7', 'm7', 'm7'],
+  mixolidio: ['7', 'm7', 'm7b5', 'maj7', 'm7', 'm7', 'maj7'],
+  eolio: ['m7', 'm7b5', 'maj7', 'm7', 'm7', 'maj7', '7'],
+  locrio: ['m7b5', 'maj7', 'm7', 'm7', 'maj7', '7', 'm7']
 };
 
-/**
- * Obter índice de uma nota no array cromático
- */
-export function getNoteIndex(note) {
-  // Normalizar bemóis para sustenidos
-  const normalizedNote = note
-    .replace('Db', 'C#')
-    .replace('Eb', 'D#')
-    .replace('Gb', 'F#')
-    .replace('Ab', 'G#')
-    .replace('Bb', 'A#');
+// Função para transpor uma nota
+export function transporNota(nota, semitons) {
+  const indice = notas.indexOf(nota);
+  if (indice === -1) return nota;
   
-  return CHROMATIC_NOTES.indexOf(normalizedNote);
+  const novoIndice = (indice + semitons) % 12;
+  return notas[novoIndice];
 }
 
-/**
- * Obter nota a partir de um índice
- */
-export function getNoteFromIndex(index) {
-  return CHROMATIC_NOTES[index % 12];
-}
-
-/**
- * Transpor uma nota por um número de semitons
- */
-export function transposeNote(note, semitones) {
-  const index = getNoteIndex(note);
-  if (index === -1) return null;
+// Função para gerar escala de um modo em uma tonalidade
+export function gerarEscala(tonica, modo) {
+  const intervalos = intervalosModosGrecos[modo];
+  if (!intervalos) return [];
   
-  const newIndex = (index + semitones + 12) % 12;
-  return CHROMATIC_NOTES[newIndex];
-}
-
-/**
- * Construir um acorde a partir de uma nota fundamental e tipo
- */
-export function buildChord(rootNote, chordType = 'major') {
-  const rootIndex = getNoteIndex(rootNote);
-  if (rootIndex === -1) return [];
+  const tonicaIndice = notas.indexOf(tonica);
+  if (tonicaIndice === -1) return [];
   
-  const formula = CHORD_FORMULAS[chordType];
-  if (!formula) return [];
-  
-  return formula.map(interval => {
-    const noteIndex = (rootIndex + interval) % 12;
-    return CHROMATIC_NOTES[noteIndex];
+  return intervalos.map(intervalo => {
+    const indice = (tonicaIndice + intervalo) % 12;
+    return notas[indice];
   });
 }
 
-/**
- * Construir voicing de acorde em múltiplas oitavas
- * @param {string} rootNote - Nota fundamental
- * @param {string} chordType - Tipo do acorde
- * @param {string} voicingType - Tipo de voicing ('spread', 'close', 'drop2')
- * @param {number} baseOctave - Oitava base (padrão: 3)
- * @returns {Array} Array de objetos {note, octave}
- */
-export function buildChordVoicing(rootNote, chordType = 'major', voicingType = 'spread', baseOctave = 3) {
-  const chordNotes = buildChord(rootNote, chordType);
-  if (chordNotes.length === 0) return [];
+// Função para gerar campo harmônico de um modo em uma tonalidade
+export function gerarCampoHarmonico(tonica, modo) {
+  const escala = gerarEscala(tonica, modo);
+  const qualidades = qualidadesAcordes[modo];
   
-  const voicing = [];
+  if (!escala.length || !qualidades) return [];
   
-  if (voicingType === 'spread') {
-    // Voicing espalhado em 3 oitavas (som mais rico e completo)
-    chordNotes.forEach((note, index) => {
-      const octaveOffset = Math.floor(index / 3);
-      voicing.push({
-        note,
-        octave: baseOctave + octaveOffset
-      });
-    });
-  } else if (voicingType === 'close') {
-    // Voicing fechado (todas as notas na mesma oitava)
-    chordNotes.forEach(note => {
-      voicing.push({
-        note,
-        octave: baseOctave
-      });
-    });
-  } else if (voicingType === 'drop2') {
-    // Drop 2 voicing (segunda nota uma oitava abaixo - comum em guitarra jazz)
-    chordNotes.forEach((note, index) => {
-      voicing.push({
-        note,
-        octave: index === 1 ? baseOctave - 1 : baseOctave
-      });
-    });
-  } else if (voicingType === 'bass') {
-    // Voicing com baixo grave (fundamental 2 oitavas abaixo)
-    voicing.push({
-      note: chordNotes[0],
-      octave: baseOctave - 1  // Baixo uma oitava abaixo
-    });
-    chordNotes.forEach((note, index) => {
-      if (index > 0) {
-        voicing.push({
-          note,
-          octave: baseOctave
-        });
-      }
-    });
-  }
-  
-  return voicing;
-}
-
-/**
- * Construir uma escala a partir de uma nota fundamental e modo
- */
-export function buildScale(rootNote, mode = 'ionian') {
-  const rootIndex = getNoteIndex(rootNote);
-  if (rootIndex === -1) return [];
-  
-  const formula = MODE_FORMULAS[mode];
-  if (!formula) return [];
-  
-  return formula.map(interval => {
-    const noteIndex = (rootIndex + interval) % 12;
-    return CHROMATIC_NOTES[noteIndex];
+  return escala.map((nota, index) => {
+    return nota + qualidades[index];
   });
 }
 
-/**
- * Construir escala em múltiplas oitavas (para cobrir extensão do braço da guitarra)
- * @param {string} rootNote - Nota fundamental
- * @param {string} mode - Modo grego
- * @param {number} numOctaves - Número de oitavas (padrão: 3)
- * @returns {Array} Array de objetos {note, octave}
- */
-export function buildScaleMultiOctave(rootNote, mode = 'ionian', numOctaves = 3, startOctave = 3) {
-  const singleOctaveScale = buildScale(rootNote, mode);
-  if (singleOctaveScale.length === 0) return [];
+// Função para obter fórmula intervalar em português
+export function obterFormulaPortugues(modo) {
+  const formulas = {
+    jonio: '1 - 2 - 3 - 4 - 5 - 6 - 7',
+    dorico: '1 - 2 - b3 - 4 - 5 - 6 - b7',
+    frigio: '1 - b2 - b3 - 4 - 5 - b6 - b7',
+    lidio: '1 - 2 - 3 - #4 - 5 - 6 - 7',
+    mixolidio: '1 - 2 - 3 - 4 - 5 - 6 - b7',
+    eolio: '1 - 2 - b3 - 4 - 5 - b6 - b7',
+    locrio: '1 - b2 - b3 - 4 - b5 - b6 - b7'
+  };
   
-  const multiOctaveScale = [];
-  
-  for (let oct = 0; oct < numOctaves; oct++) {
-    const currentOctave = startOctave + oct;
-    singleOctaveScale.forEach(note => {
-      multiOctaveScale.push({
-        note,
-        octave: currentOctave
-      });
-    });
-  }
-  
-  return multiOctaveScale;
+  return formulas[modo] || '';
 }
 
-/**
- * Identificar tipo de acorde a partir do nome
- * Ex: "Cmaj7" -> "major7", "Dm" -> "minor", "G7" -> "dominant7"
- */
-export function identifyChordType(chordName) {
-  const name = chordName.toLowerCase();
-  
-  // Tétrades
-  if (name.includes('maj7') || name.includes('m7+') || name.includes('δ')) return 'major7';
-  if (name.includes('m7b5') || name.includes('ø')) return 'minor7b5';
-  if (name.includes('dim7') || name.includes('°7')) return 'diminished7';
-  if (name.includes('m7') || name.includes('min7')) return 'minor7';
-  if (name.includes('7')) return 'dominant7';
-  
-  // Tríades
-  if (name.includes('dim') || name.includes('°')) return 'diminished';
-  if (name.includes('aug') || name.includes('+')) return 'augmented';
-  if (name.includes('sus4')) return 'sus4';
-  if (name.includes('sus2')) return 'sus2';
-  if (name.includes('m') || name.includes('min') || name.includes('-')) return 'minor';
-  
-  // Padrão: maior
+// Função para converter escala para notação portuguesa
+export function escalaParaPortugues(escala) {
+  return escala.map(nota => notaParaPortugues[nota] || nota).join(' - ');
+}
+
+// Lista de todas as tonalidades
+export const tonalidades = [
+  { key: 'C', nome: 'Dó Maior', notaPortugues: 'Dó' },
+  { key: 'C#', nome: 'Dó# Maior', notaPortugues: 'Dó#' },
+  { key: 'D', nome: 'Ré Maior', notaPortugues: 'Ré' },
+  { key: 'D#', nome: 'Ré# Maior', notaPortugues: 'Ré#' },
+  { key: 'E', nome: 'Mi Maior', notaPortugues: 'Mi' },
+  { key: 'F', nome: 'Fá Maior', notaPortugues: 'Fá' },
+  { key: 'F#', nome: 'Fá# Maior', notaPortugues: 'Fá#' },
+  { key: 'G', nome: 'Sol Maior', notaPortugues: 'Sol' },
+  { key: 'G#', nome: 'Sol# Maior', notaPortugues: 'Sol#' },
+  { key: 'A', nome: 'Lá Maior', notaPortugues: 'Lá' },
+  { key: 'A#', nome: 'Lá# Maior', notaPortugues: 'Lá#' },
+  { key: 'B', nome: 'Si Maior', notaPortugues: 'Si' }
+];
+
+
+// Funções auxiliares para AppContext
+export function extractRootNote(chordInput) {
+  if (!chordInput) return 'C';
+  const match = chordInput.match(/^([A-G][#b]?)/);
+  return match ? match[1] : 'C';
+}
+
+export function identifyChordType(chordInput) {
+  if (!chordInput) return 'major';
+  const withoutRoot = chordInput.replace(/^[A-G][#b]?/, '');
+  if (withoutRoot.includes('m7b5') || withoutRoot.includes('ø')) return 'half_diminished';
+  if (withoutRoot.includes('dim7') || withoutRoot.includes('°7')) return 'diminished7';
+  if (withoutRoot.includes('dim') || withoutRoot.includes('°')) return 'diminished';
+  if (withoutRoot.includes('aug') || withoutRoot.includes('+')) return 'augmented';
+  if (withoutRoot.includes('maj7') || withoutRoot.includes('M7')) return 'major7';
+  if (withoutRoot.includes('m7') || withoutRoot.includes('min7')) return 'minor7';
+  if (withoutRoot.includes('7')) return 'dominant7';
+  if (withoutRoot.includes('m') || withoutRoot.includes('min')) return 'minor';
+  if (withoutRoot.includes('sus4')) return 'sus4';
+  if (withoutRoot.includes('sus2')) return 'sus2';
   return 'major';
 }
 
-/**
- * Extrair nota fundamental de um nome de acorde
- * Ex: "Cmaj7" -> "C", "D#m" -> "D#", "Bb7" -> "A#"
- */
-export function extractRootNote(chordName) {
-  // Pegar os primeiros 1 ou 2 caracteres (nota + possível sustenido/bemol)
-  const match = chordName.match(/^([A-G][#b]?)/);
-  if (!match) return null;
-  
-  let note = match[1];
-  
-  // Normalizar bemóis para sustenidos
-  note = note
-    .replace('Db', 'C#')
-    .replace('Eb', 'D#')
-    .replace('Gb', 'F#')
-    .replace('Ab', 'G#')
-    .replace('Bb', 'A#');
-  
-  return note;
-}
-
-/**
- * Construir campo harmônico de um modo
- * Retorna os 7 acordes do campo harmônico
- */
-export function buildHarmonicField(rootNote, mode = 'ionian') {
-  const scale = buildScale(rootNote, mode);
-  if (scale.length !== 7) return [];
-  
-  // Fórmulas de acordes para cada grau (baseado em tríades diatônicas)
-  const chordTypes = {
-    ionian: ['major', 'minor', 'minor', 'major', 'major', 'minor', 'diminished'],
-    dorian: ['minor', 'minor', 'major', 'major', 'minor', 'diminished', 'major'],
-    phrygian: ['minor', 'major', 'major', 'minor', 'diminished', 'major', 'minor'],
-    lydian: ['major', 'major', 'minor', 'diminished', 'major', 'minor', 'minor'],
-    mixolydian: ['major', 'minor', 'diminished', 'major', 'minor', 'minor', 'major'],
-    aeolian: ['minor', 'diminished', 'major', 'minor', 'minor', 'major', 'major'],
-    locrian: ['diminished', 'major', 'minor', 'minor', 'major', 'major', 'minor']
+export function buildChord(root, type) {
+  const intervals = {
+    major: [0, 4, 7],
+    minor: [0, 3, 7],
+    diminished: [0, 3, 6],
+    augmented: [0, 4, 8],
+    major7: [0, 4, 7, 11],
+    minor7: [0, 3, 7, 10],
+    dominant7: [0, 4, 7, 10],
+    diminished7: [0, 3, 6, 9],
+    half_diminished: [0, 3, 6, 10],
+    sus4: [0, 5, 7],
+    sus2: [0, 2, 7],
   };
-  
-  const types = chordTypes[mode] || chordTypes.ionian;
-  
-  return scale.map((note, index) => ({
-    degree: index + 1,
-    root: note,
-    type: types[index],
-    notes: buildChord(note, types[index])
-  }));
+  const rootIdx = notas.indexOf(root);
+  if (rootIdx === -1) return [root];
+  const steps = intervals[type] || intervals.major;
+  return steps.map(s => notas[(rootIdx + s) % 12]);
 }
 
-/**
- * Obter intervalo entre duas notas (em semitons)
- */
-export function getInterval(note1, note2) {
-  const index1 = getNoteIndex(note1);
-  const index2 = getNoteIndex(note2);
-  
-  if (index1 === -1 || index2 === -1) return null;
-  
-  return (index2 - index1 + 12) % 12;
+export function buildScale(root, mode) {
+  return gerarEscala(root, mode || 'jonio');
 }
-
-/**
- * Nomes dos intervalos
- */
-export const INTERVAL_NAMES = {
-  0: 'Uníssono',
-  1: 'Segunda Menor',
-  2: 'Segunda Maior',
-  3: 'Terça Menor',
-  4: 'Terça Maior',
-  5: 'Quarta Justa',
-  6: 'Trítono',
-  7: 'Quinta Justa',
-  8: 'Sexta Menor',
-  9: 'Sexta Maior',
-  10: 'Sétima Menor',
-  11: 'Sétima Maior'
-};
-

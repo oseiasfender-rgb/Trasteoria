@@ -368,3 +368,6 @@ export {
   getPosicoesCaged,
   getAcordesCompativeisCom,
 };
+
+// Compatibilidade com AtlasViewer
+export const atlasAcordes = generateAtlasAcordes();

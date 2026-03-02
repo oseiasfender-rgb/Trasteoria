@@ -117,7 +117,7 @@ class MIDIManager {
     const mappedNote = this.getMappedNote(note, channel);
     const normalizedVelocity = velocity / 127;
 
-
+    .toFixed(0)}%)`);
 
     if (this.audioEngine && this.audioEngine.playNote) {
       this.audioEngine.playNote(mappedNote, normalizedVelocity);
@@ -155,6 +155,7 @@ class MIDIManager {
   handleControlChange(cc, value, channel) {
     const normalizedValue = value / 127;
 
+    .toFixed(0)}%`);
 
     // Mapeamentos padrão de CC
     switch (cc) {
@@ -196,6 +197,7 @@ class MIDIManager {
     const pitchValue = ((msb << 7) | lsb) - 8192;
     const normalizedPitch = pitchValue / 8192; // -1 a 1
 
+    .toFixed(0)}%`);
 
     if (this.audioEngine && this.audioEngine.setPitchBend) {
       this.audioEngine.setPitchBend(normalizedPitch);
@@ -256,7 +258,7 @@ class MIDIManager {
         output.send([0x80, midiNote, 0]);
       }, duration);
 
-
+      `);
       return true;
     } catch (error) {
       return false;

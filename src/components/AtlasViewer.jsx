@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Search, ChevronDown, ChevronUp, Volume2, BookOpen, Grid3x3, List } from 'lucide-react';
-import { atlasModosGregos } from '@/data/atlasModosGregos';
-import { atlasCamposHarmonicos } from '@/data/atlasCamposHarmonicos';
-import { atlasAcordes } from '@/data/atlasAcordes';
-import { atlasProgressoes } from '@/data/atlasProgressoes';
+import { atlasModosGregos } from '@/utils/atlasModosGregos';
+import { atlasCamposHarmonicos } from '@/utils/atlasCamposHarmonicos';
+import { atlasAcordes } from '@/utils/atlasAcordes';
+import { atlasProgressoes } from '@/utils/atlasProgressoes';
 
 export default function AtlasViewer() {
   const [activeTab, setActiveTab] = useState('modos');

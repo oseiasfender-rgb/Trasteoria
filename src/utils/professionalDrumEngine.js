@@ -607,3 +607,4 @@ class ProfessionalDrumEngine {
 
 export default ProfessionalDrumEngine;
 
+export { ProfessionalDrumEngine };

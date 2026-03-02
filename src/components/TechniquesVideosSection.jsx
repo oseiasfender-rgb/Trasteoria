@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.j
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.jsx';
 import { Button } from '@/components/ui/button.jsx';
 import { VideoPlayer } from './VideoPlayer.jsx';
-import { techniquesVideos, videoCategories, difficultyLevels, filterVideos } from '../data/techniquesVideos.js';
+import { techniquesVideos, videoCategories, difficultyLevels, filterVideos } from '../utils/techniquesVideos.js';
 import { Play, CheckCircle, Filter, Video } from 'lucide-react';
 
 export function TechniquesVideosSection() {

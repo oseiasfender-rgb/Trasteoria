@@ -5,8 +5,8 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
-import SampleEngine from '../data/sampleEngine.js';
-import DrumSampleEngine from '../data/drumSampleEngine.js';
+import SampleEngine from '../utils/sampleEngine.js';
+import DrumSampleEngine from '../utils/drumSampleEngine.js';
 import { bassSampleEngine } from './bassSampleEngine.js';
 import { pianoSampleEngine } from './pianoSampleEngine.js';
 import ProSampleMixer from './proSampleMixer.js';

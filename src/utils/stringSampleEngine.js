@@ -494,7 +494,7 @@ class StringSampleEngine {
     const audioBuffer = kit?.get(noteName);
 
     if (!audioBuffer) {
-
+      `);
       return;
     }
 

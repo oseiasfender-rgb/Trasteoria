@@ -1,22 +1,36 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.jsx';
-import { Musimport { BookOpen, Music, Zap, Play, Guitar, TrendingUp, Heart, Brain, Ear, Activity } from 'lucide-react';ort { AppProvider, useAppContext } from './contexts/AppContext.jsx';
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
+import { BookOpen, Music, Zap, Play, Guitar, TrendingUp, Heart, Brain, Ear, Activity, Users, Music2, Library, Settings } from 'lucide-react';
+import { AppProvider, useAppContext } from './contexts/AppContext.jsx';
 import { ThemeProvider } from './contexts/ThemeContext.jsx';
 import { ProgressProvider } from './contexts/ProgressContext.jsx';
+import { PremiumProvider } from './contexts/PremiumContext.jsx';
 import ToastProvider from './components/ToastProvider.jsx';
+import UpgradePrompt from './components/UpgradePrompt.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
+import AccessibilityProvider from './components/AccessibilityProvider.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
+import PWAInstaller from './components/PWAInstaller.jsx';
 
-// Importar componentes das seções
-import { FundamentosSection } from './components/FundamentosSection.jsx';
-import { HarmoniaSection } from './components/HarmoniaSection.jsx';
-import { EscalasArpejosSection } from './components/EscalasArpejosSection.jsx';
-import { ImprovisacaoSection } from './components/ImprovisacaoSection.jsx';
-import { EstilosSection } from './components/EstilosSection.jsx';
-import { DesenvolvimentoSection } from './components/DesenvolvimentoSection.jsx'import BandCreator from './components/BandCreator';
-import AIChordSuggester from './components/AIChordSuggester';
-import EarTraining from './components/EarTraining';
-import GuitarInput from './components/GuitarInput';.jsx';
+import { SectionLoader } from './components/SectionLoader.jsx';
+
+// Lazy loading dos componentes das seções (otimização de performance)
+const FundamentosSection = lazy(() => import('./components/FundamentosSection.jsx').then(m => ({ default: m.FundamentosSection })));
+const HarmoniaSection = lazy(() => import('./components/HarmoniaSection.jsx').then(m => ({ default: m.HarmoniaSection })));
+const EscalasArpejosSection = lazy(() => import('./components/EscalasArpejosSection.jsx').then(m => ({ default: m.EscalasArpejosSection })));
+const ImprovisacaoSection = lazy(() => import('./components/ImprovisacaoSection.jsx').then(m => ({ default: m.ImprovisacaoSection })));
+const EstilosSection = lazy(() => import('./components/EstilosSection.jsx').then(m => ({ default: m.EstilosSection })));
+const DesenvolvimentoSection = lazy(() => import('./components/DesenvolvimentoSection.jsx').then(m => ({ default: m.DesenvolvimentoSection })));
+const BandCreator = lazy(() => import('./components/BandCreator'));
+const AIChordSuggester = lazy(() => import('./components/AIChordSuggester'));
+const EarTraining = lazy(() => import('./components/EarTraining'));
+const GuitarInput = lazy(() => import('./components/GuitarInput'));
+const JamSession = lazy(() => import('./components/JamSession'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+const ComposicaoSection = lazy(() => import('./components/ComposicaoSection.jsx').then(m => ({ default: m.ComposicaoSection })));
+const LeituraSection = lazy(() => import('./components/LeituraSection.jsx').then(m => ({ default: m.LeituraSection })));
+const RepertorioSection = lazy(() => import('./components/RepertorioSection.jsx').then(m => ({ default: m.RepertorioSection })));
 
 // Componentes originais dos Modos Gregos
 import { Navigation } from './components/Navigation.jsx';
@@ -29,6 +43,7 @@ import { VideoSection } from './components/VideoSection.jsx';
 import { modosInfo, modosList, getModoData } from './data/modosDataExpanded.js';
 import { tonalidades } from './data/musicTheory.js';
 import './App.css';
+import './animations.css';
 
 function AppContent() {
   const [activeSection, setActiveSection] = useState('fundamentos');
@@ -121,14 +136,14 @@ function AppContent() {
         {/* Header Principal */}
         <Card className="mb-8 bg-card/50 backdrop-blur-sm border-purple-500/20">
           <CardHeader className="text-center relative">
-            {/* Theme Toggle */}
-            <div className="absolute top-4 right-4">
+            {/* Theme Toggle & Octave Selector */}
+            <div className="absolute top-4 right-4 flex items-center space-x-2">
               <ThemeToggle />
             </div>
             <div className="flex items-center justify-center space-x-3 mb-4">
-              <Music className="w-8 h-8 text-purple-400" />
+              <img src="/logo-oficial.png" alt="TrasTeoria" className="w-12 h-12 rounded-lg" />
               <CardTitle className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Guitarra Completa
+                TrasTeoria
               </CardTitle>
             </div>
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full inline-block">
@@ -169,6 +184,22 @@ function AppContent() {
               <span className="hidden sm:inline">Desenvolvimento</span>
               <span className="sm:hidden">Desenv.</span>
             </TabsTrigger>
+            <TabsTrigger value="composicao" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
+              <Music2 className="w-4 h-4" />
+              <span className="hidden sm:inline">Composição</span>
+              <span className="sm:hidden">Comp.</span>
+            </TabsTrigger>
+            <TabsTrigger value="leitura" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
+              <BookOpen className="w-4 h-4" />
+              <span className="hidden sm:inline">Leitura</span>
+              <span className="sm:hidden">Leitura</span>
+            </TabsTrigger>
+            <TabsTrigger value="repertorio" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
+              <Library className="w-4 h-4" />
+              <span className="hidden sm:inline">Repertório</span>
+              <span className="sm:hidden">Reprt.</span>
+            </TabsTrigger>
+
             <TabsTrigger value="modos_gregos" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
               <Heart className="w-4 h-4" />
               <span className="hidden sm:inline">Modos Gregos</span>
@@ -194,36 +225,80 @@ function AppContent() {
               <span className="hidden sm:inline">Guitar Input</span>
               <span className="sm:hidden">Input</span>
             </TabsTrigger>
+            <TabsTrigger value="jam_session" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm bg-gradient-to-r from-pink-600 to-purple-600">
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline">Jam Session</span>
+              <span className="sm:hidden">Jam</span>
+            </TabsTrigger>
+            <TabsTrigger value="admin" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm bg-gradient-to-r from-red-600 to-orange-600">
+              <Settings className="w-4 h-4" />
+              <span className="hidden sm:inline">Admin</span>
+              <span className="sm:hidden">Admin</span>
+            </TabsTrigger>
           </TabsList>
 
-          {/* Conteúdo das Seções */}
-          <TabsContent value="fundamentos">
-            <FundamentosSection />
-          </TabsContent>
+          {/* Conteúdo das Seções com Lazy Loading */}
+          <Suspense fallback={<SectionLoader />}>
+            <TabsContent value="fundamentos">
+              <FundamentosSection />
+            </TabsContent>
 
-          <TabsContent value="harmonia">
-            <HarmoniaSection />
-          </TabsContent>
+            <TabsContent value="harmonia">
+              <HarmoniaSection />
+            </TabsContent>
 
-          <TabsContent value="escalas">
-            <EscalasArpejosSection />
-          </TabsContent>
+            <TabsContent value="escalas">
+              <EscalasArpejosSection />
+            </TabsContent>
 
-          <TabsContent value="improvisacao">
-            <ImprovisacaoSection />
-          </TabsContent>
+            <TabsContent value="improvisacao">
+              <ImprovisacaoSection />
+            </TabsContent>
 
-          <TabsContent value="estilos">
-            <EstilosSection />
-          </TabsContent>
+            <TabsContent value="estilos">
+              <EstilosSection />
+            </TabsContent>
 
-          <TabsContent value="desenvolvimento">
-            <DesenvolvimentoSection />
-          </TabsContent>
+            <TabsContent value="desenvolvimento">
+              <DesenvolvimentoSection />
+            </TabsContent>
 
-          <TabsContent value="band_creator">
-            <BandCreator />
-          </TabsContent>
+            <TabsContent value="band_creator">
+              <BandCreator />
+            </TabsContent>
+
+            <TabsContent value="ai_suggester">
+              <AIChordSuggester />
+            </TabsContent>
+
+            <TabsContent value="ear_training">
+              <EarTraining />
+            </TabsContent>
+
+            <TabsContent value="guitar_input">
+              <GuitarInput />
+            </TabsContent>
+
+            <TabsContent value="jam_session">
+              <JamSession />
+            </TabsContent>
+
+            <TabsContent value="admin">
+              <AdminDashboard />
+            </TabsContent>
+
+            <TabsContent value="composicao">
+              <ComposicaoSection />
+            </TabsContent>
+
+            <TabsContent value="leitura">
+              <LeituraSection />
+            </TabsContent>
+
+            <TabsContent value="repertorio">
+              <RepertorioSection />
+            </TabsContent>
+          </Suspense>
 
           <TabsContent value="modos_gregos">
             {/* Seção Original dos Modos Gregos */}
@@ -233,8 +308,9 @@ function AppContent() {
                 <div className="flex items-center justify-center space-x-3 mb-4">
                   <Heart className="w-8 h-8 text-primary" />
                   <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
-                    Modos Gregos Interativo
+                    TrasTeoria
                   </h1>
+                  <p className="text-sm text-muted-foreground">Desenvolvido com Modos Gregos</p>
                 </div>
                 <div className="inline-block bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium">
                   Seção Especializada - Todos os 12 Tons
@@ -245,9 +321,9 @@ function AppContent() {
               <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
               {/* Content dos Modos Gregos */}
-              <main>
+              <div>
                 {renderModosGregosContent()}
-              </main>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
@@ -258,16 +334,23 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <ProgressProvider>
-        <AppProvider>
-          <ToastProvider />
-          <AppContent />
-        </AppProvider>
-      </ProgressProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <AccessibilityProvider>
+        <ThemeProvider>
+          <PremiumProvider>
+            <ProgressProvider>
+              <AppProvider>
+              <ToastProvider />
+              <UpgradePrompt />
+              <PWAInstaller />
+              <AppContent />
+              </AppProvider>
+            </ProgressProvider>
+          </PremiumProvider>
+        </ThemeProvider>
+      </AccessibilityProvider>
+    </ErrorBoundary>
   );
 }
 
 export default App;
-

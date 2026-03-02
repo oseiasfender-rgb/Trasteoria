@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.j
 import { Button } from '@/components/ui/button.jsx';
 import { useAppContext } from '../contexts/AppContext.jsx';
 import { useToast } from '../hooks/useToast.js';
-import { chordProgressions, progressionGenres, progressionDifficulties, filterProgressions } from '../data/chordProgressions.js';
+import { chordProgressions, progressionGenres, progressionDifficulties, filterProgressions } from '../utils/chordProgressions.js';
 import { Music2, Play, Plus, Trash2, Save, Download, Lightbulb } from 'lucide-react';
 
 export function ComposicaoSection() {

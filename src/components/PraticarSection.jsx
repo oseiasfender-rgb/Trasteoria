@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button.jsx';
 import { Progress } from '@/components/ui/progress.jsx';
 import { Badge } from '@/components/ui/badge.jsx';
 import { Play, Pause, RotateCcw, CheckCircle, XCircle, Volume2 } from 'lucide-react';
-import { modosInfo, modosList } from '../data/modosDataExpanded.js';
-import { gerarEscala, tonalidades } from '../data/musicTheory.js';
+import { modosInfo, modosList } from '../utils/modosDataExpanded.js';
+import { gerarEscala, tonalidades } from '../utils/musicTheory.js';
 
 export function PraticarSection() {
   const [exercicioAtivo, setExercicioAtivo] = useState('identificacao');

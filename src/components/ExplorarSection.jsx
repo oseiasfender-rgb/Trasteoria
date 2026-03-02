@@ -5,8 +5,8 @@ import { Badge } from '@/components/ui/badge.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.jsx';
 import { Shuffle, Play, Copy, Download, Lightbulb, Music2, Zap } from 'lucide-react';
-import { modosInfo, modosList, getModoData } from '../data/modosDataExpanded.js';
-import { tonalidades, gerarCampoHarmonico } from '../data/musicTheory.js';
+import { modosInfo, modosList, getModoData } from '../utils/modosDataExpanded.js';
+import { tonalidades, gerarCampoHarmonico } from '../utils/musicTheory.js';
 
 export function ExplorarSection() {
   const [selectedMode, setSelectedMode] = useState('jonio');

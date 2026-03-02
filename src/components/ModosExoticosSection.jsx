@@ -12,8 +12,8 @@ import {
   categorias, 
   getModosPorCategoria,
   transporEscalaExotica 
-} from '../data/modosExoticos.js';
-import { tonalidades } from '../data/musicTheory.js';
+} from '../utils/modosExoticos.js';
+import { tonalidades } from '../utils/musicTheory.js';
 
 export function ModosExoticosSection() {
   const [categoriaAtiva, setCategoriaAtiva] = useState('Simétrica');

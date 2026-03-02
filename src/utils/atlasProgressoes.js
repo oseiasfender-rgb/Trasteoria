@@ -316,3 +316,6 @@ export {
   getProgressoesPorGenero,
   getProgressoesPorTensao,
 };
+
+// Compatibilidade com AtlasViewer
+export const atlasProgressoes = listProgressoes();

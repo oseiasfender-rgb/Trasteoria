@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button.jsx';
 import { Input } from '@/components/ui/input.jsx';
 import { useAppContext } from '../contexts/AppContext.jsx';
 import { useToast } from '../hooks/useToast.js';
-import { songRepertoire, repertoireGenres, repertoireDifficulties, filterSongs } from '../data/songRepertoire.js';
+import { songRepertoire, repertoireGenres, repertoireDifficulties, filterSongs } from '../utils/songRepertoire.js';
 import { Music, Play, Heart, Search, Book, Clock, TrendingUp } from 'lucide-react';
 
 export function RepertorioSection() {
