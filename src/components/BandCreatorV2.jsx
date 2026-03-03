@@ -88,19 +88,26 @@ const BandCreatorV2 = () => {
   // Atualizar volumes
   useEffect(() => {
     if (engineRef.current) {
-      engineRef.current.setVolumes({
-        drums: volumes.drums / 100,
-        bass: volumes.bass / 100,
-        piano: volumes.piano / 100,
-        master: volumes.master / 100
-      });
+      // Usar setChannelVolume individualmente (a engine não tem setVolumes)
+      if (typeof engineRef.current.setChannelVolume === 'function') {
+        engineRef.current.setChannelVolume('drums', volumes.drums / 100);
+        engineRef.current.setChannelVolume('bass', volumes.bass / 100);
+        engineRef.current.setChannelVolume('keys', volumes.piano / 100);
+        engineRef.current.setChannelVolume('master', volumes.master / 100);
+      }
     }
   }, [volumes]);
   
   // Atualizar mutes
   useEffect(() => {
-    if (engineRef.current) {
-      engineRef.current.setMutes(mutes);
+    if (engineRef.current && typeof engineRef.current.toggleChannelMute === 'function') {
+      // Sincronizar estado de mute com a engine
+      const currentMixer = engineRef.current.mixer;
+      if (currentMixer) {
+        if (!!currentMixer.drums?.mute !== !!mutes.drums) engineRef.current.toggleChannelMute('drums');
+        if (!!currentMixer.bass?.mute !== !!mutes.bass) engineRef.current.toggleChannelMute('bass');
+        if (!!currentMixer.keys?.mute !== !!mutes.piano) engineRef.current.toggleChannelMute('keys');
+      }
     }
   }, [mutes]);
   

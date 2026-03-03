@@ -19,41 +19,76 @@ export default function AtlasViewer() {
     const search = searchTerm.toLowerCase();
     
     switch(activeTab) {
-      case 'modos':
-        return Object.values(atlasModosGregos).filter(modo =>
-          modo.name.toLowerCase().includes(search) ||
-          modo.description.toLowerCase().includes(search)
+      case 'modos': {
+        // atlasModosGregos = {C: {jonio: {...}, dorico: {...}}, D: {...}}
+        // Pegar apenas a tonalidade selecionada e listar os modos
+        const modosNaTonalidade = atlasModosGregos[selectedTone] || {};
+        return Object.values(modosNaTonalidade).filter(modo =>
+          modo && modo.name &&
+          (
+            modo.name.toLowerCase().includes(search) ||
+            (modo.sonoridade || '').toLowerCase().includes(search) ||
+            (modo.formula || '').toLowerCase().includes(search)
+          )
         );
+      }
       
-      case 'campos':
-        return Object.values(atlasCamposHarmonicos).filter(campo =>
-          campo.name.toLowerCase().includes(search) ||
-          campo.type.toLowerCase().includes(search)
+      case 'campos': {
+        // atlasCamposHarmonicos = {C: {maior: {...}, menor_natural: {...}}, D: {...}}
+        const camposNaTonalidade = atlasCamposHarmonicos[selectedTone] || {};
+        return Object.values(camposNaTonalidade).filter(campo =>
+          campo && campo.name &&
+          (
+            campo.name.toLowerCase().includes(search) ||
+            (campo.tipo || campo.type || '').toLowerCase().includes(search)
+          )
         );
+      }
       
-      case 'acordes':
-        return Object.values(atlasAcordes).filter(acorde =>
-          acorde.name.toLowerCase().includes(search) ||
-          acorde.category.toLowerCase().includes(search)
+      case 'acordes': {
+        // atlasAcordes = {C: {maj: {C: {...}, A: {...}}, min: {...}}, D: {...}}
+        // Pegar todos os tipos de acorde na tonalidade selecionada, posicao C
+        const acordesNaTonalidade = atlasAcordes[selectedTone] || {};
+        return Object.values(acordesNaTonalidade).map(posicoes => {
+          // Cada tipo tem posicoes CAGED; pegar a posicao C ou a primeira disponivel
+          return posicoes?.C || Object.values(posicoes || {})[0];
+        }).filter(acorde =>
+          acorde && acorde.name &&
+          (
+            acorde.name.toLowerCase().includes(search) ||
+            (acorde.categoria || acorde.category || '').toLowerCase().includes(search)
+          )
         );
+      }
       
-      case 'progressoes':
-        return Object.values(atlasProgressoes).filter(prog =>
-          prog.name.toLowerCase().includes(search) ||
-          prog.genre.toLowerCase().includes(search)
+      case 'progressoes': {
+        // atlasProgressoes = [{id, name, descricao, generos, exemplo}, ...] (array)
+        const progressoesArray = Array.isArray(atlasProgressoes)
+          ? atlasProgressoes
+          : Object.values(atlasProgressoes);
+        return progressoesArray.filter(prog =>
+          prog && prog.name &&
+          (
+            prog.name.toLowerCase().includes(search) ||
+            (Array.isArray(prog.generos)
+              ? prog.generos.join(' ').toLowerCase().includes(search)
+              : (prog.genre || prog.generos || '').toString().toLowerCase().includes(search)
+            )
+          )
         );
+      }
       
       default:
         return [];
     }
-  }, [activeTab, searchTerm]);
+  }, [activeTab, searchTerm, selectedTone]);
 
   // Renderizar Modo
   const renderModo = (modo) => (
-    <div key={modo.id} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
+    <div key={modo.id || modo.name} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
       <div className="flex justify-between items-start mb-3">
         <div>
-          <h3 className="text-lg font-bold text-gray-800">{modo.name}</h3>
+          <h3 className="text-lg font-bold text-gray-800">{modo.tonalidade || modo.name}</h3>
           <p className="text-sm text-gray-600">{modo.formula}</p>
         </div>
         <button
@@ -65,19 +100,18 @@ export default function AtlasViewer() {
         </button>
       </div>
       
-      <p className="text-sm text-gray-700 mb-3">{modo.description}</p>
+      <p className="text-sm text-gray-700 mb-3">{modo.sonoridade || modo.description || ''}</p>
       
-      <div className="grid grid-cols-5 gap-2 mb-3">
-        {modo.shapes?.slice(0, 5).map((shape, idx) => (
-          <div key={idx} className="bg-gray-100 p-2 rounded text-center text-xs font-mono">
-            <div className="text-gray-600">Shape {idx + 1}</div>
-            <div className="text-gray-800 font-bold">{shape}</div>
-          </div>
-        ))}
-      </div>
+      {modo.notas && (
+        <div className="flex flex-wrap gap-1 mb-3">
+          {modo.notas.map((nota, idx) => (
+            <span key={idx} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded font-mono font-bold">{nota}</span>
+          ))}
+        </div>
+      )}
       
       <div className="text-xs text-gray-500">
-        Sonoridade: {modo.sonoridade} | Brilho: {modo.brilho}/10
+        Sonoridade: {modo.sonoridade || '-'} | Aplicação: {modo.aplicacao || '-'}
       </div>
     </div>
   );
@@ -87,8 +121,8 @@ export default function AtlasViewer() {
     <div key={campo.id} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
       <div className="flex justify-between items-start mb-3">
         <div>
-          <h3 className="text-lg font-bold text-gray-800">{campo.name}</h3>
-          <p className="text-sm text-gray-600">{campo.type}</p>
+          <h3 className="text-lg font-bold text-gray-800">{campo.tonalidade || campo.name}</h3>
+          <p className="text-sm text-gray-600">{campo.tipo || campo.type || ''}</p>
         </div>
         <button
           onClick={() => playCampo(campo)}
@@ -109,18 +143,18 @@ export default function AtlasViewer() {
       </div>
       
       <div className="text-xs text-gray-500">
-        Progressões típicas: {campo.progressions?.join(', ')}
+        Progressões típicas: {campo.progressoes?.map(p => p.nome).join(', ') || campo.progressions?.join(', ') || '-'}
       </div>
     </div>
   );
 
   // Renderizar Acorde
   const renderAcorde = (acorde) => (
-    <div key={acorde.id} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
+    <div key={acorde.id || acorde.cifra} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
       <div className="flex justify-between items-start mb-3">
         <div>
-          <h3 className="text-lg font-bold text-gray-800">{acorde.name}</h3>
-          <p className="text-sm text-gray-600">{acorde.category}</p>
+          <h3 className="text-lg font-bold text-gray-800">{acorde.cifra || acorde.name}</h3>
+          <p className="text-sm text-gray-600">{acorde.categoria || acorde.category || ''}</p>
         </div>
         <button
           onClick={() => playAcorde(acorde)}
@@ -141,7 +175,7 @@ export default function AtlasViewer() {
       </div>
       
       <div className="text-xs text-gray-500">
-        Fórmula: {acorde.formula} | Tensão: {acorde.tension}/10
+        Fórmula: {acorde.formula || '-'} | Sonoridade: {acorde.sonoridade || acorde.tension || '-'}
       </div>
     </div>
   );
@@ -152,7 +186,7 @@ export default function AtlasViewer() {
       <div className="flex justify-between items-start mb-3">
         <div>
           <h3 className="text-lg font-bold text-gray-800">{prog.name}</h3>
-          <p className="text-sm text-gray-600">{prog.genre}</p>
+          <p className="text-sm text-gray-600">{Array.isArray(prog.generos) ? prog.generos.join(', ') : (prog.genre || '')}</p>
         </div>
         <button
           onClick={() => playProgressao(prog)}
@@ -171,10 +205,10 @@ export default function AtlasViewer() {
         ))}
       </div>
       
-      <p className="text-sm text-gray-700 mb-2">{prog.description}</p>
+      <p className="text-sm text-gray-700 mb-2">{prog.descricao || prog.description || ''}</p>
       
       <div className="text-xs text-gray-500">
-        Gêneros: {prog.genres?.join(', ')}
+        Exemplo: {prog.exemplo || '-'}
       </div>
     </div>
   );
