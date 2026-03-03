@@ -4,6 +4,7 @@
  * Inspirado em DigiTech TRIO+, iReal Pro e Band-in-a-Box
  */
 
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 import DrumEngineV2 from './drumEngineV2';
 import ProfessionalBassEngine from './professionalBassEngine';
 import ProfessionalPianoEngine from './professionalPianoEngine';
@@ -385,7 +386,7 @@ class BandCreatorEngine {
    * Obter terça do acorde
    */
   getThird(root, quality = 'major') {
-    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notes = CHROMATIC_SHARP;
     const rootIndex = notes.indexOf(root);
     
     if (rootIndex === -1) return 'E';
@@ -398,7 +399,7 @@ class BandCreatorEngine {
    * Obter quinta do acorde
    */
   getFifth(root) {
-    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notes = CHROMATIC_SHARP;
     const rootIndex = notes.indexOf(root);
     
     if (rootIndex === -1) return 'G';

@@ -1,3 +1,4 @@
+import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 /**
  * 🎼 Progressões de Acordes Comuns
  * Biblioteca de progressões populares para composição
@@ -121,7 +122,7 @@ export const progressionDifficulties = ['Todos', 'Iniciante', 'Intermediário', 
 
 // Função para transpor progressão para qualquer tonalidade
 export function transposeProgression(progression, key) {
-  const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  const notes = CHROMATIC_SHARP;
   const scale = {
     'C': ['C', 'Dm', 'Em', 'F', 'G', 'Am', 'Bdim'],
     'G': ['G', 'Am', 'Bm', 'C', 'D', 'Em', 'F#dim'],

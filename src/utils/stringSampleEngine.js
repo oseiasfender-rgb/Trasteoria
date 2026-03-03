@@ -17,6 +17,7 @@
  * 7. Cordas Orquestrais (orchestral_strings) - Seção completa de cordas
  */
 
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 import { sampleEngine } from './sampleEngine.js';
 
 class StringSampleEngine {
@@ -276,7 +277,7 @@ class StringSampleEngine {
    */
   generateNotes() {
     const notes = [];
-    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const noteNames = CHROMATIC_SHARP;
     
     // Gerar todas as notas de E1 a E7
     for (let octave = 1; octave <= 7; octave++) {

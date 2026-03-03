@@ -9,12 +9,13 @@
  * - Análise de tensão/resolução
  */
 
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 class HarmonicAnalyzer {
   constructor() {
     this.chordDatabase = this.createChordDatabase();
     this.progressionPatterns = this.createProgressionPatterns();
     this.tonalityPatterns = this.createTonalityPatterns();
-    this.notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    this.notes = CHROMATIC_SHARP;
   }
 
   /**

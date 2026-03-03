@@ -8,6 +8,7 @@
  * - Suporte a diferentes articulações
  */
 
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 import { sampleEngine } from './sampleEngine.js';
 
 class PianoSampleEngine {
@@ -30,7 +31,7 @@ class PianoSampleEngine {
    */
   generateNotes() {
     const notes = [];
-    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const noteNames = CHROMATIC_SHARP;
     
     // Começar em A0 (índice 9)
     for (let octave = 0; octave <= 8; octave++) {
@@ -237,7 +238,7 @@ class PianoSampleEngine {
    * Converter MIDI para nota
    */
   midiToNote(midiNote) {
-    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const noteNames = CHROMATIC_SHARP;
     const octave = Math.floor(midiNote / 12) - 1;
     const noteIndex = midiNote % 12;
     return `${noteNames[noteIndex]}${octave}`;

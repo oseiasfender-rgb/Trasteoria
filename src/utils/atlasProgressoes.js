@@ -1,3 +1,5 @@
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
+
 /**
  * Atlas de Progressões - Dados Estruturados
  * 20+ Progressões Harmônicas Clássicas

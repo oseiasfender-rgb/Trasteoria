@@ -10,6 +10,7 @@ import { useAppContext } from '../contexts/AppContext.jsx';
 import ChordDiagram from './ChordDiagram';
 import { InteractiveFretboard } from './InteractiveFretboard.jsx';
 import { getModoData } from '../utils/modosDataExpanded.js';
+import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference, noteToPortuguese } from '../utils/noteNaming';
 
 export function EscalasArpejosSection() {
   const { playScale, playArpeggio } = useAppContext();
@@ -337,7 +338,7 @@ export function EscalasArpejosSection() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'].map(k => (
+                      {KEYS_CIRCLE_OF_FIFTHS.map(k => (
                         <SelectItem key={k} value={k}>{k}</SelectItem>
                       ))}
                     </SelectContent>

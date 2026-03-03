@@ -22,6 +22,7 @@
  * 12. Clavicórdio (harpsichord)
  */
 
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 import { sampleEngine } from './sampleEngine.js';
 
 class KeyboardSampleEngine {
@@ -319,7 +320,7 @@ class KeyboardSampleEngine {
    */
   generateNotes() {
     const notes = [];
-    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const noteNames = CHROMATIC_SHARP;
     
     // Começar em A0 (índice 9)
     for (let octave = 0; octave <= 8; octave++) {

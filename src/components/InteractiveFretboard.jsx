@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button.jsx';
 import { Badge } from '@/components/ui/badge.jsx';
 import { Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { useAppContext } from '../contexts/AppContext.jsx';
+import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference, noteToPortuguese } from '../utils/noteNaming';
 
 export function InteractiveFretboard({ modo, tonalidade }) {
   const { playNote: playNoteContext, playScale: playScaleContext, audioInitialized } = useAppContext();
@@ -23,7 +24,7 @@ export function InteractiveFretboard({ modo, tonalidade }) {
   ];
 
   const frets = Array.from({ length: 13 }, (_, i) => i); // 0 a 12 casas
-  const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  const noteNames = CHROMATIC_SHARP;
 
   // Função para converter nota MIDI para frequência
   const midiToFreq = (midi) => 440 * Math.pow(2, (midi - 69) / 12);

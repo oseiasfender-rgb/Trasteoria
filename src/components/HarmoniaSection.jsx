@@ -10,6 +10,7 @@ import { useToast } from '../hooks/useToast';
 import ChordDiagram from './ChordDiagram';
 import { InteractiveFretboard } from './InteractiveFretboard.jsx';
 import { getModoData } from '../utils/modosDataExpanded.js';
+import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference, noteToPortuguese } from '../utils/noteNaming';
 
 export function HarmoniaSection() {
   const { playChord } = useAppContext();
@@ -162,7 +163,7 @@ export function HarmoniaSection() {
   // Função para calcular acordes na tonalidade
   const calcularAcordes = (key, campo) => {
     // Notas com sustenidos e bemóis
-    const notasSustenidos = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notasSustenidos = KEYS_CIRCLE_OF_FIFTHS;
     const notasBemois = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
     
     // Usar bemóis para tonalidades menores e sustenidos para maiores
@@ -229,7 +230,7 @@ export function HarmoniaSection() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].map(key => (
+                    {KEYS_CIRCLE_OF_FIFTHS.map(key => (
                       <SelectItem key={key} value={key}>{key}</SelectItem>
                     ))}
                   </SelectContent>
@@ -677,7 +678,7 @@ export function HarmoniaSection() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'].map(k => (
+                      {KEYS_CIRCLE_OF_FIFTHS.map(k => (
                         <SelectItem key={k} value={k}>{k}</SelectItem>
                       ))}
                     </SelectContent>

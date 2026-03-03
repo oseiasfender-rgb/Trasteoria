@@ -9,7 +9,8 @@
  * 4. Menor Melódico
  */
 
-const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference, KEYS_CIRCLE_OF_FIFTHS } from './noteNaming';
+const NOTES = CHROMATIC_SHARP;
 
 const GRAUS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 
@@ -99,6 +100,14 @@ const CAMPOS_HARMONICOS = {
   },
 };
 
+// Intervalos diatônicos corretos para cada tipo de campo harmônico
+const INTERVALOS_CAMPOS = {
+  MAIOR:           [0, 2, 4, 5, 7, 9, 11],
+  MENOR_NATURAL:   [0, 2, 3, 5, 7, 8, 10],
+  MENOR_HARMONICO: [0, 2, 3, 5, 7, 8, 11],
+  MENOR_MELODICO:  [0, 2, 3, 5, 7, 9, 11],
+};
+
 /**
  * Gera campo harmônico em uma tonalidade específica
  */
@@ -107,12 +116,15 @@ function generateCampoInTonality(campoId, tonalityIndex) {
   if (!campo) return null;
 
   const root = NOTES[tonalityIndex];
+  const pref = getKeyPreference(root);
+  const intervalos = INTERVALOS_CAMPOS[campoId.toUpperCase()] || [0, 2, 4, 5, 7, 9, 11];
+
   const acordesGerados = campo.acordes.map((acorde, index) => {
-    const notaDoAcorde = NOTES[(tonalityIndex + index * 2) % 12];
+    const notaDoAcorde = indexToNote((tonalityIndex + intervalos[index]) % 12, pref);
     return {
       ...acorde,
       nota: notaDoAcorde,
-      cifra: `${notaDoAcorde}${acorde.tipo === 'maj7' ? 'maj7' : acorde.tipo}`,
+      cifra: `${notaDoAcorde}${acorde.tipo}`,
     };
   });
 
@@ -129,14 +141,13 @@ function generateCampoInTonality(campoId, tonalityIndex) {
  */
 function generateAtlasCampos() {
   const atlas = {};
-
-  NOTES.forEach((note, noteIndex) => {
+  KEYS_CIRCLE_OF_FIFTHS.forEach((note) => {
+    const noteIndex = noteToIndex(note);
     atlas[note] = {};
     Object.keys(CAMPOS_HARMONICOS).forEach((campoKey) => {
       atlas[note][campoKey.toLowerCase()] = generateCampoInTonality(campoKey, noteIndex);
     });
   });
-
   return atlas;
 }
 

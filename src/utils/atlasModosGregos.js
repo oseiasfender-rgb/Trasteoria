@@ -11,7 +11,8 @@
  * - Licks e frases
  */
 
-const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference, KEYS_CIRCLE_OF_FIFTHS } from './noteNaming';
+const NOTES = CHROMATIC_SHARP;
 
 const MODOS = {
   JONIO: {
@@ -233,9 +234,10 @@ function generateModoInTonality(modoId, tonalityIndex) {
   if (!modo) return null;
 
   const root = NOTES[tonalityIndex];
+  const pref = getKeyPreference(root);
   const notas = modo.intervals.map((interval) => {
     const noteIndex = (tonalityIndex + interval) % 12;
-    return NOTES[noteIndex];
+    return indexToNote(noteIndex, pref);
   });
 
   return {
@@ -251,14 +253,14 @@ function generateModoInTonality(modoId, tonalityIndex) {
  */
 function generateAtlasModos() {
   const atlas = {};
-
-  NOTES.forEach((note, noteIndex) => {
+  // Usar ciclo das quintas para cobrir todas as 12 tonalidades com enarmonias corretas
+  KEYS_CIRCLE_OF_FIFTHS.forEach((note) => {
+    const noteIndex = noteToIndex(note);
     atlas[note] = {};
     Object.keys(MODOS).forEach((modoKey) => {
       atlas[note][modoKey.toLowerCase()] = generateModoInTonality(modoKey, noteIndex);
     });
   });
-
   return atlas;
 }
 
@@ -286,7 +288,7 @@ function listModos() {
  * Lista todas as tonalidades
  */
 function listTonalidades() {
-  return NOTES;
+  return KEYS_CIRCLE_OF_FIFTHS;
 }
 
 export {

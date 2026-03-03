@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button.jsx';
 import { useAppContext } from '../contexts/AppContext.jsx';
 import { useToast } from '../hooks/useToast.js';
 import { BookOpen, Play, Check, X, RotateCcw, Trophy, Target } from 'lucide-react';
+import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference, noteToPortuguese } from '../utils/noteNaming';
 
 export function LeituraSection() {
   const { playNote, currentOctave } = useAppContext();
@@ -241,7 +242,7 @@ export function LeituraSection() {
 
                 {/* Opções de resposta */}
                 <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-                  {['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].map(note => (
+                  {KEYS_CIRCLE_OF_FIFTHS.map(note => (
                     <Button
                       key={note}
                       variant={userAnswer === note ? 'default' : 'outline'}

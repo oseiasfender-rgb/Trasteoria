@@ -8,6 +8,7 @@
  * - Suporte a diferentes estilos (fingerstyle, slap, pick)
  */
 
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 import { sampleEngine } from './sampleEngine.js';
 
 class BassSampleEngine {
@@ -30,7 +31,7 @@ class BassSampleEngine {
    */
   generateNotes() {
     const notes = [];
-    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const noteNames = CHROMATIC_SHARP;
     
     // Começar em B0 (índice 11 da oitava 0)
     for (let octave = 0; octave <= 2; octave++) {

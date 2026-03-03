@@ -1,3 +1,4 @@
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 // bassEngine.js
 // Sistema de baixo com 3 modos: Root Notes, Walking Bass, Melodic Bass
 // Web Audio API para síntese de som de baixo
@@ -71,7 +72,7 @@ class BassEngine {
   // Converter nota para frequência (baixo usa oitavas graves 0-2)
   // Suporta baixo de 5 cordas (B0) e 4 cordas (E1)
   noteToFrequency(note, octaveOverride = null) {
-    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notes = CHROMATIC_SHARP;
     
     // Extrair nota e oitava
     let noteName = note.replace(/[0-9]/g, '');
@@ -130,7 +131,7 @@ class BassEngine {
   // Modo 2: Walking Bass (linha melódica jazz/blues)
   generateWalkingPattern(chordProgression, beatsPerChord = 4) {
     const pattern = [];
-    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notes = CHROMATIC_SHARP;
     
     chordProgression.forEach((chord, chordIndex) => {
       const root = this.getRootNote(chord).replace('2', '');
@@ -176,7 +177,7 @@ class BassEngine {
   // Modo 3: Melodic Bass (linha elaborada funk/R&B)
   generateMelodicPattern(chordProgression, beatsPerChord = 4) {
     const pattern = [];
-    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notes = CHROMATIC_SHARP;
     
     chordProgression.forEach((chord, chordIndex) => {
       const root = this.getRootNote(chord).replace('2', '');

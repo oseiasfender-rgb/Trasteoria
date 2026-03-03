@@ -4,6 +4,7 @@ import { atlasModosGregos } from '@/utils/atlasModosGregos';
 import { atlasCamposHarmonicos } from '@/utils/atlasCamposHarmonicos';
 import { atlasAcordes } from '@/utils/atlasAcordes';
 import { atlasProgressoes } from '@/utils/atlasProgressoes';
+import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference, noteToPortuguese } from '../utils/noteNaming';
 
 export default function AtlasViewer() {
   const [activeTab, setActiveTab] = useState('modos');
@@ -12,7 +13,7 @@ export default function AtlasViewer() {
   const [viewMode, setViewMode] = useState('grid');
   const [expandedItems, setExpandedItems] = useState({});
 
-  const tones = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  const tones = KEYS_CIRCLE_OF_FIFTHS;
 
   // Filtrar dados baseado na busca
   const filteredData = useMemo(() => {

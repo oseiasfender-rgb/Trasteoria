@@ -11,6 +11,7 @@ import { useToast } from '../hooks/useToast';
 import AnimatedButton from './AnimatedButton';
 import AnimatedCard from './AnimatedCard';
 import ProgressBar from './ProgressBar';
+import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference, noteToPortuguese } from '../utils/noteNaming';
 
 const EarTraining = () => {
   const { playNote, playChord, playScale, initializeAudio } = useAppContext();
@@ -104,7 +105,7 @@ const EarTraining = () => {
   
   // Obter nota a partir de intervalo
   const getNoteFromInterval = (baseNote, semitones) => {
-    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notes = CHROMATIC_SHARP;
     const baseIndex = notes.indexOf(baseNote);
     const targetIndex = (baseIndex + semitones) % 12;
     const octaveShift = Math.floor((baseIndex + semitones) / 12);

@@ -10,7 +10,8 @@
  * 5. Sus e Abertos
  */
 
-const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference, KEYS_CIRCLE_OF_FIFTHS } from './noteNaming';
+const NOTES = CHROMATIC_SHARP;
 
 const TIPOS_ACORDES = {
   // TRÍADES

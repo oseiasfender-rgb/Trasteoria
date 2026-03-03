@@ -1,3 +1,4 @@
+import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 // Modos Exóticos e Híbridos - Expansão do Conteúdo Teórico
 
 export const modosExoticos = {
@@ -229,7 +230,7 @@ export const categorias = [
 
 // Função para transpor escalas exóticas
 export const transporEscalaExotica = (intervalos, tonalidade) => {
-  const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  const noteNames = CHROMATIC_SHARP;
   const baseIndex = noteNames.indexOf(tonalidade);
   
   return intervalos.map(intervalo => {

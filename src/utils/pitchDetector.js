@@ -3,6 +3,7 @@
  * Detecção de pitch (nota musical) em tempo real usando autocorrelação
  */
 
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 class PitchDetector {
   constructor() {
     this.audioContext = null;

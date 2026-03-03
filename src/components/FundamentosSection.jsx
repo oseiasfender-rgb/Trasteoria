@@ -9,6 +9,7 @@ import { useToast } from '../hooks/useToast';
 import { useGamification } from '../contexts/GamificationContext.jsx';
 import AnimatedButton from './AnimatedButton';
 import AnimatedCard from './AnimatedCard';
+import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference, noteToPortuguese } from '../utils/noteNaming';
 
 export function FundamentosSection() {
   const [activeTab, setActiveTab] = useState('teoria');
@@ -196,7 +197,7 @@ export function FundamentosSection() {
                 <div>
                   <h4 className="font-semibold mb-3">As 12 Notas Cromáticas</h4>
                   <div className="grid grid-cols-6 gap-2">
-                    {['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].map((nota, index) => (
+                    {KEYS_CIRCLE_OF_FIFTHS.map((nota, index) => (
                       <div key={index} className="bg-primary/20 text-center py-2 rounded font-mono">
                         {nota}
                       </div>

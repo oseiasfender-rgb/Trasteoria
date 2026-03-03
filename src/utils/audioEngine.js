@@ -1,3 +1,4 @@
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 // Módulo de Síntese de Áudio para o Aplicativo de Modos Gregos
 // Usando Web Audio API para geração de áudio em tempo real
 
@@ -196,7 +197,7 @@ class AudioEngine {
     // Aguardar um pouco e tocar a segunda nota
     setTimeout(async () => {
       // Calcular a segunda nota baseada nos semitons
-      const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      const notes = CHROMATIC_SHARP;
       const baseIndex = notes.indexOf(baseNote);
       const targetIndex = (baseIndex + semitons) % 12;
       const targetOctave = octave + Math.floor((baseIndex + semitons) / 12);

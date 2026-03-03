@@ -10,6 +10,7 @@
  * - Sincronização de clock
  */
 
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference } from './noteNaming';
 class MIDIManager {
   constructor(audioEngine) {
     this.audioEngine = audioEngine;
@@ -221,7 +222,7 @@ class MIDIManager {
     }
 
     // Mapeamento padrão: MIDI 60 = C4
-    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notes = CHROMATIC_SHARP;
     const octave = Math.floor(midiNote / 12) - 1;
     const noteName = notes[midiNote % 12];
 
@@ -269,7 +270,7 @@ class MIDIManager {
    * Converte nota para MIDI
    */
   noteToMIDI(note) {
-    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notes = CHROMATIC_SHARP;
     const match = note.match(/([A-G]#?)(\d)/);
 
     if (!match) return 60; // Default C4
