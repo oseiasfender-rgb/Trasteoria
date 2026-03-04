@@ -4,7 +4,7 @@
  */
 import {
   CHROMATIC_SHARP, CHROMATIC_FLAT,
-  noteToIndex, indexToNote, getKeyPreference,
+  noteToIndex, indexToNote, getKeyPreference, getModePreference,
   generateScale, noteToPortuguese
 } from './noteNaming';
 
@@ -73,7 +73,10 @@ export function transporNota(nota, semitons, key) {
 export function gerarEscala(tonica, modo) {
   const intervalos = intervalosModosGrecos[modo];
   if (!intervalos) return [];
-  const pref = getKeyPreference(tonica);
+  // getModePreference considera tanto a tonalidade quanto os intervalos do modo:
+  // modos com graus bemolizados (Dórico, Frígio, Mixolídio, Eólio, Lócrio)
+  // usam bemóis mesmo quando a tônica é natural (ex: Lócrio em C → Db Eb Gb Ab Bb)
+  const pref = getModePreference(tonica, intervalos);
   return generateScale(tonica, intervalos, pref);
 }
 

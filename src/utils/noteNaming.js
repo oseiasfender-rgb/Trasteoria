@@ -275,13 +275,41 @@ export function getEnharmonic(note) {
 }
 
 /**
+ * Determina a preferência de acidente para um modo específico em uma tonalidade.
+ *
+ * Regra: o modo determina quantos graus são alterados para baixo (bemol) ou para cima (#).
+ * Modos com muitos graus bemolizados (Frígio, Eólio, Lócrio) devem usar bemoéis
+ * mesmo quando a tônica é natural ou de sustenidos.
+ *
+ * @param {string} key - tonalidade (ex: 'C', 'G', 'F#')
+ * @param {number[]} intervals - intervalos do modo em semitons
+ * @returns {'sharp'|'flat'|'natural'}
+ */
+export function getModePreference(key, intervals) {
+  // Escala maior da tonalidade (referência diatônica)
+  const majorIntervals = [0, 2, 4, 5, 7, 9, 11];
+  // Contar graus que são mais baixos que a escala maior (bemolizados)
+  let flatCount = 0;
+  let sharpCount = 0;
+  for (let i = 1; i < intervals.length; i++) {
+    const diff = intervals[i] - majorIntervals[i];
+    if (diff < 0) flatCount++;
+    if (diff > 0) sharpCount++;
+  }
+  // Se o modo tem mais graus bemolizados que elevados, usar bemol
+  if (flatCount > sharpCount) return 'flat';
+  // Caso contrário, usar a preferência da tonalidade
+  return getKeyPreference(key) === 'flat' ? 'flat' : 'sharp';
+}
+
+/**
  * Gera escala de qualquer modo para uma tonalidade, com nomenclatura correta.
  * @param {string} key - tonalidade (ex: 'F#', 'Bb')
  * @param {number[]} intervals - array de semitons (ex: [0,2,4,5,7,9,11] para maior)
  * @param {'sharp'|'flat'|'natural'|null} forcePref - forçar preferência (null = auto)
  */
 export function generateScale(key, intervals, forcePref = null) {
-  const pref = forcePref ?? getKeyPreference(key);
+  const pref = forcePref ?? getModePreference(key, intervals);
   const root = noteToIndex(key);
   if (root === -1) return [];
   return intervals.map(i => indexToNote((root + i) % 12, pref));

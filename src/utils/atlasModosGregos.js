@@ -11,7 +11,7 @@
  * - Licks e frases
  */
 
-import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference, KEYS_CIRCLE_OF_FIFTHS } from './noteNaming';
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference, getModePreference, KEYS_CIRCLE_OF_FIFTHS } from './noteNaming';
 const NOTES = CHROMATIC_SHARP;
 
 const MODOS = {
@@ -234,7 +234,9 @@ function generateModoInTonality(modoId, tonalityIndex) {
   if (!modo) return null;
 
   const root = NOTES[tonalityIndex];
-  const pref = getKeyPreference(root);
+  // Usar getModePreference: considera tanto a tonalidade quanto os intervalos do modo
+  // Ex: Lócrio em C usa bemóis (Db, Eb, Gb, Ab, Bb) pois tem 5 graus bemolizados
+  const pref = getModePreference(root, modo.intervals);
   const notas = modo.intervals.map((interval) => {
     const noteIndex = (tonalityIndex + interval) % 12;
     return indexToNote(noteIndex, pref);
