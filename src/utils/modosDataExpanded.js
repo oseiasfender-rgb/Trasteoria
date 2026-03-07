@@ -3,7 +3,8 @@ import {
   gerarCampoHarmonico, 
   obterFormulaPortugues, 
   escalaParaPortugues,
-  tonalidades 
+  tonalidades,
+  intervalosModosGrecos
 } from './musicTheory.js';
 
 // Imports dos diagramas
@@ -113,6 +114,7 @@ export function gerarDadosModo(modoKey, tonalidade) {
     escala,
     campoHarmonico,
     tonalidade,
+    intervalos: intervalosModosGrecos[modoKey] || [],
     tonalidades: tonalidades.find(t => t.key === tonalidade)
   };
 }

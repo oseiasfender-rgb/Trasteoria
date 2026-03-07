@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button.jsx';
 import { Badge } from '@/components/ui/badge.jsx';
 import { Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { useAppContext } from '../contexts/AppContext.jsx';
-import { CHROMATIC_SHARP, KEYS_CIRCLE_OF_FIFTHS, noteToIndex, indexToNote, getKeyPreference, noteToPortuguese } from '../utils/noteNaming';
+import { CHROMATIC_SHARP, noteToIndex, indexToNote, getKeyPreference, getModePreference, noteToPortuguese } from '../utils/noteNaming';
 
 export function InteractiveFretboard({ modo, tonalidade }) {
   const { playNote: playNoteContext, playScale: playScaleContext, audioInitialized } = useAppContext();
@@ -12,7 +12,9 @@ export function InteractiveFretboard({ modo, tonalidade }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [highlightMode, setHighlightMode] = useState('graus'); // 'graus', 'notas', 'intervalos'
-  
+  const audioContextRef = useRef(null);
+  const oscillatorRef = useRef(null);
+
   // Configuração do braço da guitarra (afinação padrão)
   const strings = [
     { note: 'E', octave: 4, openFret: 64 }, // 1ª corda (Mi agudo)
@@ -24,18 +26,37 @@ export function InteractiveFretboard({ modo, tonalidade }) {
   ];
 
   const frets = Array.from({ length: 13 }, (_, i) => i); // 0 a 12 casas
-  const noteNames = CHROMATIC_SHARP;
+
+  // ─── Determinar preferência de acidente baseada no modo e tonalidade ───────
+  // Regra: se o modo tem escala com bemóis (ex: Lócrio, Frígio, Eólio),
+  // o braço deve exibir as notas com bemóis para coincidir com modo.escala.
+  const accidentPref = (() => {
+    if (modo && modo.intervalos && modo.intervalos.length > 0) {
+      // Usar os intervalos do modo para determinar a preferência
+      return getModePreference(tonalidade || 'C', modo.intervalos);
+    }
+    if (modo && modo.escala && modo.escala.length > 0) {
+      // Inferir preferência a partir das notas da escala já geradas
+      const flatCount = modo.escala.filter(n => n.includes('b')).length;
+      const sharpCount = modo.escala.filter(n => n.includes('#')).length;
+      if (flatCount > sharpCount) return 'flat';
+      if (sharpCount > flatCount) return 'sharp';
+    }
+    // Fallback: usar preferência da tonalidade
+    return getKeyPreference(tonalidade || 'C') === 'flat' ? 'flat' : 'sharp';
+  })();
 
   // Função para converter nota MIDI para frequência
   const midiToFreq = (midi) => 440 * Math.pow(2, (midi - 69) / 12);
 
   // Função para obter a nota em uma casa específica
+  // Usa a mesma preferência de acidente do modo para que as notas coincidam com modo.escala
   const getNoteAtFret = (stringIndex, fretNumber) => {
     const string = strings[stringIndex];
     const midiNote = string.openFret + fretNumber;
     const noteIndex = (midiNote - 12) % 12; // C = 0
     return {
-      name: noteNames[noteIndex],
+      name: indexToNote(noteIndex, accidentPref),
       midi: midiNote,
       frequency: midiToFreq(midiNote)
     };
@@ -44,13 +65,24 @@ export function InteractiveFretboard({ modo, tonalidade }) {
   // Função para obter o grau da nota no modo atual
   const getNoteGrade = (noteName) => {
     if (!modo || !modo.escala) return null;
-    const noteIndex = modo.escala.findIndex(note => note === noteName);
-    return noteIndex !== -1 ? noteIndex + 1 : null;
+    // Busca direta
+    let idx = modo.escala.findIndex(note => note === noteName);
+    if (idx !== -1) return idx + 1;
+    // Busca por enarmonia (C# == Db, etc.)
+    const noteIdx = noteToIndex(noteName);
+    if (noteIdx === -1) return null;
+    idx = modo.escala.findIndex(note => noteToIndex(note) === noteIdx);
+    return idx !== -1 ? idx + 1 : null;
   };
 
   // Função para verificar se a nota está no modo atual
   const isNoteInMode = (noteName) => {
-    return modo && modo.escala && modo.escala.includes(noteName);
+    if (!modo || !modo.escala) return false;
+    if (modo.escala.includes(noteName)) return true;
+    // Verificar por enarmonia
+    const noteIdx = noteToIndex(noteName);
+    if (noteIdx === -1) return false;
+    return modo.escala.some(note => noteToIndex(note) === noteIdx);
   };
 
   // Função para obter a cor do grau
@@ -112,6 +144,7 @@ export function InteractiveFretboard({ modo, tonalidade }) {
       };
 
     } catch (error) {
+      // Silenciar erros de áudio
     }
   };
 
@@ -123,8 +156,8 @@ export function InteractiveFretboard({ modo, tonalidade }) {
     
     for (let i = 0; i < modo.escala.length; i++) {
       const noteName = modo.escala[i];
-      const noteIndex = noteNames.indexOf(noteName);
-      const frequency = midiToFreq(60 + noteIndex); // C4 como base
+      const noteIdx = noteToIndex(noteName);
+      const frequency = noteIdx !== -1 ? midiToFreq(60 + noteIdx) : 440;
       
       await new Promise(resolve => {
         playNoteFromFretboard(frequency, 500);
@@ -320,4 +353,3 @@ export function InteractiveFretboard({ modo, tonalidade }) {
     </Card>
   );
 }
-
