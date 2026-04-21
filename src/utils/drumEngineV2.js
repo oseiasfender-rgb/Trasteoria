@@ -23,18 +23,21 @@ class DrumEngineV2 {
   }
 
   /**
-   * Inicializar contexto de áudio e engine profissional
+   * Inicializar contexto de áudio e engine profissional.
+   * Se this.audioContext já foi injetado externamente, usa ele.
+   * Caso contrário, cria um novo.
    */
   async ensureContext() {
     if (!this.audioContext) {
       this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    // Criar professionalDrum com o audioContext atual (externo ou interno)
+    if (!this.professionalDrum) {
       this.professionalDrum = new ProfessionalDrumEngine(this.audioContext);
     }
-    
     if (this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
-    
     return this.audioContext;
   }
 
@@ -461,44 +464,84 @@ class DrumEngineV2 {
   }
 
   /**
-   * Tocar padrão
+   * Tocar padrão usando lookahead scheduler (sem drift)
+   * Baseado na técnica de Chris Wilson:
+   * https://www.html5rocks.com/en/tutorials/audio/scheduling/
    */
   async playPattern(genreId, styleId, bpm = 120) {
     await this.ensureContext();
-    
-    this.bpm = bpm;
-    this.currentGenre = genreId;
-    this.currentStyle = styleId;
+
+    this.bpm           = bpm;
+    this.currentGenre  = genreId;
+    this.currentStyle  = styleId;
     this.currentPattern = this.generatePattern(genreId, styleId);
-    this.isPlaying = true;
-    this.currentBeat = 0;
-    
-    // Duração de 1 beat em milissegundos
-    const beatDuration = (60 / this.bpm) * 1000;
-    
-    // Tocar padrão em loop
-    this.intervalId = setInterval(() => {
+    this.isPlaying     = true;
+    this.currentBeat   = 0;
+
+    // Lookahead: quantos segundos à frente agendar
+    const LOOKAHEAD      = 0.1;  // 100ms
+    const SCHEDULE_TICK  = 25;   // acordar a cada 25ms
+    const STEP           = 0.25; // resolução de 16th notes
+
+    // Tempo da próxima nota a ser agendada
+    this._nextNoteTime  = this.audioContext.currentTime + 0.05;
+    this._currentStep   = 0;
+
+    const schedule = () => {
       if (!this.isPlaying) return;
-      
-      // Tocar todos os drums no beat atual
-      const currentBeatEvents = this.currentPattern.filter(
-        event => event.time === this.currentBeat
-      );
-      
-      currentBeatEvents.forEach(event => {
-        event.drums.forEach(drum => {
-          this.playDrum(drum);
+
+      const beatDuration = 60 / this.bpm;
+      const stepDuration = beatDuration * STEP;
+
+      // Agendar todas as notas dentro da janela de lookahead
+      while (this._nextNoteTime < this.audioContext.currentTime + LOOKAHEAD) {
+        const stepTime = this._nextNoteTime;
+        const stepPos  = Math.round(this._currentStep * STEP * 1000) / 1000;
+
+        // Encontrar eventos para este step
+        const events = this.currentPattern.filter(e => {
+          const diff = Math.abs(e.time - stepPos);
+          return diff < STEP / 2;
         });
-      });
-      
-      // Avançar beat
-      this.currentBeat += 0.25; // 16th notes
-      
-      // Reset ao final do compasso (4 beats)
-      if (this.currentBeat >= 4) {
-        this.currentBeat = 0;
+
+        events.forEach(event => {
+          event.drums.forEach(drum => {
+            this.playDrumAt(drum, stepTime);
+          });
+        });
+
+        // Avançar step
+        this._currentStep++;
+        if (this._currentStep >= Math.round(4 / STEP)) {
+          this._currentStep = 0;
+        }
+        this._nextNoteTime += stepDuration;
       }
-    }, beatDuration / 4); // 16th note resolution
+
+      this.intervalId = setTimeout(schedule, SCHEDULE_TICK);
+    };
+
+    schedule();
+  }
+
+  /**
+   * Tocar instrumento individual em tempo agendado
+   */
+  playDrumAt(drumType, time) {
+    if (!this.professionalDrum) return;
+    const velocity = this.volume;
+    switch (drumType) {
+      case 'kick':       this.professionalDrum.playKickAt        ? this.professionalDrum.playKickAt(this.drumStyle, velocity, time)        : this.professionalDrum.playKick(this.drumStyle, velocity); break;
+      case 'snare':      this.professionalDrum.playSnareAt       ? this.professionalDrum.playSnareAt(this.drumStyle, velocity, time)       : this.professionalDrum.playSnare(this.drumStyle, velocity); break;
+      case 'hihat':      this.professionalDrum.playHihatClosedAt ? this.professionalDrum.playHihatClosedAt(this.drumStyle, velocity, time) : this.professionalDrum.playHihatClosed(this.drumStyle, velocity); break;
+      case 'hihat-open': this.professionalDrum.playHihatOpenAt   ? this.professionalDrum.playHihatOpenAt(this.drumStyle, velocity, time)   : this.professionalDrum.playHihatOpen(this.drumStyle, velocity); break;
+      case 'crash':      this.professionalDrum.playCrashAt       ? this.professionalDrum.playCrashAt(velocity, time)                      : this.professionalDrum.playCrash(velocity); break;
+      case 'ride':       this.professionalDrum.playRideAt        ? this.professionalDrum.playRideAt(velocity, time)                       : this.professionalDrum.playRide(velocity); break;
+      case 'tom-high':   this.professionalDrum.playTomAt         ? this.professionalDrum.playTomAt('high', velocity, time)                : this.professionalDrum.playTom('high', velocity); break;
+      case 'tom-mid':    this.professionalDrum.playTomAt         ? this.professionalDrum.playTomAt('mid', velocity, time)                 : this.professionalDrum.playTom('mid', velocity); break;
+      case 'tom-low':    this.professionalDrum.playTomAt         ? this.professionalDrum.playTomAt('low', velocity, time)                 : this.professionalDrum.playTom('low', velocity); break;
+      default: break;
+    }
   }
 
   /**

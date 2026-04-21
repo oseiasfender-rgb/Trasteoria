@@ -185,6 +185,83 @@ class ProfessionalPianoEngine {
   }
 
   /**
+   * 🎹 Tocar acorde em tempo absoluto agendado (Web Audio API lookahead)
+   * @param {Array} notes - Array de { note, octave }
+   * @param {number} duration - Duração em segundos
+   * @param {number} velocity - Volume 0-1
+   * @param {number} time - AudioContext.currentTime absoluto
+   */
+  playChordAt(notes, duration = 2.0, velocity = 0.7, time = null) {
+    const startTime = time !== null ? time : this.audioContext.currentTime;
+    notes.forEach(noteData => {
+      this._playNoteAtTime(noteData.note, noteData.octave, duration, velocity, startTime);
+    });
+  }
+
+  _playNoteAtTime(note, octave, duration, velocity, startTime) {
+    const frequency   = this.getNoteFrequency(note, octave);
+    const attackTime  = 0.002;
+    const decayTime   = 0.1;
+    const releaseTime = Math.max(0.2, duration * 0.3);
+    const sustainLevel = velocity * 0.6;
+
+    const fundamental = this.audioContext.createOscillator();
+    const fundGain    = this.audioContext.createGain();
+    const harmonics   = [];
+    const harmGains   = [];
+    const ratios      = [2, 3, 4, 5];
+    const amplitudes  = [0.4, 0.25, 0.15, 0.1];
+
+    ratios.forEach((ratio, i) => {
+      const osc  = this.audioContext.createOscillator();
+      const gain = this.audioContext.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(frequency * ratio, startTime);
+      const amp = amplitudes[i] * velocity;
+      gain.gain.setValueAtTime(0, startTime);
+      gain.gain.linearRampToValueAtTime(amp, startTime + attackTime);
+      gain.gain.exponentialRampToValueAtTime(amp * 0.4, startTime + attackTime + decayTime);
+      gain.gain.setValueAtTime(amp * 0.4, startTime + duration);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration + releaseTime);
+      harmonics.push(osc);
+      harmGains.push(gain);
+    });
+
+    const filter = this.audioContext.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(Math.min(8000, frequency * 8), startTime);
+    filter.Q.setValueAtTime(1, startTime);
+
+    fundamental.type = 'sine';
+    fundamental.frequency.setValueAtTime(frequency, startTime);
+
+    fundGain.gain.setValueAtTime(0, startTime);
+    fundGain.gain.linearRampToValueAtTime(velocity, startTime + attackTime);
+    fundGain.gain.exponentialRampToValueAtTime(sustainLevel, startTime + attackTime + decayTime);
+    fundGain.gain.setValueAtTime(sustainLevel, startTime + duration);
+    fundGain.gain.exponentialRampToValueAtTime(0.001, startTime + duration + releaseTime);
+
+    fundamental.connect(fundGain);
+    fundGain.connect(filter);
+    harmonics.forEach((osc, i) => {
+      osc.connect(harmGains[i]);
+      harmGains[i].connect(filter);
+    });
+    filter.connect(this.reverb.dryGain);
+    this.reverb.dryGain.connect(this.masterGain);
+    filter.connect(this.reverb.convolver);
+
+    const stopTime = startTime + duration + releaseTime + 0.05;
+    fundamental.start(startTime);
+    harmonics.forEach(osc => osc.start(startTime));
+    fundamental.stop(stopTime);
+    harmonics.forEach(osc => osc.stop(stopTime));
+
+    this.activeNotes.push({ oscillators: [fundamental, ...harmonics], stopTime });
+    this.cleanupActiveNotes();
+  }
+
+  /**
    * 🎹 Tocar acorde com voicing específico
    */
   playChordWithVoicing(chord, voicingType = 'close', duration = 2.0, velocity = 0.7) {
