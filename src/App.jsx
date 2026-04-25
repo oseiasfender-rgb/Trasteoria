@@ -23,6 +23,7 @@ import { ShareButton } from './components/ShareButton.jsx';
 import UserStats from './components/UserStats.jsx';
 import { AnalyticsProvider } from './components/AnalyticsProvider.jsx';
 import { InteractiveFretboard } from './components/InteractiveFretboard.jsx';
+import { MethodoCover } from './components/MethodoCover.jsx';
 
 // Lazy loading dos componentes das seções (otimização de performance)
 const FundamentosSection = lazy(() => import('./components/FundamentosSection.jsx').then(m => ({ default: m.FundamentosSection })));
@@ -61,7 +62,7 @@ import './App.css';
 import './animations.css';
 
 function AppContent() {
-  const [activeSection, setActiveSection] = useState('fundamentos');
+  const [activeSection, setActiveSection] = useState('metodo');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showMetronome, setShowMetronome] = useState(false);
@@ -99,11 +100,18 @@ function AppContent() {
   };
 
   // Gamificação: XP ao mudar de seção
-  const handleSectionChange = (section) => {
-    setActiveSection(section);
-    addPoints(2);
-    window.dispatchEvent(new CustomEvent('sectionChange', { detail: { section } }));
+  const handleSectionChange = (value) => {
+    setActiveSection(value);
   };
+
+  // Se a seção ativa for 'metodo', mostrar o MethodoCover
+  if (activeSection === 'metodo') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <MethodoCover onNavigate={handleSectionChange} />
+      </div>
+    );
+  }
 
   const currentModo = getModoData(selectedModo, selectedTonality);
   const currentTonality = tonalidades.find(t => t.key === selectedTonality);
@@ -247,6 +255,17 @@ function AppContent() {
             </div>
           </div>
         )}
+
+        {/* Botão de Voltar ao Método */}
+        <div className="mb-4">
+          <button
+            onClick={() => handleSectionChange('metodo')}
+            className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 hover:text-purple-200 transition-colors border border-purple-500/30 hover:border-purple-500/60"
+          >
+            <span>←</span>
+            <span>Voltar ao Método</span>
+          </button>
+        </div>
 
         {/* Navegação Principal */}
         <Tabs value={activeSection} onValueChange={handleSectionChange} className="w-full">
