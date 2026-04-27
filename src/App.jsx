@@ -23,7 +23,6 @@ import { ShareButton } from './components/ShareButton.jsx';
 import UserStats from './components/UserStats.jsx';
 import { AnalyticsProvider } from './components/AnalyticsProvider.jsx';
 import { InteractiveFretboard } from './components/InteractiveFretboard.jsx';
-import { MethodoCover } from './components/MethodoCover.jsx';
 
 // Lazy loading dos componentes das seções (otimização de performance)
 const FundamentosSection = lazy(() => import('./components/FundamentosSection.jsx').then(m => ({ default: m.FundamentosSection })));
@@ -62,7 +61,7 @@ import './App.css';
 import './animations.css';
 
 function AppContent() {
-  const [activeSection, setActiveSection] = useState('metodo');
+  const [activeSection, setActiveSection] = useState('fundamentos');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showMetronome, setShowMetronome] = useState(false);
@@ -100,18 +99,11 @@ function AppContent() {
   };
 
   // Gamificação: XP ao mudar de seção
-  const handleSectionChange = (value) => {
-    setActiveSection(value);
+  const handleSectionChange = (section) => {
+    setActiveSection(section);
+    addPoints(2);
+    window.dispatchEvent(new CustomEvent('sectionChange', { detail: { section } }));
   };
-
-  // Se a seção ativa for 'metodo', mostrar o MethodoCover
-  if (activeSection === 'metodo') {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        <MethodoCover onNavigate={handleSectionChange} />
-      </div>
-    );
-  }
 
   const currentModo = getModoData(selectedModo, selectedTonality);
   const currentTonality = tonalidades.find(t => t.key === selectedTonality);
@@ -216,15 +208,15 @@ function AppContent() {
             </div>
             <div className="flex items-center justify-center space-x-3 mb-4">
               <img src="/logo-oficial.png" alt="TrasTeoria" className="w-12 h-12 rounded-lg" />
-              <CardTitle className="text-4xl font-bold bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent">
-                Método TrasTeoria
+              <CardTitle className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                TrasTeoria
               </CardTitle>
             </div>
-            <div className="bg-gradient-to-r from-amber-600 to-yellow-600 text-white px-6 py-2 rounded-full inline-block">
-              <span className="font-semibold">Fundamentos, Harmonia e Improvisação</span>
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full inline-block">
+              <span className="font-semibold">Método de Excelência Unificado — Todos os 12 Tons</span>
             </div>
             <div className="mt-2">
-              <span className="bg-amber-500/20 text-amber-300 text-xs px-3 py-1 rounded-full font-medium border border-amber-500/30">
+              <span className="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full font-medium border border-green-500/30">
                 ✨ v2.0 — Braço Interativo + Gamificação Ativa
               </span>
             </div>
@@ -256,28 +248,9 @@ function AppContent() {
           </div>
         )}
 
-        {/* Botão de Voltar ao Método */}
-        {activeSection !== 'metodo' && (
-          <div className="mb-4">
-            <button
-              onClick={() => handleSectionChange('metodo')}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-amber-600/20 hover:bg-amber-600/40 text-amber-300 hover:text-amber-200 transition-colors border border-amber-500/30 hover:border-amber-500/60"
-            >
-              <span>←</span>
-              <span>Voltar ao Método</span>
-            </button>
-          </div>
-        )}
-
         {/* Navegação Principal */}
         <Tabs value={activeSection} onValueChange={handleSectionChange} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-2 mb-8 h-auto p-2">
-            <TabsTrigger value="metodo" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm bg-gradient-to-r from-amber-600 to-yellow-600">
-              <Heart className="w-4 h-4" />
-              <span className="hidden sm:inline">Método</span>
-              <span className="sm:hidden">Método</span>
-              <span className="bg-amber-400 text-amber-900 text-xs px-2 py-0.5 rounded-full font-semibold ml-1">Fundação</span>
-            </TabsTrigger>
             <TabsTrigger value="fundamentos" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Fundamentos</span>
