@@ -57,11 +57,12 @@ import { ExplorarSection } from './components/ExplorarSection.jsx';
 import { VideoSection } from './components/VideoSection.jsx';
 import { modosInfo, modosList, getModoData } from './utils/modosDataExpanded.js';
 import { tonalidades } from './utils/musicTheory.js';
+import GuitarMethodViewer from './components/GuitarMethodViewer.jsx';
 import './App.css';
 import './animations.css';
 
 function AppContent() {
-  const [activeSection, setActiveSection] = useState('fundamentos');
+  const [activeSection, setActiveSection] = useState('metodo');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showMetronome, setShowMetronome] = useState(false);
@@ -251,6 +252,11 @@ function AppContent() {
         {/* Navegação Principal */}
         <Tabs value={activeSection} onValueChange={handleSectionChange} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-2 mb-8 h-auto p-2">
+            <TabsTrigger value="metodo" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm bg-gradient-to-r from-yellow-600 to-amber-600">
+              <BookOpen className="w-4 h-4" />
+              <span className="hidden sm:inline">Método TrasTeoria</span>
+              <span className="sm:hidden">Método</span>
+            </TabsTrigger>
             <TabsTrigger value="fundamentos" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Fundamentos</span>
@@ -365,6 +371,10 @@ function AppContent() {
 
           {/* Conteúdo das Seções com Lazy Loading */}
           <Suspense fallback={<SectionLoader />}>
+            <TabsContent value="metodo">
+              <GuitarMethodViewer />
+            </TabsContent>
+
             <TabsContent value="fundamentos">
               <FundamentosSection />
             </TabsContent>
