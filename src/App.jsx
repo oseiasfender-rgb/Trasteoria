@@ -23,6 +23,7 @@ import { ShareButton } from './components/ShareButton.jsx';
 import UserStats from './components/UserStats.jsx';
 import { AnalyticsProvider } from './components/AnalyticsProvider.jsx';
 import { InteractiveFretboard } from './components/InteractiveFretboard.jsx';
+import { MethodoCover } from './components/MethodoCover.jsx';
 
 // Lazy loading dos componentes das seções (otimização de performance)
 const FundamentosSection = lazy(() => import('./components/FundamentosSection.jsx').then(m => ({ default: m.FundamentosSection })));
@@ -57,7 +58,6 @@ import { ExplorarSection } from './components/ExplorarSection.jsx';
 import { VideoSection } from './components/VideoSection.jsx';
 import { modosInfo, modosList, getModoData } from './utils/modosDataExpanded.js';
 import { tonalidades } from './utils/musicTheory.js';
-import GuitarMethodViewer from './components/GuitarMethodViewer.jsx';
 import './App.css';
 import './animations.css';
 
@@ -100,11 +100,18 @@ function AppContent() {
   };
 
   // Gamificação: XP ao mudar de seção
-  const handleSectionChange = (section) => {
-    setActiveSection(section);
-    addPoints(2);
-    window.dispatchEvent(new CustomEvent('sectionChange', { detail: { section } }));
+  const handleSectionChange = (value) => {
+    setActiveSection(value);
   };
+
+  // Se a seção ativa for 'metodo', mostrar o MethodoCover
+  if (activeSection === 'metodo') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <MethodoCover onNavigate={handleSectionChange} />
+      </div>
+    );
+  }
 
   const currentModo = getModoData(selectedModo, selectedTonality);
   const currentTonality = tonalidades.find(t => t.key === selectedTonality);
@@ -249,14 +256,20 @@ function AppContent() {
           </div>
         )}
 
+        {/* Botão de Voltar ao Método */}
+        <div className="mb-4">
+          <button
+            onClick={() => handleSectionChange('metodo')}
+            className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 hover:text-purple-200 transition-colors border border-purple-500/30 hover:border-purple-500/60"
+          >
+            <span>←</span>
+            <span>Voltar ao Método</span>
+          </button>
+        </div>
+
         {/* Navegação Principal */}
         <Tabs value={activeSection} onValueChange={handleSectionChange} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-2 mb-8 h-auto p-2">
-            <TabsTrigger value="metodo" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm bg-gradient-to-r from-yellow-600 to-amber-600">
-              <BookOpen className="w-4 h-4" />
-              <span className="hidden sm:inline">Método TrasTeoria</span>
-              <span className="sm:hidden">Método</span>
-            </TabsTrigger>
             <TabsTrigger value="fundamentos" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Fundamentos</span>
@@ -371,10 +384,6 @@ function AppContent() {
 
           {/* Conteúdo das Seções com Lazy Loading */}
           <Suspense fallback={<SectionLoader />}>
-            <TabsContent value="metodo">
-              <GuitarMethodViewer />
-            </TabsContent>
-
             <TabsContent value="fundamentos">
               <FundamentosSection />
             </TabsContent>
