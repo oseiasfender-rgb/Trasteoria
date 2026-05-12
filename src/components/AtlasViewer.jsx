@@ -20,27 +20,27 @@ export default function AtlasViewer() {
     
     switch(activeTab) {
       case 'modos':
-        return Object.values(atlasModosGregos).filter(modo =>
-          modo.name.toLowerCase().includes(search) ||
-          modo.description.toLowerCase().includes(search)
+        return Object.values(atlasModosGregos || {}).filter(modo =>
+          (modo?.name?.toLowerCase() || '').includes(search) ||
+          (modo?.description?.toLowerCase() || '').includes(search)
         );
       
       case 'campos':
-        return Object.values(atlasCamposHarmonicos).filter(campo =>
-          campo.name.toLowerCase().includes(search) ||
-          campo.type.toLowerCase().includes(search)
+        return Object.values(atlasCamposHarmonicos || {}).filter(campo =>
+          (campo?.name?.toLowerCase() || '').includes(search) ||
+          (campo?.type?.toLowerCase() || '').includes(search)
         );
       
       case 'acordes':
-        return Object.values(atlasAcordes).filter(acorde =>
-          acorde.name.toLowerCase().includes(search) ||
-          acorde.category.toLowerCase().includes(search)
+        return Object.values(atlasAcordes || {}).filter(acorde =>
+          (acorde?.name?.toLowerCase() || '').includes(search) ||
+          (acorde?.category?.toLowerCase() || '').includes(search)
         );
       
       case 'progressoes':
-        return Object.values(atlasProgressoes).filter(prog =>
-          prog.name.toLowerCase().includes(search) ||
-          prog.genre.toLowerCase().includes(search)
+        return Object.values(atlasProgressoes || {}).filter(prog =>
+          (prog?.name?.toLowerCase() || '').includes(search) ||
+          (prog?.genre?.toLowerCase() || '').includes(search)
         );
       
       default:

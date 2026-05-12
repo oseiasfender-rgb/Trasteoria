@@ -87,7 +87,7 @@ const BandCreatorV2 = () => {
   
   // Atualizar volumes
   useEffect(() => {
-    if (engineRef.current) {
+    if (engineRef.current && typeof engineRef.current.setVolumes === 'function') {
       engineRef.current.setVolumes({
         drums: volumes.drums / 100,
         bass: volumes.bass / 100,
@@ -99,14 +99,14 @@ const BandCreatorV2 = () => {
   
   // Atualizar mutes
   useEffect(() => {
-    if (engineRef.current) {
+    if (engineRef.current && typeof engineRef.current.setMutes === 'function') {
       engineRef.current.setMutes(mutes);
     }
   }, [mutes]);
   
   // Atualizar bass mode
   useEffect(() => {
-    if (engineRef.current) {
+    if (engineRef.current && typeof engineRef.current.setBassMode === 'function') {
       engineRef.current.setBassMode(bassMode);
     }
   }, [bassMode]);
