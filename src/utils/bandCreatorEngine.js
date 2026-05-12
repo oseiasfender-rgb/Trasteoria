@@ -254,6 +254,33 @@ class BandCreatorEngine {
   }
 
   /**
+   * Ajustar volumes (compatibilidade com BandCreatorV2)
+   */
+  setVolumes(volumes) {
+    if (volumes.drums !== undefined) this.setChannelVolume('drums', volumes.drums);
+    if (volumes.bass !== undefined) this.setChannelVolume('bass', volumes.bass);
+    if (volumes.piano !== undefined) this.setChannelVolume('keys', volumes.piano);
+    if (volumes.master !== undefined) {
+      // Master volume aplica a todos os canais
+      const masterVolume = volumes.master;
+      Object.keys(this.mixer).forEach(channel => {
+        this.mixer[channel].volume *= masterVolume;
+      });
+      this.updateMixer();
+    }
+  }
+
+  /**
+   * Ajustar mutes (compatibilidade com BandCreatorV2)
+   */
+  setMutes(mutes) {
+    if (mutes.drums !== undefined) this.mixer.drums.mute = mutes.drums;
+    if (mutes.bass !== undefined) this.mixer.bass.mute = mutes.bass;
+    if (mutes.piano !== undefined) this.mixer.keys.mute = mutes.piano;
+    this.updateMixer();
+  }
+
+  /**
    * Mute/Unmute canal
    */
   toggleChannelMute(channel) {
