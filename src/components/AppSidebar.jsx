@@ -1,127 +1,269 @@
 import { useState } from 'react';
-import { BookOpen, Music, Zap, Play, Guitar, TrendingUp, Heart, Brain, Ear, Activity, Users, Music2, Library, Settings, Mic, Menu, X, Home } from 'lucide-react';
-import { Button } from './ui/button';
+import {
+  BookOpen, Music, Zap, Play, Guitar, TrendingUp,
+  Brain, Ear, Activity, Music2, Library, Settings,
+  Mic, Menu, X, Heart, ChevronDown, ChevronRight,
+  Layers, Radio, Video, Shield
+} from 'lucide-react';
+
+// Estrutura de navegação organizada em grupos didáticos
+const navigationGroups = [
+  {
+    id: 'metodo',
+    label: 'Método TrasTeoria',
+    icon: Heart,
+    color: 'from-amber-500 to-yellow-500',
+    badge: 'Fundação',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+    sections: [
+      { id: 'metodo', label: 'Método TrasTeoria', icon: Heart },
+    ],
+  },
+  {
+    id: 'aprender',
+    label: 'Aprender',
+    icon: BookOpen,
+    color: 'from-blue-500 to-blue-400',
+    badge: '8 módulos',
+    badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+    sections: [
+      { id: 'fundamentos', label: 'Fundamentos', icon: BookOpen },
+      { id: 'harmonia', label: 'Harmonia', icon: Music },
+      { id: 'escalas', label: 'Escalas & Arpejos', icon: Guitar },
+      { id: 'improvisacao', label: 'Improvisação', icon: Play },
+      { id: 'modos_gregos', label: 'Modos Gregos', icon: Layers },
+      { id: 'tecnicas', label: 'Técnicas', icon: Mic },
+      { id: 'leitura', label: 'Leitura', icon: BookOpen },
+      { id: 'repertorio', label: 'Repertório', icon: Library },
+    ],
+  },
+  {
+    id: 'praticar',
+    label: 'Praticar',
+    icon: Guitar,
+    color: 'from-purple-500 to-purple-400',
+    badge: '6 módulos',
+    badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+    sections: [
+      { id: 'ear_training', label: 'Ear Training', icon: Ear },
+      { id: 'guitar_input', label: 'Guitar Input', icon: Guitar },
+      { id: 'jam_session', label: 'Jam Session', icon: Radio },
+      { id: 'atlas', label: 'Atlas', icon: Library },
+      { id: 'desenvolvimento', label: 'Desenvolvimento', icon: TrendingUp },
+      { id: 'estilos', label: 'Estilos', icon: Music2 },
+    ],
+  },
+  {
+    id: 'criar',
+    label: 'Criar',
+    icon: Music,
+    color: 'from-orange-500 to-red-500',
+    badge: '6 módulos',
+    badgeColor: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
+    sections: [
+      { id: 'band_creator', label: 'Band Creator', icon: Music },
+      { id: 'band_v2', label: 'Studio Pro', icon: Music2 },
+      { id: 'composicao', label: 'Composição', icon: Brain },
+      { id: 'gravador', label: 'Gravador', icon: Mic },
+      { id: 'ai_suggester', label: 'IA Sugestões', icon: Brain },
+      { id: 'videos', label: 'Vídeos', icon: Video },
+    ],
+  },
+  {
+    id: 'progresso_group',
+    label: 'IA & Progresso',
+    icon: Activity,
+    color: 'from-green-500 to-teal-500',
+    badge: '4 módulos',
+    badgeColor: 'bg-green-500/20 text-green-300 border-green-500/30',
+    sections: [
+      { id: 'progresso', label: 'Progresso', icon: Activity },
+      { id: 'admin', label: 'Admin', icon: Shield },
+    ],
+  },
+];
 
 function AppSidebar({ activeSection, onSectionChange }) {
   const [isOpen, setIsOpen] = useState(true);
+  const [expandedGroups, setExpandedGroups] = useState(() => {
+    const initial = {};
+    navigationGroups.forEach(group => {
+      const hasActive = group.sections.some(s => s.id === activeSection);
+      initial[group.id] = hasActive || group.id === 'aprender';
+    });
+    return initial;
+  });
 
-  const sections = [
-    { id: 'metodo', label: 'Método TrasTeoria', icon: BookOpen, color: 'bg-blue-500' },
-    { id: 'fundamentals', label: 'Fundamentos', icon: Zap, color: 'bg-yellow-500' },
-    { id: 'harmonia', label: 'Harmonia', icon: Music, color: 'bg-purple-500' },
-    { id: 'escalas', label: 'Escalas & Arpejos', icon: Guitar, color: 'bg-green-500' },
-    { id: 'improvisacao', label: 'Improvisação', icon: Play, color: 'bg-pink-500' },
-    { id: 'estilos', label: 'Estilos', icon: Music2, color: 'bg-indigo-500' },
-    { id: 'desenvolvimento', label: 'Desenvolvimento', icon: TrendingUp, color: 'bg-cyan-500' },
-    { id: 'tecnicas', label: 'Técnicas', icon: Mic, color: 'bg-red-500' },
-    { id: 'atlas', label: 'Atlas', icon: Library, color: 'bg-orange-500' },
-    { id: 'studio', label: 'Studio Pro', icon: Music, color: 'bg-green-600' },
-    { id: 'ear-training', label: 'Ear Training', icon: Ear, color: 'bg-blue-600' },
-    { id: 'jam-session', label: 'Jam Session', icon: Play, color: 'bg-purple-600' },
-    { id: 'gravador', label: 'Gravador', icon: Mic, color: 'bg-red-600' },
-    { id: 'progresso', label: 'Progresso', icon: Activity, color: 'bg-teal-500' },
-    { id: 'composicao', label: 'Composição', icon: Music, color: 'bg-pink-600' },
-    { id: 'leitura', label: 'Leitura', icon: BookOpen, color: 'bg-blue-700' },
-    { id: 'repertorio', label: 'Repertório', icon: Library, color: 'bg-yellow-600' },
-    { id: 'modos-gregos', label: 'Modos Gregos', icon: Guitar, color: 'bg-green-700' },
-  ];
+  const toggleGroup = (groupId) => {
+    setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
+  };
+
+  const handleSectionClick = (sectionId) => {
+    onSectionChange(sectionId);
+    const parentGroup = navigationGroups.find(g => g.sections.some(s => s.id === sectionId));
+    if (parentGroup) {
+      setExpandedGroups(prev => ({ ...prev, [parentGroup.id]: true }));
+    }
+  };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Sidebar */}
-      <div
-        className={`
-          ${isOpen ? 'w-64' : 'w-20'} 
-          bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl
-          border-r border-cyan-500/20
-          transition-all duration-300 ease-in-out
-          overflow-y-auto
-          shadow-2xl
-        `}
-      >
-        {/* Header da Sidebar */}
-        <div className="p-4 border-b border-cyan-500/20 sticky top-0 bg-slate-800/80 backdrop-blur-sm">
-          <div className="flex items-center justify-between">
-            {isOpen && (
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Guitar className="w-5 h-5 text-white" />
-                </div>
-                <span className="font-bold text-white text-sm">TrasTeoria</span>
+    <div
+      className={`
+        ${isOpen ? 'w-64' : 'w-16'}
+        flex-shrink-0
+        bg-gradient-to-b from-slate-800/95 to-slate-900/95
+        backdrop-blur-xl
+        border-r border-purple-500/20
+        transition-all duration-300 ease-in-out
+        overflow-y-auto overflow-x-hidden
+        shadow-2xl
+        flex flex-col
+        h-screen
+        sticky top-0
+        z-40
+      `}
+    >
+      {/* Header da Sidebar */}
+      <div className="p-3 border-b border-purple-500/20 sticky top-0 bg-slate-800/90 backdrop-blur-sm z-10 flex-shrink-0">
+        <div className="flex items-center justify-between">
+          {isOpen && (
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Guitar className="w-4 h-4 text-white" />
               </div>
-            )}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-1 hover:bg-slate-700 rounded-lg transition-colors"
-            >
-              {isOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Navegação */}
-        <nav className="p-3 space-y-1">
-          {sections.map((section) => (
-            <button
-              key={section.id}
-              onClick={() => onSectionChange(section.id)}
-              className={`
-                w-full flex items-center gap-3 px-3 py-2 rounded-lg
-                transition-all duration-200
-                ${activeSection === section.id
-                  ? `${section.color} text-white shadow-lg`
-                  : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
-                }
-              `}
-              title={section.label}
-            >
-              <section.icon size={20} className="flex-shrink-0" />
-              {isOpen && <span className="text-sm font-medium truncate">{section.label}</span>}
-            </button>
-          ))}
-        </nav>
-
-        {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-cyan-500/20 bg-slate-800/80 backdrop-blur-sm">
+              <div className="min-w-0">
+                <span className="font-bold text-white text-sm truncate block">TrasTeoria</span>
+                <span className="text-purple-300 text-xs truncate block">v8.0</span>
+              </div>
+            </div>
+          )}
           <button
-            className={`
-              w-full flex items-center gap-3 px-3 py-2 rounded-lg
-              bg-gradient-to-r from-cyan-500/20 to-purple-500/20
-              hover:from-cyan-500/30 hover:to-purple-500/30
-              text-cyan-300 hover:text-cyan-200
-              transition-all duration-200
-            `}
-            title="Configurações"
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors text-slate-300 hover:text-white flex-shrink-0"
+            title={isOpen ? 'Recolher menu' : 'Expandir menu'}
           >
-            <Settings size={20} className="flex-shrink-0" />
-            {isOpen && <span className="text-sm font-medium">Configurações</span>}
+            {isOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
       </div>
 
-      {/* Conteúdo Principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Bar */}
-        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-md border-b border-cyan-500/20 px-6 py-4 shadow-lg">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-white">
-              {sections.find(s => s.id === activeSection)?.label || 'TrasTeoria'}
-            </h1>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-slate-300">v8.0</span>
-            </div>
-          </div>
-        </div>
+      {/* Navegação em Grupos */}
+      <nav className="flex-1 p-2 space-y-1 overflow-y-auto">
+        {navigationGroups.map((group) => {
+          const GroupIcon = group.icon;
+          const isGroupExpanded = expandedGroups[group.id];
+          const isGroupActive = group.sections.some(s => s.id === activeSection);
 
-        {/* Conteúdo */}
-        <div className="flex-1 overflow-auto">
-          <div className="p-6">
-            {/* Placeholder para conteúdo */}
-            <div className="text-slate-300 text-center py-12">
-              <p>Conteúdo da seção: {sections.find(s => s.id === activeSection)?.label}</p>
+          // Seção única (Método TrasTeoria) — botão direto
+          if (group.sections.length === 1) {
+            const section = group.sections[0];
+            const SectionIcon = section.icon;
+            const isActive = activeSection === section.id;
+            return (
+              <button
+                key={group.id}
+                onClick={() => handleSectionClick(section.id)}
+                className={`
+                  w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
+                  transition-all duration-200 text-left
+                  ${isActive
+                    ? 'bg-gradient-to-r from-amber-600 to-yellow-600 text-white shadow-lg shadow-amber-500/20'
+                    : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                  }
+                `}
+                title={!isOpen ? group.label : undefined}
+              >
+                <SectionIcon size={18} className="flex-shrink-0" />
+                {isOpen && (
+                  <div className="flex items-center justify-between w-full min-w-0">
+                    <span className="text-sm font-semibold truncate">{group.label}</span>
+                    <span className={`text-xs px-1.5 py-0.5 rounded-full border flex-shrink-0 ml-1 ${group.badgeColor}`}>
+                      {group.badge}
+                    </span>
+                  </div>
+                )}
+              </button>
+            );
+          }
+
+          // Grupos com múltiplas seções — accordion
+          return (
+            <div key={group.id}>
+              <button
+                onClick={() => isOpen ? toggleGroup(group.id) : handleSectionClick(group.sections[0].id)}
+                className={`
+                  w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
+                  transition-all duration-200 text-left
+                  ${isGroupActive
+                    ? 'bg-slate-700/60 text-white border border-white/10'
+                    : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                  }
+                `}
+                title={!isOpen ? group.label : undefined}
+              >
+                <GroupIcon size={18} className="flex-shrink-0" />
+                {isOpen && (
+                  <div className="flex items-center justify-between w-full min-w-0">
+                    <span className="text-sm font-semibold truncate">{group.label}</span>
+                    <div className="flex items-center gap-1 flex-shrink-0 ml-1">
+                      <span className={`text-xs px-1.5 py-0.5 rounded-full border ${group.badgeColor}`}>
+                        {group.badge}
+                      </span>
+                      {isGroupExpanded
+                        ? <ChevronDown size={14} className="text-slate-400" />
+                        : <ChevronRight size={14} className="text-slate-400" />
+                      }
+                    </div>
+                  </div>
+                )}
+              </button>
+
+              {/* Seções do Grupo */}
+              {isOpen && isGroupExpanded && (
+                <div className="ml-3 mt-1 space-y-0.5 border-l border-slate-700/50 pl-3">
+                  {group.sections.map((section) => {
+                    const SectionIcon = section.icon;
+                    const isActive = activeSection === section.id;
+                    return (
+                      <button
+                        key={section.id}
+                        onClick={() => handleSectionClick(section.id)}
+                        className={`
+                          w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg
+                          transition-all duration-200 text-left text-sm
+                          ${isActive
+                            ? `bg-gradient-to-r ${group.color} text-white shadow-md`
+                            : 'text-slate-400 hover:bg-slate-700/40 hover:text-slate-200'
+                          }
+                        `}
+                      >
+                        <SectionIcon size={15} className="flex-shrink-0" />
+                        <span className="truncate">{section.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          </div>
-        </div>
+          );
+        })}
+      </nav>
+
+      {/* Footer */}
+      <div className="p-2 border-t border-purple-500/20 bg-slate-800/80 backdrop-blur-sm flex-shrink-0">
+        <button
+          className={`
+            w-full flex items-center gap-3 px-3 py-2 rounded-lg
+            bg-gradient-to-r from-purple-500/10 to-pink-500/10
+            hover:from-purple-500/20 hover:to-pink-500/20
+            text-purple-300 hover:text-purple-200
+            transition-all duration-200
+          `}
+          title="Configurações"
+        >
+          <Settings size={16} className="flex-shrink-0" />
+          {isOpen && <span className="text-sm font-medium">Configurações</span>}
+        </button>
       </div>
     </div>
   );

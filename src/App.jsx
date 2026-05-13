@@ -175,9 +175,9 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex">
+    <div className="h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex overflow-hidden">
       <AppSidebar activeSection={activeSection} onSectionChange={handleSectionChange} />
-      <div className="flex-1 container mx-auto px-4 py-8">
+      <div className="flex-1 overflow-y-auto px-4 py-8">
         {/* Header Principal */}
         <Card className="mb-8 bg-card/50 backdrop-blur-sm border-purple-500/20">
           <CardHeader className="text-center relative">
