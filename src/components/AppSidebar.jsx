@@ -58,10 +58,9 @@ const navigationGroups = [
     label: 'Criar',
     icon: Music,
     color: 'from-orange-500 to-red-500',
-    badge: '6 módulos',
+    badge: '5 módulos',
     badgeColor: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
     sections: [
-      { id: 'band_creator', label: 'Band Creator', icon: Music },
       { id: 'band_v2', label: 'Studio Pro', icon: Music2 },
       { id: 'composicao', label: 'Composição', icon: Brain },
       { id: 'gravador', label: 'Gravador', icon: Mic },
@@ -74,7 +73,7 @@ const navigationGroups = [
     label: 'IA & Progresso',
     icon: Activity,
     color: 'from-green-500 to-teal-500',
-    badge: '4 módulos',
+    badge: '2 módulos',
     badgeColor: 'bg-green-500/20 text-green-300 border-green-500/30',
     sections: [
       { id: 'progresso', label: 'Progresso', icon: Activity },

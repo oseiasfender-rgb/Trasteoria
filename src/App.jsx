@@ -31,7 +31,6 @@ const EscalasArpejosSection = lazy(() => import('./components/EscalasArpejosSect
 const ImprovisacaoSection = lazy(() => import('./components/ImprovisacaoSection.jsx').then(m => ({ default: m.ImprovisacaoSection })));
 const EstilosSection = lazy(() => import('./components/EstilosSection.jsx').then(m => ({ default: m.EstilosSection })));
 const DesenvolvimentoSection = lazy(() => import('./components/DesenvolvimentoSection.jsx').then(m => ({ default: m.DesenvolvimentoSection })));
-const BandCreator = lazy(() => import('./components/BandCreator'));
 const AIChordSuggester = lazy(() => import('./components/AIChordSuggester'));
 const EarTraining = lazy(() => import('./components/EarTraining'));
 const GuitarInput = lazy(() => import('./components/GuitarInput'));
@@ -304,11 +303,6 @@ function AppContent() {
               <span className="hidden sm:inline">Modos Gregos</span>
               <span className="sm:hidden">Modos</span>
             </TabsTrigger>
-            <TabsTrigger value="band_creator" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm bg-gradient-to-r from-orange-600 to-red-600">
-              <Music className="w-4 h-4" />
-              <span className="hidden sm:inline">Band Creator</span>
-              <span className="sm:hidden">Band</span>
-            </TabsTrigger>
             <TabsTrigger value="ai_suggester" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm bg-gradient-to-r from-purple-600 to-blue-600">
               <Brain className="w-4 h-4" />
               <span className="hidden sm:inline">AI Suggester</span>
@@ -395,9 +389,6 @@ function AppContent() {
               <DesenvolvimentoSection />
             </TabsContent>
 
-            <TabsContent value="band_creator">
-              <BandCreator />
-            </TabsContent>
 
             <TabsContent value="ai_suggester">
               <AIChordSuggester />
