@@ -58,6 +58,7 @@ import { VideoSection } from './components/VideoSection.jsx';
 import { modosInfo, modosList, getModoData } from './utils/modosDataExpanded.js';
 import { tonalidades } from './utils/musicTheory.js';
 import AppSidebar from './components/AppSidebar.jsx';
+import GuitarMethodViewer from './components/GuitarMethodViewer.jsx';
 import './App.css';
 import './animations.css';
 
@@ -367,6 +368,9 @@ function AppContent() {
 
           {/* Conteúdo das Seções com Lazy Loading */}
           <Suspense fallback={<SectionLoader />}>
+            <TabsContent value="metodo">
+              <GuitarMethodViewer />
+            </TabsContent>
             <TabsContent value="fundamentos">
               <FundamentosSection />
             </TabsContent>
