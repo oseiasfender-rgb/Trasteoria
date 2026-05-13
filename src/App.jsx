@@ -38,7 +38,7 @@ const JamSession = lazy(() => import('./components/JamSession'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const TechniquesVideosSection = lazy(() => import('./components/TechniquesVideosSection.jsx').then(m => ({ default: m.TechniquesVideosSection })));
 const AtlasViewer = lazy(() => import('./components/AtlasViewer.jsx'));
-const BandCreatorV2 = lazy(() => import('./components/BandCreatorV2.jsx'));
+const StudioPro = lazy(() => import('./components/StudioPro.jsx').then(m => ({ default: m.StudioPro })));
 const AudioRecorder = lazy(() => import('./components/AudioRecorder.jsx'));
 const ProgressDashboard = lazy(() => import('./components/ProgressDashboard.jsx'));
 const ComposicaoSection = lazy(() => import('./components/ComposicaoSection.jsx').then(m => ({ default: m.ComposicaoSection })));
@@ -419,7 +419,7 @@ function AppContent() {
             </TabsContent>
 
             <TabsContent value="band_v2">
-              <BandCreatorV2 />
+              <StudioPro />
             </TabsContent>
 
             <TabsContent value="gravador">

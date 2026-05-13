@@ -9,6 +9,8 @@ import { useToast } from '../hooks/useToast';
 import { useAppContext } from '../contexts/AppContext.jsx';
 import ChordDiagram from './ChordDiagram';
 import { InteractiveFretboard } from './InteractiveFretboard.jsx';
+import { InteractiveFretboardV2 } from './InteractiveFretboardV2.jsx';
+import { ScaleAnimationPlayer } from './ScaleAnimationPlayer.jsx';
 import { getModoData } from '../utils/modosDataExpanded.js';
 
 export function EscalasArpejosSection() {
@@ -306,8 +308,10 @@ export function EscalasArpejosSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList role="tablist" className="grid w-full grid-cols-6">
+        <TabsList role="tablist" className="grid w-full grid-cols-8">
           <TabsTrigger role="tab" value="fretboard">🎸 Braço</TabsTrigger>
+          <TabsTrigger role="tab" value="fretboard_v2">🎸 Braço Pro</TabsTrigger>
+          <TabsTrigger role="tab" value="animacao">▶ Animação</TabsTrigger>
           <TabsTrigger role="tab" value="modos_gregos">Modos Gregos</TabsTrigger>
           <TabsTrigger role="tab" value="caged">Sistema CAGED</TabsTrigger>
           <TabsTrigger role="tab" value="exoticas">Escalas Exóticas</TabsTrigger>
@@ -362,6 +366,14 @@ export function EscalasArpejosSection() {
           </Card>
         </TabsContent>
 
+        {/* Braço Pro V2 */}
+        <TabsContent value="fretboard_v2" className="space-y-6">
+          <InteractiveFretboardV2 modo={fretboardModo} tonalidade={selectedKey} instrumento="guitarra" />
+        </TabsContent>
+        {/* Animação de Escalas */}
+        <TabsContent value="animacao" className="space-y-6">
+          <ScaleAnimationPlayer modo={fretboardModo} tonalidade={selectedKey} />
+        </TabsContent>
         {/* Modos Gregos */}
         <TabsContent value="modos_gregos" className="space-y-6">
           <Card className="bg-card/50 backdrop-blur-sm">

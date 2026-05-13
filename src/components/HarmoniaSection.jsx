@@ -9,6 +9,7 @@ import { useAppContext } from '../contexts/AppContext.jsx';
 import { useToast } from '../hooks/useToast';
 import ChordDiagram from './ChordDiagram';
 import { InteractiveFretboard } from './InteractiveFretboard.jsx';
+import { HarmonicTreeViewer } from './HarmonicTreeViewer.jsx';
 import { getModoData } from '../utils/modosDataExpanded.js';
 
 export function HarmoniaSection() {
@@ -209,12 +210,13 @@ export function HarmoniaSection() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList role="tablist" className="grid w-full grid-cols-5">
+        <TabsList role="tablist" className="grid w-full grid-cols-6">
           <TabsTrigger role="tab" value="campos">Campos Harmônicos</TabsTrigger>
           <TabsTrigger role="tab" value="acordes">Acordes com 7ª</TabsTrigger>
           <TabsTrigger role="tab" value="progressoes">Progressões</TabsTrigger>
           <TabsTrigger role="tab" value="voicings">Voicings</TabsTrigger>
           <TabsTrigger role="tab" value="fretboard">🎸 Braço</TabsTrigger>
+          <TabsTrigger role="tab" value="harmonic_tree">🌳 Árvore Harmônica</TabsTrigger>
         </TabsList>
 
         {/* Campos Harmônicos */}
@@ -701,6 +703,10 @@ export function HarmoniaSection() {
               <InteractiveFretboard modo={harmoniaFretboardModo} tonalidade={selectedKey} />
             </CardContent>
           </Card>
+        </TabsContent>
+        {/* Árvore Harmônica */}
+        <TabsContent value="harmonic_tree" className="space-y-6">
+          <HarmonicTreeViewer />
         </TabsContent>
       </Tabs>
     </div>
