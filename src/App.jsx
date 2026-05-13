@@ -250,9 +250,9 @@ function AppContent() {
           </div>
         )}
 
-        {/* Navegação Principal - Agora Oculta (Sidebar Lateral) */}
+        {/* Navegação Principal - Controlada pela Sidebar Lateral */}
         <Tabs value={activeSection} onValueChange={handleSectionChange} className="w-full">
-          <TabsList className="hidden">
+          <TabsList className="hidden" style={{display: 'none'}}>
             <TabsTrigger value="fundamentos" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Fundamentos</span>
