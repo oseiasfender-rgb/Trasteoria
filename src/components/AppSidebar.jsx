@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BookOpen, Music, Zap, Play, Guitar, TrendingUp, Heart, Brain, Ear, Activity, Users, Music2, Library, Settings, Mic, Menu, X, Home } from 'lucide-react';
 import { Button } from './ui/button';
 
-export function AppSidebar({ activeSection, onSectionChange }) {
+function AppSidebar({ activeSection, onSectionChange }) {
   const [isOpen, setIsOpen] = useState(true);
 
   const sections = [
@@ -126,3 +126,5 @@ export function AppSidebar({ activeSection, onSectionChange }) {
     </div>
   );
 }
+
+export default AppSidebar;

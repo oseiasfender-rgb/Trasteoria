@@ -57,7 +57,6 @@ import { ExplorarSection } from './components/ExplorarSection.jsx';
 import { VideoSection } from './components/VideoSection.jsx';
 import { modosInfo, modosList, getModoData } from './utils/modosDataExpanded.js';
 import { tonalidades } from './utils/musicTheory.js';
-import AppSidebar from './components/AppSidebar.jsx';
 import './App.css';
 import './animations.css';
 
@@ -175,9 +174,8 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex">
-      <AppSidebar activeSection={activeSection} onSectionChange={handleSectionChange} />
-      <div className="flex-1 container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="container mx-auto px-4 py-8">
         {/* Header Principal */}
         <Card className="mb-8 bg-card/50 backdrop-blur-sm border-purple-500/20">
           <CardHeader className="text-center relative">
@@ -250,9 +248,9 @@ function AppContent() {
           </div>
         )}
 
-        {/* Navegação Principal - Agora Oculta (Sidebar Lateral) */}
+        {/* Navegação Principal */}
         <Tabs value={activeSection} onValueChange={handleSectionChange} className="w-full">
-          <TabsList className="hidden">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-2 mb-8 h-auto p-2">
             <TabsTrigger value="fundamentos" className="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 p-3 text-xs md:text-sm">
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Fundamentos</span>
