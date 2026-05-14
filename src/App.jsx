@@ -150,7 +150,7 @@ function AppContent() {
               <div className="mb-4 flex items-center space-x-2">
                 <Guitar className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold">Braço Interativo — {selectedModo.charAt(0).toUpperCase() + selectedModo.slice(1)} em {selectedTonality}</h3>
-                <span className="bg-primary/20 text-primary text-xs px-2 py-1 rounded-full font-medium">v2.0</span>
+                <span className="bg-primary/20 text-primary text-xs px-2 py-1 rounded-full font-medium">v8.0</span>
               </div>
               <InteractiveFretboard 
                 modo={currentModo} 
@@ -219,7 +219,7 @@ function AppContent() {
             </div>
             <div className="mt-2">
               <span className="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full font-medium border border-green-500/30">
-                ✨ v2.0 — Braço Interativo + Gamificação Ativa
+                ✨ v8.0 — Método Completo · 12 Tons · IA Integrada
               </span>
             </div>
           </CardHeader>
