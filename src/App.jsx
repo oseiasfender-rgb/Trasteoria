@@ -45,6 +45,7 @@ const ComposicaoSection = lazy(() => import('./components/ComposicaoSection.jsx'
 const LeituraSection = lazy(() => import('./components/LeituraSection.jsx').then(m => ({ default: m.LeituraSection })));
 const RepertorioSection = lazy(() => import('./components/RepertorioSection.jsx').then(m => ({ default: m.RepertorioSection })));
 const VideoGallery = lazy(() => import('./components/VideoGallery.jsx').then(m => ({ default: m.VideoGallery })));
+const ModosExoticosSection = lazy(() => import('./components/ModosExoticosSection.jsx').then(m => ({ default: m.ModosExoticosSection })));
 
 // Componentes originais dos Modos Gregos
 import { Navigation } from './components/Navigation.jsx';
@@ -168,6 +169,13 @@ function AppContent() {
       
       case 'video':
         return <VideoSection />;
+      
+      case 'exoticos':
+        return (
+          <Suspense fallback={<SectionLoader />}>
+            <ModosExoticosSection />
+          </Suspense>
+        );
       
       default:
         return null;
@@ -454,11 +462,16 @@ function AppContent() {
                 <div className="flex items-center justify-center space-x-3 mb-4">
                   <Heart className="w-8 h-8 text-primary" />
                   <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
-                    Modos Gregos
+                    Modos Gregos & Escalas Exóticas
                   </h1>
                 </div>
-                <div className="inline-block bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium">
-                  Seção Especializada — Todos os 12 Tons · Braço Interativo
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <div className="inline-block bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium">
+                    7 Modos Gregos · Todos os 12 Tons · Braço Interativo
+                  </div>
+                  <div className="inline-block bg-violet-500/20 text-violet-300 px-4 py-2 rounded-full text-sm font-medium border border-violet-500/30">
+                    ✨ + 12 Escalas Exóticas & Sintéticas
+                  </div>
                 </div>
               </header>
 

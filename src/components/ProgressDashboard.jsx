@@ -14,15 +14,47 @@ const ProgressDashboard = () => {
   
   const totalProgress = getTotalProgress();
   
-  // Seções
-  const sections = [
-    { id: 'fundamentos', name: 'Fundamentos', icon: '📚' },
-    { id: 'harmonia', name: 'Harmonia', icon: '🎵' },
-    { id: 'escalasArpejos', name: 'Escalas & Arpejos', icon: '🎸' },
-    { id: 'improvisacao', name: 'Improvisação', icon: '🎭' },
-    { id: 'estilos', name: 'Estilos', icon: '🎹' },
-    { id: 'desenvolvimento', name: 'Desenvolvimento', icon: '📈' }
+  // Seções — todas as seções de conteúdo do sistema v8.0 por nível pedagógico
+  const sectionGroups = [
+    {
+      group: 'Fundação',
+      color: 'text-amber-400',
+      sections: [
+        { id: 'metodo', name: 'Método TrasTeoria', icon: '📖' },
+      ]
+    },
+    {
+      group: 'Iniciante',
+      color: 'text-blue-400',
+      sections: [
+        { id: 'fundamentos',  name: 'Fundamentos',     icon: '📚' },
+        { id: 'leitura',      name: 'Leitura Musical', icon: '🎼' },
+        { id: 'tecnicas',     name: 'Técnicas',         icon: '🎸' },
+        { id: 'repertorio',   name: 'Repertório',       icon: '📋' },
+      ]
+    },
+    {
+      group: 'Intermediário',
+      color: 'text-purple-400',
+      sections: [
+        { id: 'harmonia',     name: 'Harmonia',          icon: '🎵' },
+        { id: 'escalas',      name: 'Escalas & Arpejos', icon: '🎸' },
+        { id: 'modos_gregos', name: 'Modos Gregos',      icon: '🏛️' },
+        { id: 'improvisacao', name: 'Improvisação',      icon: '🎭' },
+        { id: 'estilos',      name: 'Estilos',           icon: '🎹' },
+      ]
+    },
+    {
+      group: 'Avançado',
+      color: 'text-orange-400',
+      sections: [
+        { id: 'composicao',      name: 'Composição',      icon: '🧠' },
+        { id: 'desenvolvimento', name: 'Desenvolvimento', icon: '📈' },
+        { id: 'atlas',           name: 'Atlas Harmônico', icon: '📊' },
+      ]
+    },
   ];
+  const sections = sectionGroups.flatMap(g => g.sections);
   
   // Formatar tempo
   const formatTime = (minutes) => {
@@ -129,35 +161,42 @@ const ProgressDashboard = () => {
             Progresso por Seção
           </h3>
           
-          <div className="space-y-4">
-            {sections.map((section, index) => {
-              const sectionProgress = getSectionProgress(section.id);
-              
-              return (
-                <div key={section.id} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-white font-medium flex items-center gap-2">
-                      <span className="text-2xl">{section.icon}</span>
-                      {section.name}
-                    </span>
-                    <span className="text-slate-400 text-sm">
-                      {sectionProgress.completed}/{sectionProgress.total}
-                    </span>
-                  </div>
-                  
-                  <ProgressBar 
-                    progress={sectionProgress.percentage}
-                    color={
-                      sectionProgress.percentage === 100 ? 'green' :
-                      sectionProgress.percentage >= 50 ? 'blue' :
-                      sectionProgress.percentage >= 25 ? 'yellow' : 'red'
-                    }
-                    height="md"
-                    showPercentage={true}
-                  />
+          <div className="space-y-6">
+            {sectionGroups.map((group) => (
+              <div key={group.group}>
+                <div className={`text-xs font-black tracking-widest uppercase mb-3 ${group.color}`}>
+                  {group.group}
                 </div>
-              );
-            })}
+                <div className="space-y-3">
+                  {group.sections.map((section) => {
+                    const sectionProgress = getSectionProgress(section.id);
+                    return (
+                      <div key={section.id} className="space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-white font-medium flex items-center gap-2 text-sm">
+                            <span className="text-lg">{section.icon}</span>
+                            {section.name}
+                          </span>
+                          <span className="text-slate-400 text-xs">
+                            {sectionProgress.completed}/{sectionProgress.total}
+                          </span>
+                        </div>
+                        <ProgressBar
+                          progress={sectionProgress.percentage}
+                          color={
+                            sectionProgress.percentage === 100 ? 'green' :
+                            sectionProgress.percentage >= 50 ? 'blue' :
+                            sectionProgress.percentage >= 25 ? 'yellow' : 'red'
+                          }
+                          height="md"
+                          showPercentage={true}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </AnimatedCard>
