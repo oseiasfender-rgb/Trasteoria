@@ -18,8 +18,8 @@ import { useState } from 'react';
 import {
   BookOpen, Music, Play, Guitar, TrendingUp,
   Brain, Ear, Activity, Music2, Library,
-  Mic, Menu, X, Layers, Radio, Shield,
-  Star, BarChart2, BookMarked, Headphones, Cpu, Heart
+  Mic, Mic2, Menu, X, Layers, Radio, Shield,
+  Star, BarChart2, BookMarked, Headphones, Cpu, Heart, Video
 } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -93,6 +93,8 @@ const navigationGroups = [
       { id: 'ai_suggester', label: 'Professor IA', icon: Cpu },
       { id: 'guitar_input', label: 'Guitar Input', icon: Mic },
       { id: 'jam_session',  label: 'Jam Session',  icon: Radio },
+      { id: 'gravador',     label: 'Gravador',     icon: Mic2 },
+      { id: 'videos',       label: 'Vídeos',       icon: Video },
     ],
   },
 ];
